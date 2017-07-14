@@ -57,6 +57,10 @@ if ~isempty(Ch_del)
 
     % Se eliminan las areas de los canales no deseados
     Area_select(ind_ch_del) = [];
+    
+    % Se notifica como removido
+    REGISTRO.channel(ind_ch_del).removed = ones(1,length(REGISTRO.channel(ind_ch_del))); % Ver si funciona
+    
 end
 
 % Se vuelve a calcular el tama�o de los canales
@@ -73,7 +77,7 @@ fprintf('\tCanal\t\tArea\n');
 for k = 1:largo_dataAll_select
     fprintf('\t %s\t\t %s\n',Channel_select{k},Area_select{k});
 
-    eval(['data_select',Channel_select{k},'= data_allSelect(:,k);']);
+    %eval(['data_select',Channel_select{k},'= data_allSelect(:,k);']);
 
     % Los LFP referenciados con el promedio de todos los canales
     %data_allSelect_prom(:,k) = data_allSelect(:,k)-promedio_LFPSelect;
@@ -81,27 +85,27 @@ end
 fprintf('\n');
 
 % Para que es este ploteo????
-[C,ia,ic] = unique(Area_select,'stable');
+%[C,ia,ic] = unique(Area_select,'stable');
 
-for m = 1:length(ia)%1:largo_dataAll  
-    i = ia(m);
+%for m = 1:length(ia)%1:largo_dataAll  
+%    i = ia(m);
     % pasar con un boton
-    areas_actuales = find(ic == ic(i));
+%    areas_actuales = find(ic == ic(i));
     
     % Sirve para eliminar artefactos
-    fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
-    plot(time_step_m(time_step_m<tiempo_total), data_allSelect(:,areas_actuales))
-    legend('Show')
-    line([pre_m pre_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
-    line([on_inicio_m on_inicio_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
-    line([on_final_m on_final_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([post_m post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    xlim([0 tiempo_total])
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title(['Todos los LFP en el tiempo del Area ',C(ic(i))])
+%    fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
+%    plot(time_step_m(time_step_m<tiempo_total), data_allSelect(:,areas_actuales))
+%    legend('Show')
+%    line([pre_m pre_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
+%    line([on_inicio_m on_inicio_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
+%    line([on_final_m on_final_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
+%    line([post_m post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
+%    xlim([0 tiempo_total])
+%    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
+%    title(['Todos los LFP en el tiempo del Area ',C(ic(i))])
     
     % Guardar la figura
     %saveas(fig_1,['Imagenes',path(35:end),'Todos los LFP en el tiempo del Area ',C(ic(i)),'.png'])
     
-    waitforbuttonpress;
-end
+%    waitforbuttonpress;
+%end

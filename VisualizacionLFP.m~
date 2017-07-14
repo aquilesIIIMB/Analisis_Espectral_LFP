@@ -27,7 +27,7 @@ for k = 1:largo_dataAll
     %data_all_prom(:,k) = data_all(:,k)-promedio_LFP;
 end
 fprintf('\n');
-pause(3) % 3 seg. para observar los canales y sus areas
+pause(3) % 5 seg. para observar los canales y sus areas
 
 % indices de las mismas areas
 [C,ia,ic] = unique(Area(canales_eval),'stable');
@@ -53,9 +53,7 @@ for m = 1:length(ia)%1:largo_dataAll
         %subplot(2,4,q); %Modificar el 4 por si hay mas de 8 en cada area
         %dummy = data_all(:,canales_eval(areas_actuales(q)));
         %plot(time_step_m(time_step_m<tiempo_total), (500*q)+dummy)
-        %eval(['plot(time_step_m(time_step_m<tiempo_total), -(500*q)+data_',int2str(canales_eval(areas_actuales(q))),');']);
-        %plot(time_step_m(time_step_m<tiempo_total), -(500*q)+data_all(:,areas_actuales(q)));
-        plot(time_step_m(time_step_m<tiempo_total), -(500*q)+REGISTRO.channel(canales_eval(areas_actuales(q))).data);
+        eval(['plot(time_step_m(time_step_m<tiempo_total), -(500*q)+data_',int2str(canales_eval(areas_actuales(q))),');']);
         hold on;
         
         %ylim([lim_min lim_max])
@@ -85,8 +83,7 @@ for m = 1:length(ia)%1:largo_dataAll
     for q = 1:length(areas_actuales)
         
         subplot(2,4,q);
-        %eval(['histo_diff = histogram(diff(data_',int2str(canales_eval(areas_actuales(q))),'),200);']); %Se cambio a 200
-        histo_diff = histogram(diff(REGISTRO.channel(canales_eval(areas_actuales(q))).data),200);
+        eval(['histo_diff = histogram(diff(data_',int2str(canales_eval(areas_actuales(q))),'),200);']); %Se cambio a 200
         xlim([histo_diff.BinLimits]); ylim([0 25*10^4]);
         xlabel('Amplitud de la derivada'); ylabel('Cantidad de muestras');
         title([C(ic(i)),' Histograma de la derivada del LFP CH',int2str(canales_eval(areas_actuales(q)))])

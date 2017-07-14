@@ -72,8 +72,20 @@ Channel = T.Channel;
 Area = T.Area;
 
 % Inicializacion de la estructura del registro
-name_registro.canales = Channel;
-name_registro.Area = Area;
+clear REGISTRO % asegurar que no sobrescriba un registro anterior
+REGISTRO.path = path;
+REGISTRO.channel_codes = channel_codes;
+REGISTRO.tinicial = tinicial;
+REGISTRO.reference_type = tipo_de_referencia;
+REGISTRO.selected_channels = canales_eval;
+REGISTRO.time_range = timeRange;
+REGIS
+
+for i=1:64
+    REGISTRO.channel(i).data = [];
+    REGISTRO.channel(i).name = T.Channel{i}; % Cargar los numeros de los canales
+    REGISTRO.channel(i).area = T.Area{i}; % Carga los nombres de las areas
+end
 
 % Prefijo de los archivos dentro de la ruta, obtiene todos los canales, los
 % que se quieren evaluar y los que no
@@ -93,29 +105,30 @@ ruta_regEval = [ruta_con100,int2str(canales_eval(1)),'.continuous'];
 disp(ruta_regEval)
 
 % Obtener la informacion del primer archivo
-[data, timestamps, info] = load_open_ephys_data_faster(strtrim([path,ruta_regEval]));
+[data, REGISTRO.open_ephys.timestamps, REGISTRO.open_ephys.info] = load_open_ephys_data_faster(strtrim([path,ruta_regEval]));
 
 % Tasa de muestreo de los registros
-simpleRate = info.header.sampleRate;
+simpleRate = REGISTRO.open_ephys.info.header.sampleRate;
 % Frecuencia de Nyquist
-fNyq = simpleRate/2;
+%fNyq = simpleRate/2;
 % Tasa de muestreo deseada
-desiredSimpleRate = 1000;
+REGISTRO.desiredSimpleRate = 1000;
 
 % Parametros del filtro pasa banda
-N_filt = 20;
-fc1 = 3;
-fc2 = 300;
+REGISTRO.filter_param.type = 'Band pass';
+REGISTRO.filter_param.n = 20;
+REGISTRO.filter_param.fc1 = 3;
+REGISTRO.filter_param.fc2 = 300;
 
 % Disenno del filtro pasa banda
-d = fdesign.bandpass('N,F3dB1,F3dB2',N_filt,fc1,fc2,simpleRate);
+d = fdesign.bandpass('N,F3dB1,F3dB2',REGISTRO.filter_param.n,REGISTRO.filter_param.fc1,REGISTRO.filter_param.fc2,simpleRate);
 Hd = design(d,'butter'); 
 %fvtool(Hd)
 
 % Filtrado del primer LFP
 data_filt = filter(Hd,data);
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
-data_downS = downsample(data_filt,simpleRate/desiredSimpleRate);
+data_downS = downsample(data_filt,simpleRate/REGISTRO.desiredSimpleRate);
 
 % Tiempo maximo de registro
 tiempo_max_seg = length(data)/30000;
@@ -124,11 +137,12 @@ time_step_m = linspace(0,tiempo_max_seg/60,length(data_downS)); % minutos
 
 % Eliminar los datos del primer LFP sobre los 960 segundos
 data_elim_maxTime = data_downS((time_step_m<tiempo_total)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
-eval(['data_',int2str(canales_eval(1)),' = data_elim_maxTime;']);
-eval(['data_all = data_',int2str(canales_eval(1)),';']);
+%eval(['data_',int2str(canales_eval(1)),' = data_elim_maxTime;']);
+%eval(['data_all = data_',int2str(canales_eval(1)),';']);
+data_all = data_elim_maxTime;
 
 % Almacenamiento de los LFP en la estructura
-name_registro.ch1 = data_elim_maxTime;
+REGISTRO.channel(canales_eval(1)).data = data_elim_maxTime;
 
 for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
 
@@ -137,25 +151,30 @@ for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
     disp(ruta_regEval)
     
     % Obtener la informacion del archivo "i"
-    [data, timestamps, info] = load_open_ephys_data_faster(strtrim([path,ruta_regEval]));
+    [data, ~, ~] = load_open_ephys_data_faster(strtrim([path,ruta_regEval]));
     
     % Filtrado del LFP "i"
     data_filt = filter(Hd,data);
     
     % Downsamplear el LFP "i" para llevar los registros a la tasa de muestro requerida
-    data_downS = downsample(data_filt,simpleRate/desiredSimpleRate);
+    data_downS = downsample(data_filt,simpleRate/REGISTRO.desiredSimpleRate);
     
     % Eliminar los datos del LFP "i" sobre los 960 segundos
     data_elim_maxTime = data_downS((time_step_m<tiempo_total)); % Tal vez eliminar los primeros segundos
     
     % Guardar los datos modificados
-    eval(['data_',int2str(canales_eval(i)),'= data_elim_maxTime;']);
+    %eval(['data_',int2str(canales_eval(i)),'= data_elim_maxTime;']);
     
     % guardar solo el filtrado
-    eval(['data_all = [data_all,data_',int2str(canales_eval(i)),'];']);
+    %eval(['data_all = [data_all,data_',int2str(canales_eval(i)),'];']);
+    data_all = [data_all, data_elim_maxTime];
+    
+    % Almacenamiento de los LFP en la estructura
+    REGISTRO.channel(canales_eval(i)).data = data_elim_maxTime;
     
 end
 
 % Guardar matrices en .mat
 save(path_name_registro,'data_all');
 save(path_name_registro,'etapa','-append');
+save(path_name_registro,'REGISTRO','-append');
