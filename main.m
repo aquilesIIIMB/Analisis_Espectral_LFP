@@ -19,7 +19,6 @@ clear; close all
 %% Hacer que se muestre matlab cuando se tenga que det los rangos
 %% Para mejorar lo de los artefactos, restar el lado derecho con el izquierdo
 
-%% Revisar bien porque el pre sale tan diferente a al on y post
 %% Pregunatar a Romulo como se elimnan los artefactos, de forma manual o
 % de forma automatica (umbral) y mostrarle los artefactos de los registros
 %% Guardar las imagnes de forma automatica
