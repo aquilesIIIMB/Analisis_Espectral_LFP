@@ -2,7 +2,7 @@
 %
 % Referenciacion.m
 fprintf('\nReferenciacion\n')
-%
+fprintf('%s\n',etapa)
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

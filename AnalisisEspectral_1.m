@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% AnalisisEspectral_2.m
-fprintf('\nAnalisisEspectral_2\n')
-%
+% AnalisisEspectral_1.m
+fprintf('\nAnalisisEspectral_1\n')
+fprintf('%s\n',etapa)
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,7 +84,7 @@ for j = 1:largo_dataAll_select %Problemas con el de CH50 hay NAN
     legend('pre-stim', 'on-stim', 'post-stim')
     xlabel('Frecuencia [Hz]'); ylabel('Amplitud (dB)');
     title(['Respuesta en Frecuencia Multitaper del ',Area_select{j},' LFP ',Channel_select{j}])
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),' PSD del ',Area_select{j},' LFP ',Channel_select{j}];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,' PSD del ',Area_select{j},' LFP ',Channel_select{j}];
     saveas(fig_7,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_7)
@@ -106,15 +106,17 @@ for j = 1:largo_dataAll_select %Problemas con el de CH50 hay NAN
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     title(['Espectrograma Multitaper del ',Area_select{j},' LFP ',Channel_select{j}])
     ylabel(c,'Power (dB)')
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),' Espectrograma Multitaper del ',Area_select{j},' LFP ',Channel_select{j}];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,' Espectrograma Multitaper del ',Area_select{j},' LFP ',Channel_select{j}];
     saveas(fig_8,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_8)
 end
 
 etapa = 'seleccion';
-save(name_registro,'etapa','largo_dataAll','canales_eval','-append');
-save(name_registro,'Channel','Area','tipo_de_referencia','-append');
-save(name_registro,'pre_m','on_inicio_m','on_final_m','post_m','-append');
-save(name_registro,'tiempo_total','name_registro','tipo_de_referencia','-append');
-save(name_registro,'desiredSimpleRate','path','inicio_new_dir','-append');
+save(path_name_registro,'etapa','largo_dataAll','canales_eval','-append');
+save(path_name_registro,'Channel','Area','tipo_de_referencia','-append');
+save(path_name_registro,'pre_m','on_inicio_m','on_final_m','post_m','-append');
+save(path_name_registro,'tiempo_total','name_registro','tipo_de_referencia','-append');
+save(path_name_registro,'desiredSimpleRate','path','inicio_new_dir1','-append');
+save(path_name_registro,'desiredSimpleRate','path','inicio_new_dir2','-append');
+

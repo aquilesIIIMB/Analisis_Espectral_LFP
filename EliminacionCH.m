@@ -2,7 +2,7 @@
 %
 % EliminacionCH.m
 fprintf('\nEliminacionCH\n')
-%
+fprintf('%s\n',etapa)
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

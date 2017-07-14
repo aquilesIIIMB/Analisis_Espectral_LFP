@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% AnalisisEspectral_3.m
-fprintf('\nAnalisisEspectral_3\n')
-%
+% AnalisisEspectral_2.m
+fprintf('\nAnalisisEspectral_2\n')
+fprintf('%s\n',etapa)
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -101,7 +101,7 @@ for m = 1:length(ia)%1:largo_dataAll
     legend('pre-stim', 'on-stim', 'post-stim')
     xlabel('Frequency (Hz)'); ylabel('Power (dB)')
     title(['Respuesta en Frecuencia Multitaper Promedio de los LFP ',C{ic(i)}])
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),' PSD Promedio de los LFP ',C{ic(i)}];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,' PSD Promedio de los LFP ',C{ic(i)}];
     saveas(fig_5,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_5)
@@ -124,7 +124,7 @@ for m = 1:length(ia)%1:largo_dataAll
     %caxis([min(min(10*log10(Spectrogram_mean))) max(max(10*log10(Spectrogram_mean)))]); %([-20, 15]) ([-10, 20])
     title(['Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}])
     ylabel(c,'Power (dB)')
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),' Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,' Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}];
     saveas(fig_6,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_6)

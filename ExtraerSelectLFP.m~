@@ -72,11 +72,8 @@ Channel = T.Channel;
 Area = T.Area;
 
 % Inicializacion de la estructura del registro
-for i=1:64
-    name_registro.canales(i).data = [];
-    name_registro.canales(i).name = Channel{i};
-    name_registro.canales(i).area = Area{i};
-end
+name_registro.canales = Channel;
+name_registro.Area = Area;
 
 % Prefijo de los archivos dentro de la ruta, obtiene todos los canales, los
 % que se quieren evaluar y los que no

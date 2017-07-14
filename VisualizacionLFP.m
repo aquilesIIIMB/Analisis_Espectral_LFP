@@ -2,7 +2,7 @@
 %
 % VisualizacionLFP.m
 fprintf('\nVisualizacionLFP\n')
-%
+fprintf('%s\n', etapa)
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -28,13 +28,6 @@ for k = 1:largo_dataAll
 end
 fprintf('\n');
 pause(5) % 5 seg. para observar los canales y sus areas
-
-% Crear carpeta para guardar las imagnes 35:end
-inicio_new_dir = slash_backslash(length(slash_backslash)-2);
-foldername = path(inicio_new_dir:length(path));
-if ~exist(foldername, 'dir')
-  mkdir('Imagenes',foldername);
-end
 
 % indices de las mismas areas
 [C,ia,ic] = unique(Area(canales_eval),'stable');
@@ -79,7 +72,7 @@ for m = 1:length(ia)%1:largo_dataAll
     title([C(ic(i)),'LFP en el tiempo '])
         
     % Guardar imagen de la figura
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),C{ic(i)},' LFP en el tiempo'];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' LFP en el tiempo'];
     saveas(fig_1,name_figure_save,'png');
     saveas(fig_1,name_figure_save,'fig');
     %waitforbuttonpress;
@@ -95,7 +88,7 @@ for m = 1:length(ia)%1:largo_dataAll
         xlabel('Amplitud de la derivada'); ylabel('Cantidad de muestras');
         title([C(ic(i)),' Histograma de la derivada del LFP CH',int2str(canales_eval(areas_actuales(q)))])
     end
-    name_figure_save = ['Imagenes',path(inicio_new_dir:length(path)),C{ic(i)},' Histograma de la derivada del LFP en el tiempo'];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' Histograma de la derivada del LFP en el tiempo'];
     saveas(fig_3,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_3)
