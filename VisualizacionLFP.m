@@ -43,7 +43,7 @@ for m = 1:length(ia)%1:largo_dataAll
     lim_min = min(min(data_all(:,areas_actuales)));
     
     % Crear legend
-    str_CH = char(ones(largo_areasActuales,1).*'Ch');
+    str_CH = char(ones(largo_areasActuales,1)*'Ch');
     str_num = int2str(canales_eval(areas_actuales)');
     str_numCH = strcat(str_CH,str_num);
 

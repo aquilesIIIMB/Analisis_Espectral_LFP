@@ -18,7 +18,7 @@ params.tapers   = ([HalfTimeBandWidthProduct, NumTapers]);
                   %[TW K], (K <= to 2TW-1).
 
 params.pad      = 5; % Cantidad de puntos multiplos de dos sobre el largo de la se�al
-params.Fs       = desiredSimpleRate; % Frecuencia de muestreo
+params.Fs       = REGISTRO.desiredSimpleRate; % Frecuencia de muestreo
 params.fpass    = [1 150]; % Rango de frecuencia 
 params.err      = 0; % Error considerado
 params.trialave = 1; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada

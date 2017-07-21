@@ -42,7 +42,7 @@ end
 % canales eliminar en la Etapa de seleccion
 etapa = 'evaluacion'; 
 
-% tiempos(s) de cada evento: pre, on, post estimulacion
+% tiempos(min) de cada evento: pre, on, post estimulacion
 pre_m = (tinicial + timeRange(1)*60.0)/60.0;
 on_inicio_m = (tinicial + timeRange(1)*60.0 + 30)/60.0;
 on_final_m = (tinicial + timeRange(1)*60.0 + timeRange(2)*60.0 + 30)/60.0;
@@ -139,12 +139,23 @@ time_step_m = linspace(0,tiempo_max_seg/60,length(data_downS)); % minutos
 data_elim_maxTime = data_downS((time_step_m<tiempo_total)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
 %eval(['data_',int2str(canales_eval(1)),' = data_elim_maxTime;']);
 %eval(['data_all = data_',int2str(canales_eval(1)),';']);
-data_all = data_elim_maxTime;
+time_step_m_tiempoTotal = time_step_m(time_step_m<tiempo_total);
+
+% Umbral para discriminar los artefactos
+umbral = 4*mean(abs(data_elim_maxTime))/0.675;
+
+% Remover artefactos
+%data_all_deartifacted = data_elim_maxTime;
+%data_all_deartifacted((data_elim_maxTime > umbral) | (data_elim_maxTime < -umbral)) = mean(data_elim_maxTime);
+data_deartifacted = rmArtifacts_mean(data_elim_maxTime,umbral,time_step_m_tiempoTotal,pre_m,on_inicio_m, on_final_m, post_m);
+    
+data_all = data_deartifacted;
 
 % Almacenamiento de los LFP en la estructura
-REGISTRO.channel(canales_eval(1)).data = data_elim_maxTime;
+REGISTRO.channel(canales_eval(1)).data = data_deartifacted;
 REGISTRO.channel(canales_eval(1)).removed = 0;
 
+tic;
 for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
 
     % Nombre del archivo donde esta el registro
@@ -166,15 +177,24 @@ for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
     % Guardar los datos modificados
     %eval(['data_',int2str(canales_eval(i)),'= data_elim_maxTime;']);
     
+    % Umbral para discriminar los artefactos
+    umbral = 4*mean(abs(data_elim_maxTime))/0.675;
+
+    % Remover artefactos
+    %data_all_deartifacted = data_elim_maxTime;
+    %data_all_deartifacted((data_elim_maxTime > umbral) | (data_elim_maxTime < -umbral)) = mean(data_elim_maxTime);
+    data_deartifacted = rmArtifacts_mean(data_elim_maxTime,umbral,time_step_m_tiempoTotal,pre_m,on_inicio_m, on_final_m, post_m);
+    
     % guardar solo el filtrado
     %eval(['data_all = [data_all,data_',int2str(canales_eval(i)),'];']);
-    data_all = [data_all, data_elim_maxTime];
+    data_all = [data_all, data_deartifacted];
     
     % Almacenamiento de los LFP en la estructura
-    REGISTRO.channel(canales_eval(i)).data = data_elim_maxTime;
+    REGISTRO.channel(canales_eval(i)).data = data_deartifacted;
     REGISTRO.channel(canales_eval(i)).removed = 0;
     
 end
+toc;
 
 % Guardar matrices en .mat
 save(path_name_registro,'data_all');

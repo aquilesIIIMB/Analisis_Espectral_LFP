@@ -27,14 +27,15 @@ clear; close all
 %% Parametros editables por el usuario (FLO)
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/300Hz\orlando2_2016-12-19_12-55-05\';
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/20Hz\orlando_2016-12-26_14-40-18\';
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+375\Orlando_2016-12-01_16-01-59\';
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+375\arturo_2017-06-02_12-58-17\'; % MAL COPIADO
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+375\charles_2017-06-15_11-18-58\'; 
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+2500\arturo2_2017-06-08_12-20-02\';
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+2500_300Hz\arturo_2017-06-09_15-24-39\';
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database/+2500_300Hz\orlando_2017-01-25_15-53-09\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\300Hz\orlando2_2016-12-19_12-55-05\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\20Hz\orlando_2016-12-26_14-40-18\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+375\Orlando_2016-12-01_16-01-59\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+375\arturo_2017-06-02_12-58-17\'; % MAL COPIADO
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+375\charles_2017-06-15_11-18-58\'; 
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500\arturo2_2017-06-08_12-20-02\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\arturo2_2017-06-08_12-20-02\';
+path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\orlando_2017-01-25_15-53-09\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\';
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+375/arturo2_2017-06-02_12-58-57/';
@@ -42,7 +43,7 @@ clear; close all
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+375/Orlando_2016-12-01_16-01-59/';
 %path = '/home/cmanalisis/Aquiles/Registros/Database/-375/orlando_2016-12-14_16-48-54/';
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+750/orlando2_2016-12-23_11-17-57/';
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/arturo_2017-06-09_15-24-39/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/arturo_2017-06-09_15-24-39/';
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+375_300Hz/arturo_2017-06-01_12-08-54/';
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+375_300Hz/maravilla_2017-06-08_12-42-34/';
@@ -58,7 +59,7 @@ channel_codes = 'channel_codes_florencia_PUC.csv';
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
-canales_eval = [14:21];
+canales_eval = [14:21,46:53];
 %canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal

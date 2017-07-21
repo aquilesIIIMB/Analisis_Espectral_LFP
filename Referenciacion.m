@@ -26,7 +26,7 @@ elseif strcmp(tipo_de_referencia, 'general') %% Referencia al promedio general
     for j = 1:largo_todas_areas
         %disp(Channel_select{j})
         %eval(['data_ref = data_select',Channel_select{j},';']);
-        data_ref = ;
+        %data_ref = ;
         data_ref = zdata(:,j) - average;
         eval(['data_select_ref',Channel_select{j},' = data_ref;']);
         dataAll_select_ref = [dataAll_select_ref, data_ref];

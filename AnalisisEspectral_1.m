@@ -18,7 +18,7 @@ params.tapers   = ([HalfTimeBandWidthProduct, NumTapers]);
                   %[TW K], (K <= to 2TW-1).
 
 params.pad      = 2; % Cantidad de puntos multiplos de dos sobre el largo de la se�al
-params.Fs       = desiredSimpleRate; % Frecuencia de muestreo
+params.Fs       = REGISTRO.desiredSimpleRate; % Frecuencia de muestreo
 params.fpass    = [1 150]; % Rango de frecuencia 
 params.err      = 0; % Error considerado
 params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
@@ -117,6 +117,5 @@ save(path_name_registro,'etapa','largo_dataAll','canales_eval','-append');
 save(path_name_registro,'Channel','Area','tipo_de_referencia','-append');
 save(path_name_registro,'pre_m','on_inicio_m','on_final_m','post_m','-append');
 save(path_name_registro,'tiempo_total','name_registro','tipo_de_referencia','-append');
-save(path_name_registro,'desiredSimpleRate','path','inicio_new_dir1','-append');
-save(path_name_registro,'desiredSimpleRate','path','inicio_new_dir2','-append');
+save(path_name_registro,'inicio_new_dir1','inicio_new_dir2','-append');
 
