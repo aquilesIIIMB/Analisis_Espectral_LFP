@@ -24,7 +24,8 @@ ruta_con100 = dir_signals(1,1:6);
 
 % Nombre del archivo donde esta el registro de los canales que se desean
 % evluar
-ruta_regEval = [ruta_con100,int2str(canales_eval(1)),'.continuous'];
+%ruta_regEval = [ruta_con100,int2str(canales_eval(1)),'.continuous'];
+ruta_regEval = dir_signals(canales_eval(1),:);
 disp(ruta_regEval)
 
 % Obtener la informacion del primer archivo
@@ -78,7 +79,8 @@ tic;
 for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
 
     % Nombre del archivo donde esta el registro
-    ruta_regEval = [ruta_con100,int2str(canales_eval(i)),'.continuous'];
+    %ruta_regEval = [ruta_con100,int2str(canales_eval(i)),'.continuous'];
+    ruta_regEval = dir_signals(canales_eval(i),:);
     disp(ruta_regEval)
     
     % Obtener la informacion del archivo "i"

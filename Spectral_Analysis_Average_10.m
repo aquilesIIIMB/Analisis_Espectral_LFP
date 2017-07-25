@@ -79,7 +79,7 @@ registroLFP.stage.spectral_analysis_average = 1;
 
 % Guardar matrices en .mat
 path_name_registro = [inicio_foldername,'Imagenes',foldername,name_registro];
-save(path_name_registro,'-v7.3')
+
 %save(path_name_registro,'registroLFP');
 %save(path_name_registro,'name_registro','-append');
 %save(path_name_registro,'inicio_foldername','-append');
@@ -91,3 +91,5 @@ clear Mean_Spectrogram_pre_mean Desv_Spectrogram_pre_mean pre_m on_inicio_m on_f
 clear Spectral_pre_mean Spectral_on_mean Spectral_post_mean post_m tiempo_total canales_eval largo_canales_eval
 clear Data_ref areas_actuales f_Spectrogram_mean t_Spectrogram_mean 
 clear Spectrogram_on_mean Spectrogram_pre_mean Spectrogram_post_mean
+
+save(path_name_registro,'-v7.3')
