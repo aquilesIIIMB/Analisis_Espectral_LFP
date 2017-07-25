@@ -3,7 +3,7 @@ function [data_all_changed, fueraUmbral] = rmArtifacts_mean(data,umbral,time_ste
 data_all_changed = data;
 largo_data = length(data);
 x = 0:1/1000:largo_data/1000-1/1000;
-s=(10^-2)*sin(2*pi*110*x);
+s=(10^-2)*sin(2*pi*200*x);
 shift_left = 100; % 50
 shift_right = 200; % 50
 %%

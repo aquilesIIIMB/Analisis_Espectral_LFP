@@ -79,10 +79,11 @@ registroLFP.stage.spectral_analysis_average = 1;
 
 % Guardar matrices en .mat
 path_name_registro = [inicio_foldername,'Imagenes',foldername,name_registro];
-save(path_name_registro,'registroLFP');
-save(path_name_registro,'name_registro','-append');
-save(path_name_registro,'inicio_foldername','-append');
-save(path_name_registro,'foldername','-append');
+save(path_name_registro,'-v7.3')
+%save(path_name_registro,'registroLFP');
+%save(path_name_registro,'name_registro','-append');
+%save(path_name_registro,'inicio_foldername','-append');
+%save(path_name_registro,'foldername','-append');
 
 % Eliminacion de variables no utilizadas
 clear Spectrogram_mean Spectral_pre_mean Spectral_on_mean Spectral_post_mean m C ia ic i

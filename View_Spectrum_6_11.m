@@ -46,7 +46,7 @@ for j = 1:largo_canales_eval
     legend('pre-stim', 'on-stim', 'post-stim')
     xlabel('Frecuencia [Hz]'); ylabel('Amplitud (dB)');
     title(['Respuesta en Frecuencia Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name])
-    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,registroLFP.channel(canales_eval(j)).name,' PSD del LFP de ',registroLFP.channel(canales_eval(j)).area];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD del LFP'];
     saveas(fig_7,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_7)
@@ -68,7 +68,7 @@ for j = 1:largo_canales_eval
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     title(['Espectrograma Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name])
     ylabel(c,'Power (dB)')
-    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,registroLFP.channel(canales_eval(j)).name,' Espectrograma Multitaper del LFP de ',registroLFP.channel(canales_eval(j)).area];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' Espectrograma Multitaper del LFP de ',registroLFP.channel(canales_eval(j)).name];
     saveas(fig_8,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_8)

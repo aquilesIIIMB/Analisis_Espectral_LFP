@@ -30,7 +30,7 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
         data_ref_artifacted = registroLFP.channel(canales_eval(j)).data - average;
         registroLFP.channel(canales_eval(j)).data_artifacted = data_ref_artifacted; 
         
-        umbral = 5*mean(abs(data_ref_artifacted))/0.675; % 3,4,5 amplitud
+        umbral = 4*mean(abs(data_ref_artifacted))/0.675; % 3,4,5 amplitud
         registroLFP.channel(canales_eval(j)).threshold = umbral; 
         
         [data_referenciado, ind_fueraUmbral] = rmArtifacts_mean(data_ref_artifacted, umbral,...
