@@ -16,11 +16,11 @@ dir_signals = dir([path,'10*_CH*.continuous']);
 
 % Listado de los nombre de los archivos de los LFP
 dir_signals = char(natsortfiles({dir_signals.name})); % Ordena los nombres de los archivos correctamente
-largo_dir = length(dir_signals);
+%largo_dir = length(dir_signals);
 
 % Prefijo del nombre del registro (ej: 100_CH) para tomar solo canales que
 % se desean evaluar
-ruta_con100 = dir_signals(1,1:6);
+%ruta_con100 = dir_signals(1,1:6);
 
 % Nombre del archivo donde esta el registro de los canales que se desean
 % evluar
@@ -43,6 +43,13 @@ data_filt = filter(Hd,data);
 
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
 data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
+
+% TTL
+%a = load_open_ephys_data_faster('C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500\arturo_2017-06-09_15-24-39\100_ADC8.continuous');
+%b = filter(Hd,a);
+%b_downS = downsample(b,sampleRate/registroLFP.desired_fs);
+%t_downS = linspace(0,(length(b_downS)/1000)/60.0,length(b_downS));
+%plot(t_downS,b_downS)
 
 % Tiempo maximo de registro
 time_max_reg_seg = length(data)/30000;

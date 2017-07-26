@@ -55,37 +55,37 @@ o = int2str(indx(:,1));
 p = int2str(indx(:,2));
 x =strcat(strcat(strcat(strcat(o),':'),p),',');
 x = str2num(x);
-fueraUmbral_propag_post = x(:);
+fueraUmbral_propag_post = x(:); %Son indices
 %% 
 fueraUmbral = (fueraUmbral_pre | fueraUmbral_rup | fueraUmbral_on | fueraUmbral_rdown | fueraUmbral_post); 
 %%
-B = zeros(size(data));
-B(fueraUmbral_propag_pre) = 1;
-entre_sinfueraUmbral_pre = ~B;
+%B = zeros(size(data));
+%B(fueraUmbral_propag_pre) = 1;
+%entre_sinfueraUmbral_pre = ~B;
 %data_all_changed(fueraUmbral_propag_pre) = mean(data(entre_sinfueraUmbral_pre));
 data_all_changed(unique(fueraUmbral_propag_pre)) = s(1:length(unique(fueraUmbral_propag_pre)));
 %%
-B = zeros(size(data));
-B(fueraUmbral_propag_rup) = 1;
-entre_sinfueraUmbral_rup = ~B;
+%B = zeros(size(data));
+%B(fueraUmbral_propag_rup) = 1;
+%entre_sinfueraUmbral_rup = ~B;
 %data_all_changed(fueraUmbral_propag_rup) = mean(data(entre_sinfueraUmbral_rup));
 data_all_changed(unique(fueraUmbral_propag_rup)) = s(1:length(unique(fueraUmbral_propag_rup)));
 %%
-B = zeros(size(data));
-B(fueraUmbral_propag_on) = 1;
-entre_sinfueraUmbral_on = ~B;
+%B = zeros(size(data));
+%B(fueraUmbral_propag_on) = 1;
+%entre_sinfueraUmbral_on = ~B;
 %data_all_changed(fueraUmbral_propag_on) = mean(data(entre_sinfueraUmbral_on));
 data_all_changed(unique(fueraUmbral_propag_on)) = s(1:length(unique(fueraUmbral_propag_on)));
 %%
-B = zeros(size(data));
-B(fueraUmbral_propag_rdown) = 1;
-entre_sinfueraUmbral_rdown = ~B;
+%B = zeros(size(data));
+%B(fueraUmbral_propag_rdown) = 1;
+%entre_sinfueraUmbral_rdown = ~B;
 %data_all_changed(fueraUmbral_propag_rdown) = mean(data(entre_sinfueraUmbral_rdown));
 data_all_changed(unique(fueraUmbral_propag_rdown)) = s(1:length(unique(fueraUmbral_propag_rdown)));
 %%
-B = zeros(size(data));
-B(fueraUmbral_propag_post) = 1;
-entre_sinfueraUmbral_post = ~B;
+%B = zeros(size(data));
+%B(fueraUmbral_propag_post) = 1;
+%entre_sinfueraUmbral_post = ~B;
 %data_all_changed(fueraUmbral_propag_post) = mean(data(entre_sinfueraUmbral_post));
 data_all_changed(unique(fueraUmbral_propag_post)) = s(1:length(unique(fueraUmbral_propag_post)));
 %%

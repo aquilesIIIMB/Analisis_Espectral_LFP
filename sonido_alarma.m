@@ -1,5 +1,6 @@
 function sonido_alarma()
-
+% Sonido de alarma para pedir que el usuario modifique algo
+% Se abre una ventana figure y en ella hay q presionar "Enter"
 WarnWave = [sin(1:.6:400), sin(1:.7:400), sin(1:.4:400)];
 Audio = audioplayer(WarnWave, 22050);
 play(Audio);
