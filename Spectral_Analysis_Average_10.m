@@ -32,11 +32,16 @@ for m = 1:length(ia)%1:largo_dataAll
     areas_actuales = find(ic == ic(i));
     
     % Cargar datos de todos los registros de un area
-    Data_ref = registroLFP.channel(canales_eval(areas_actuales)).data_ref;
+    Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data_ref];
+    
+    % Eliminacion de los intervalos donde hay artefactos
+    ind_over_threshold_totals = (sum([registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold],2)>0);
+    Data_ref(ind_over_threshold_totals,:) = [];
     
     % Multitaper estimation para el spectrograma%%%%%%%%%%%%
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params); 
-
+    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
+    
+    % Se le quita el ruido rosa, dejando mas plano el espectro
     Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean);
   
     % Sin eliminar artefactos

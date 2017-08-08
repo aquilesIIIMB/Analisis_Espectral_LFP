@@ -16,10 +16,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\orlando_2017-01-25_15-53-09\';
+path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\';
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
@@ -28,8 +28,8 @@ channel_codes = 'channel_codes_florencia_PUC.csv';
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
-%canales_eval = [14:21,46:53];
-canales_eval = 1:64;
+canales_eval = [14:21,46:53];
+%canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
