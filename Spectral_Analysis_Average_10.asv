@@ -109,5 +109,4 @@ clear Spectral_pre_mean Spectral_on_mean Spectral_post_mean post_m tiempo_total 
 clear Data_ref areas_actuales f_Spectrogram_mean t_Spectrogram_mean 
 clear Spectrogram_on_mean Spectrogram_pre_mean Spectrogram_post_mean
 
-% Descomentar
 save(path_name_registro,'-v7.3')
