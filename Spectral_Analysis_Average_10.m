@@ -32,7 +32,7 @@ for m = 1:length(ia)%1:largo_dataAll
     areas_actuales = find(ic == ic(i));
     
     % Cargar datos de todos los registros de un area
-    Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data_ref];
+    Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
     
     % Eliminacion de los intervalos donde hay artefactos
     ind_over_threshold_totals = (sum([registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold],2)>0);
@@ -46,7 +46,7 @@ for m = 1:length(ia)%1:largo_dataAll
     [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
         
     % Se le quita el ruido rosa, dejando mas plano el espectro
-    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean);
+    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean); %***
   
     % Nueva definicion de tiempos de las fases pre on post despues de eliminar los artefactos
     new_total_time = linspace(0,(length(total_time_deartifacted)/1000)/60,length(total_time_deartifacted));
@@ -55,25 +55,28 @@ for m = 1:length(ia)%1:largo_dataAll
     new_on_final_m = max(new_total_time(total_time_deartifacted<on_final_m));
     new_post_m = min(new_total_time(total_time_deartifacted>post_m));
     new_tiempo_total = max(new_total_time(total_time_deartifacted<tiempo_total));
-    
-    % Sin eliminar artefactos
-    Spectral_pre_mean = mean(Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0-60)),:),1);
-    Spectral_on_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0+60) & t_Spectrogram_mean<(new_on_final_m*60.0-60),:),1);
-    Spectral_post_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_post_m*60.0+60) & t_Spectrogram_mean<(new_tiempo_total*60),:),1);
+
+    % PSD sin normalizar por la frecuencia de la fase pre
+    Spectral_pre_mean = mean(Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0-30)),:),1);
+    Spectral_on_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0+30) & t_Spectrogram_mean<(new_on_final_m*60.0-30),:),1);
+    Spectral_post_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_post_m*60.0+30) & t_Spectrogram_mean<(new_tiempo_total*60),:),1);
 
     % Spectrograma final
     Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0)),:);
     Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean,1);
     Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
-    Spectrogram_pre_mean = (Spectrogram_pre_mean-ones(size(Spectrogram_pre_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_pre_mean))*diag(Desv_Spectrogram_pre_mean));
+    
+    %Spectrogram_pre_mean = (Spectrogram_pre_mean-ones(size(Spectrogram_pre_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_pre_mean))*diag(Desv_Spectrogram_pre_mean));
 
-    Spectrogram_on_mean = Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0-30.0) & t_Spectrogram_mean<(new_on_final_m*60.0+15.0),:);
-    Spectrogram_on_mean = (Spectrogram_on_mean-ones(size(Spectrogram_on_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_on_mean))*diag(Desv_Spectrogram_pre_mean));
+    %Spectrogram_on_mean = Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0-30.0) & t_Spectrogram_mean<(new_on_final_m*60.0+15.0),:);
+    %Spectrogram_on_mean = (Spectrogram_on_mean-ones(size(Spectrogram_on_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_on_mean))*diag(Desv_Spectrogram_pre_mean));
 
-    Spectrogram_post_mean = Spectrogram_mean((t_Spectrogram_mean>(new_post_m*60.0-15.0) & t_Spectrogram_mean<(new_tiempo_total*60)),:);
-    Spectrogram_post_mean = (Spectrogram_post_mean-ones(size(Spectrogram_post_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_post_mean))*diag(Desv_Spectrogram_pre_mean));
+    %Spectrogram_post_mean = Spectrogram_mean((t_Spectrogram_mean>(new_post_m*60.0-15.0) & t_Spectrogram_mean<(new_tiempo_total*60)),:);
+    %Spectrogram_post_mean = (Spectrogram_post_mean-ones(size(Spectrogram_post_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_post_mean))*diag(Desv_Spectrogram_pre_mean));
 
-    Spectrogram_mean = [Spectrogram_pre_mean; Spectrogram_on_mean; Spectrogram_post_mean];
+    %Spectrogram_mean = [Spectrogram_pre_mean; Spectrogram_on_mean; Spectrogram_post_mean];
+    
+    Spectrogram_mean = (Spectrogram_mean-ones(size(Spectrogram_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_mean))*diag(Desv_Spectrogram_pre_mean));
     Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));
     
     % Almacenamiento de los analisis
@@ -88,7 +91,15 @@ for m = 1:length(ia)%1:largo_dataAll
     % Datos de los PSD promedio
     registroLFP.average_spectrum(m).psd.pre.data = Spectral_pre_mean;
     registroLFP.average_spectrum(m).psd.on.data = Spectral_on_mean;
-    registroLFP.average_spectrum(m).psd.post.data = Spectral_post_mean;
+    registroLFP.average_spectrum(m).psd.post.data = Spectral_post_mean;   
+        
+    % Tiempos de los limites de cada fase
+    registroLFP.average_spectrum(m).times.pre_m_deartifacted = new_pre_m;
+    registroLFP.average_spectrum(m).times.start_on_m_deartifacted = new_on_inicio_m;
+    registroLFP.average_spectrum(m).times.end_on_m_deartifacted = new_on_final_m;
+    registroLFP.average_spectrum(m).times.post_m_deartifacted = new_post_m;
+    registroLFP.average_spectrum(m).times.end_m_deartifacted = new_tiempo_total; 
+    registroLFP.average_spectrum(m).times.steps_m_deartifacted = new_total_time;
     
 end
 

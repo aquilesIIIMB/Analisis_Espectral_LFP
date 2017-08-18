@@ -80,7 +80,7 @@ data_elim_maxTime = data_downS((time_step_m<registroLFP.times.end_m)); % Si se e
 registroLFP.channel(canales_eval(1)).data_raw = data_elim_maxTime;
 
 % Datos estandarizados con zscore
-registroLFP.channel(canales_eval(1)).data = zscore(data_elim_maxTime);
+%registroLFP.channel(canales_eval(1)).data = zscore(data_elim_maxTime);
 
 tic;
 for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
@@ -118,7 +118,7 @@ for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
     registroLFP.channel(canales_eval(i)).data_raw = data_elim_maxTime;
     
     % Datos estandarizados con zscore
-    registroLFP.channel(canales_eval(i)).data = zscore(data_elim_maxTime);
+    %registroLFP.channel(canales_eval(i)).data = zscore(data_elim_maxTime);
     
 end
 toc;

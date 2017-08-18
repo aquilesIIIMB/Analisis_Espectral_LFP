@@ -35,7 +35,7 @@ canales_eval = 1:64;
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
 
 %% Tiempo de inicio (segundos)
-tinicial = 0;
+tinicial = 25;
 
 %% Intervalos de tiempo del protocolo
 %timeRange = [5, 5, 5];

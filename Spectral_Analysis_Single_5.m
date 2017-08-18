@@ -24,17 +24,18 @@ tiempo_total = registroLFP.times.end_m;
 for i = 1:largo_canales_eval
     
     % Tomar el LFP del canal que se analizara. Formato samplesxCh\trials
-    Data = registroLFP.channel(canales_eval(i)).data;
+    Data = registroLFP.channel(canales_eval(i)).data_raw;
     
     % Multitaper estimation para el spectrograma
     [Spectrogram,t_Spectrogram,f_Spectrogram]= mtspecgramc(Data,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params); 
     
-    Spectrogram = pink_noise_del(f_Spectrogram, Spectrogram);
+    % Se le quita el ruido rosa, dejando mas plano el espectro
+    %Spectrogram = pink_noise_del(f_Spectrogram, Spectrogram);
     
     % PSD del LFP
-    Spectral_pre = mean(Spectrogram((t_Spectrogram<(pre_m*60.0-60)),:),1);
-    Spectral_on = mean(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+60) & t_Spectrogram<(on_final_m*60.0-60),:),1);    
-    Spectral_post = mean(Spectrogram(t_Spectrogram>(post_m*60.0+60) & t_Spectrogram<(tiempo_total*60),:),1);
+    Spectral_pre = mean(Spectrogram((t_Spectrogram<(pre_m*60.0-30)),:),1);
+    Spectral_on = mean(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+30) & t_Spectrogram<(on_final_m*60.0-30),:),1);    
+    Spectral_post = mean(Spectrogram(t_Spectrogram>(post_m*60.0+30) & t_Spectrogram<(tiempo_total*60),:),1);
     
     % Espectrogramas normalziados segun la fase pre estimulacion
     %Spectrogram_pre = Spectrogram((t_Spectrogram<(pre_m*60.0)),:);

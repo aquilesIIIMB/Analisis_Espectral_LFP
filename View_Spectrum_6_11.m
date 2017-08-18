@@ -60,7 +60,7 @@ for j = 1:largo_canales_eval
     xlabel('Time (sec)');
     ylim(registroLFP.multitaper.params.fpass)
     c=colorbar('southoutside');
-    caxis([-10, 10]); %([-20, 15]) [-15, 20]
+    caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
@@ -101,6 +101,13 @@ for m = 1:length(ia)
     t_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.tiempo;
     f_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.frecuencia; 
     
+    new_pre_m = registroLFP.average_spectrum(m).times.pre_m_deartifacted;
+    new_on_inicio_m = registroLFP.average_spectrum(m).times.start_on_m_deartifacted;
+    new_on_final_m = registroLFP.average_spectrum(m).times.end_on_m_deartifacted;
+    new_post_m = registroLFP.average_spectrum(m).times.post_m_deartifacted;
+    new_tiempo_total = registroLFP.average_spectrum(m).times.end_m_deartifacted; 
+    new_total_time = registroLFP.average_spectrum(m).times.steps_m_deartifacted;
+    
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -129,10 +136,10 @@ for m = 1:length(ia)
     c=colorbar('southoutside');
     caxis([-10, 10]); %([-20, 15]) [-15, 20]
     hold on
-    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([new_pre_m*60.0 new_pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
+    line([new_on_inicio_m*60.0 new_on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
+    line([new_on_final_m*60.0 new_on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([new_post_m*60.0 new_post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     %caxis([min(min(10*log10(Spectrogram_mean))) max(max(10*log10(Spectrogram_mean)))]); %([-20, 15]) ([-10, 20])
     title(['Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}])
     ylabel(c,'Power (dB)')
