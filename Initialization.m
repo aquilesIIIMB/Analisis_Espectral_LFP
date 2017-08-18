@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% Initialization_1.m
+% Initialization.m
 fprintf('\nInicializacion\n')
 %
 %
@@ -28,9 +28,6 @@ fprintf('El tiempo inicial es:\n\t%d segundos\n', tinicial);
 pause(1)
 fprintf('Rangos de tiempo del experimento\n\tPre estimulacion: %d min\n\tEn estimulacion: %d min\n\tPost estimulacion: %d min\n', timeRange(1), timeRange(2), timeRange(3));
 pause(1)
-
-% Sonido de alerta que se necesita al usuario
-%sonido_alarma;
 
 
 % Confirma que los parametros estan correctos
@@ -60,8 +57,8 @@ registroLFP.channel.name = [];
 registroLFP.channel.area = [];
 registroLFP.channel.data = [];
 registroLFP.channel.data_raw = [];
-registroLFP.channel.data_artifacted = [];
 registroLFP.channel.data_ref = [];
+registroLFP.channel.data_noartifacted = [];
 registroLFP.channel.spectrogram = [];
 registroLFP.channel.psd = [];
 registroLFP.channel.threshold = [];
@@ -113,7 +110,7 @@ registroLFP.times.steps_m = [];
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
 registroLFP.multitaper.params.tapers = ([3 5]); % [TW K], (K <= to 2TW-1)
-registroLFP.multitaper.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la señal
+registroLFP.multitaper.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la seï¿½al
 registroLFP.multitaper.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
 registroLFP.multitaper.params.fpass = [1 150]; % Rango de frecuencias
 registroLFP.multitaper.params.err = 0; % Error considerado
@@ -131,10 +128,7 @@ registroLFP.stage.referencing = 0;
 registroLFP.stage.spectral_analysis_single = 0;
 registroLFP.stage.view_spectrum = 0;
 registroLFP.stage.delete_channel = 0;
-%registroLFP.stage.referencing = 0;
-%registroLFP.stage.view_lfp = 0;
 registroLFP.stage.spectral_analysis_average = 0;
-%registroLFP.stage.view_spectrum = 0;
  
 % Asignacion de los canales y areas que se usaran
 [registroLFP.channel(1:64).name] = T.Channel{:}; % Cargar los numeros de los canales

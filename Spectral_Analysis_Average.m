@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Spectral_Analysis_Average_10.m
+% Spectral_Analysis_Average.m
 fprintf('\nAnalisis Espectral Promedio\n')
 %
 %
@@ -36,25 +36,22 @@ for m = 1:length(ia)%1:largo_dataAll
     
     % Eliminacion de los intervalos donde hay artefactos
     ind_over_threshold_totals = (sum([registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold],2)>0);
-    %ind_over_threshold_totals_downS = downsample(double(ind_over_threshold_totals),round(length(Data_ref)/length(t_Spectrogram_mean)));
-    %ind_over_threshold_totals_downS = logical(ind_over_threshold_totals_downS);
-    %disp(round(length(Data_ref)/length(t_Spectrogram_mean)))
     Data_ref(ind_over_threshold_totals,:) = [];
-    total_time_deartifacted = registroLFP.times.steps_m(~ind_over_threshold_totals);
+    total_time_noartifacted = registroLFP.times.steps_m(~ind_over_threshold_totals);
     
     % Multitaper estimation para el spectrograma%%%%%%%%%%%%
     [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
         
     % Se le quita el ruido rosa, dejando mas plano el espectro
-    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean); %***
+    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean); 
   
     % Nueva definicion de tiempos de las fases pre on post despues de eliminar los artefactos
-    new_total_time = linspace(0,(length(total_time_deartifacted)/1000)/60,length(total_time_deartifacted));
-    new_pre_m = max(new_total_time(total_time_deartifacted<pre_m));
-    new_on_inicio_m = min(new_total_time(total_time_deartifacted>on_inicio_m));
-    new_on_final_m = max(new_total_time(total_time_deartifacted<on_final_m));
-    new_post_m = min(new_total_time(total_time_deartifacted>post_m));
-    new_tiempo_total = max(new_total_time(total_time_deartifacted<tiempo_total));
+    new_total_time = linspace(0,(length(total_time_noartifacted)/1000)/60,length(total_time_noartifacted));
+    new_pre_m = max(new_total_time(total_time_noartifacted<pre_m));
+    new_on_inicio_m = min(new_total_time(total_time_noartifacted>on_inicio_m));
+    new_on_final_m = max(new_total_time(total_time_noartifacted<on_final_m));
+    new_post_m = min(new_total_time(total_time_noartifacted>post_m));
+    new_tiempo_total = max(new_total_time(total_time_noartifacted<tiempo_total));
 
     % PSD sin normalizar por la frecuencia de la fase pre
     Spectral_pre_mean = mean(Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0-30)),:),1);
@@ -65,16 +62,6 @@ for m = 1:length(ia)%1:largo_dataAll
     Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0)),:);
     Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean,1);
     Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
-    
-    %Spectrogram_pre_mean = (Spectrogram_pre_mean-ones(size(Spectrogram_pre_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_pre_mean))*diag(Desv_Spectrogram_pre_mean));
-
-    %Spectrogram_on_mean = Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0-30.0) & t_Spectrogram_mean<(new_on_final_m*60.0+15.0),:);
-    %Spectrogram_on_mean = (Spectrogram_on_mean-ones(size(Spectrogram_on_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_on_mean))*diag(Desv_Spectrogram_pre_mean));
-
-    %Spectrogram_post_mean = Spectrogram_mean((t_Spectrogram_mean>(new_post_m*60.0-15.0) & t_Spectrogram_mean<(new_tiempo_total*60)),:);
-    %Spectrogram_post_mean = (Spectrogram_post_mean-ones(size(Spectrogram_post_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_post_mean))*diag(Desv_Spectrogram_pre_mean));
-
-    %Spectrogram_mean = [Spectrogram_pre_mean; Spectrogram_on_mean; Spectrogram_post_mean];
     
     Spectrogram_mean = (Spectrogram_mean-ones(size(Spectrogram_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_mean))*diag(Desv_Spectrogram_pre_mean));
     Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));
@@ -94,12 +81,12 @@ for m = 1:length(ia)%1:largo_dataAll
     registroLFP.average_spectrum(m).psd.post.data = Spectral_post_mean;   
         
     % Tiempos de los limites de cada fase
-    registroLFP.average_spectrum(m).times.pre_m_deartifacted = new_pre_m;
-    registroLFP.average_spectrum(m).times.start_on_m_deartifacted = new_on_inicio_m;
-    registroLFP.average_spectrum(m).times.end_on_m_deartifacted = new_on_final_m;
-    registroLFP.average_spectrum(m).times.post_m_deartifacted = new_post_m;
-    registroLFP.average_spectrum(m).times.end_m_deartifacted = new_tiempo_total; 
-    registroLFP.average_spectrum(m).times.steps_m_deartifacted = new_total_time;
+    registroLFP.average_spectrum(m).times.pre_m_noartifacted = new_pre_m;
+    registroLFP.average_spectrum(m).times.start_on_m_noartifacted = new_on_inicio_m;
+    registroLFP.average_spectrum(m).times.end_on_m_noartifacted = new_on_final_m;
+    registroLFP.average_spectrum(m).times.post_m_noartifacted = new_post_m;
+    registroLFP.average_spectrum(m).times.end_m_noartifacted = new_tiempo_total; 
+    registroLFP.average_spectrum(m).times.steps_m_noartifacted = new_total_time;
     
 end
 
@@ -109,8 +96,6 @@ registroLFP.stage.spectral_analysis_average = 1;
 path_name_registro = [inicio_foldername,'Imagenes',foldername,name_registro];
 
 %save(path_name_registro,'registroLFP');
-%save(path_name_registro,'name_registro','-append');
-%save(path_name_registro,'inicio_foldername','-append');
 %save(path_name_registro,'foldername','-append');
 
 % Eliminacion de variables no utilizadas
@@ -119,6 +104,10 @@ clear Mean_Spectrogram_pre_mean Desv_Spectrogram_pre_mean pre_m on_inicio_m on_f
 clear Spectral_pre_mean Spectral_on_mean Spectral_post_mean post_m tiempo_total canales_eval largo_canales_eval
 clear Data_ref areas_actuales f_Spectrogram_mean t_Spectrogram_mean 
 clear Spectrogram_on_mean Spectrogram_pre_mean Spectrogram_post_mean
+clear new_total_time new_pre_m new_on_inicio_m new_on_final_m new_post_m
+clear new_tiempo_total total_time_noartifacted ind_over_threshold_totals
+
 
 % Descomentar
 save(path_name_registro,'-v7.3')
+

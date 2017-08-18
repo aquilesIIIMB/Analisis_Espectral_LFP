@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% View_LFP_3_9.m
+% View_LFP_Raw_Ref.m
 fprintf('\nVisualizacion LFP\n')
 %
 %
@@ -28,11 +28,6 @@ for m = 1:length(ia)
     areas_actuales = find(ic == ic(i));
     largo_areasActuales = length(areas_actuales);
     
-    % limites maximos y minimos en amplitud para observar los LFP a la
-    % misma escala (tal vez no se usa)
-    %lim_max = max(max([registroLFP.channel(canales_eval(areas_actuales)).data_artifacted]));
-    %lim_min = min(min([registroLFP.channel(canales_eval(areas_actuales)).data_artifacted]));
-    
     % Crear legend
     str_CH = char(ones(largo_areasActuales,1)*'Ch');
     str_num = int2str(canales_eval(areas_actuales)');
@@ -55,11 +50,10 @@ for m = 1:length(ia)
 
     xlim([0 registroLFP.times.end_m]);ylim([-(1000*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -1000+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
     xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title([C(ic(i)),'LFP estandarizado en el tiempo '])
+    title([C(ic(i)),'LFP en bruto en el tiempo '])
         
     % Guardar imagen de la figura
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' LFP en el tiempo'];
-    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' LFP estandarizado en el tiempo'];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' LFP en bruto en el tiempo'];
     saveas(fig_2,name_figure_save,'png');
     saveas(fig_2,name_figure_save,'fig');
     %waitforbuttonpress;
@@ -76,7 +70,6 @@ for m = 1:length(ia)
         xlabel('Amplitud de la derivada'); ylabel('Cantidad de muestras');
         title([C(ic(i)),' Derivada LFP Estandarizado CH',int2str(canales_eval(areas_actuales(q)))])
     end
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' Histograma de la derivada del LFP en el tiempo'];
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' Histograma de la derivada del LFP estandarizado en el tiempo'];
     saveas(fig_3,name_figure_save,'png');
     %waitforbuttonpress;
@@ -99,11 +92,6 @@ for m = 1:length(ia)
     areas_actuales = find(ic == ic(i));
     largo_areasActuales = length(areas_actuales);
     
-    % limites maximos y minimos en amplitud para observar los LFP a la
-    % misma escala (tal vez no se usa)
-    %lim_max = max(max([registroLFP.channel(canales_eval(areas_actuales)).data_ref]));
-    %lim_min = min(min([registroLFP.channel(canales_eval(areas_actuales)).data_ref]));
-    
     % Crear legend
     str_CH = char(ones(largo_areasActuales,1)*'Ch');
     str_num = int2str(canales_eval(areas_actuales)');
@@ -113,16 +101,16 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(500*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_artifacted);
+        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(800*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
         hold on;        
                 
     end
     legend(str_numCH)
     
     for q = 1:largo_areasActuales
-        linea_ref = refline([0 -(500*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(800*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
-        linea_ref = refline([0 -(500*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(800*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
     end
     
@@ -132,12 +120,11 @@ for m = 1:length(ia)
     line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
     line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
 
-    xlim([0 registroLFP.times.end_m]);ylim([-(500*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_artifacted)  -500+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_artifacted)])
+    xlim([0 registroLFP.times.end_m]);ylim([-(800*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -800+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)])
     xlabel('Tiempo (minutos)'); ylabel('Amplitud')
     title([C(ic(i)),'LFP referenciado con artefactos en el tiempo '])
         
     % Guardar imagen de la figura
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' LFP en el tiempo'];
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,'Referenciado ',C{ic(i)},' LFP con artefactos en el tiempo'];
     saveas(fig_2,name_figure_save,'png');
     saveas(fig_2,name_figure_save,'fig');
@@ -151,10 +138,6 @@ for m = 1:length(ia)
         % Se grafica cada LFP de un area en un mismo grafico
         plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(15*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data);
         hold on;
-        %linea_ref = refline([0 -(800*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold_ref]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
-        %hold on;
-        %linea_ref = refline([0 -(800*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold_ref]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
-        %hold on;
                 
     end
     legend(str_numCH)
@@ -167,31 +150,15 @@ for m = 1:length(ia)
 
     xlim([0 registroLFP.times.end_m]);ylim([-(15*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -15+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
     xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title([C(ic(i)),'LFP referenciado sin artefactos en el tiempo '])
+    title([C(ic(i)),'LFP referenciado, norm y sin artefactos en el tiempo '])
         
     % Guardar imagen de la figura
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' LFP en el tiempo'];
-    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,'Referenciado ',C{ic(i)},' LFP en el tiempo'];
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,'Referenciado ',C{ic(i)},' LFP norm y sin artefactos en el tiempo'];
     saveas(fig_1,name_figure_save,'png');
     saveas(fig_1,name_figure_save,'fig');
     %waitforbuttonpress;
     close(fig_1)   
     
-    
-    %fig_3 = figure('units','normalized','outerposition',[0 0 1 1]);
-    %for q = 1:length(areas_actuales)
-        
-    %    subplot(2,4,q);
-    %    histo_diff = histogram(diff(registroLFP.channel(canales_eval(areas_actuales(q))).data_ref),400);
-    %    grid on
-    %    xlim([histo_diff.BinLimits]); ylim([0 15*10^4]);
-    %    xlabel('Amplitud de la derivada'); ylabel('Cantidad de muestras');
-    %    title([C(ic(i)),' Histograma de la derivada del LFP CH',int2str(canales_eval(areas_actuales(q)))])
-    %end
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,C{ic(i)},' Histograma de la derivada del LFP en el tiempo'];
-    %saveas(fig_3,name_figure_save,'png');
-    %waitforbuttonpress;
-    %close(fig_3)
     
 end
     

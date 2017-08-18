@@ -11,15 +11,13 @@ clear; close all
 %%% !!Que falta: 
 %% Para mejorar lo de los artefactos, restar el lado derecho con el izquierdo
 
-%% Pregunatar a Romulo como se elimnan los artefactos, de forma manual o
-
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\';
+%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\';
 
 %%% Ubuntu
-%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
@@ -35,7 +33,7 @@ canales_eval = 1:64;
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
 
 %% Tiempo de inicio (segundos)
-tinicial = 25;
+tinicial = 11;
 
 %% Intervalos de tiempo del protocolo
 %timeRange = [5, 5, 5];
@@ -46,28 +44,26 @@ timeRange = [6, 6, 6]; %Mixtos
 %% Ejecucion del programa (No cambiar)
 tic;
 % Etapa de generacion de todos los lfp
-Initialization_1;
+Initialization;
 
-Extract_LFP_2;
+Extract_LFP;
 
-View_LFP_3_9;
+View_LFP_Raw_Ref;
 
-%Referencing_4_8;
+Spectral_Analysis_Single;
 
-Spectral_Analysis_Single_5;
-
-View_Spectrum_6_11;
+View_Spectrum_Single_Average;
 
 % Etapa de eliminacion de ch y lfp promedios
-Delete_CH_7;
+Delete_CH;
 
-Referencing_4_8;
+Referencing;
 
-View_LFP_3_9;
+View_LFP_Raw_Ref;
 
-Spectral_Analysis_Average_10;
+Spectral_Analysis_Average;
 
-View_Spectrum_6_11;
+View_Spectrum_Single_Average;
 toc;
 
 sonido_alarma;

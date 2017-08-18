@@ -1,5 +1,8 @@
-function [z,mu,sigma] = zscore_deartifacted(x,ind_over_threshold,flag,dim)
+function [z,mu,sigma] = zscore_noartifacted(x,ind_over_threshold,flag,dim)
 % Edited - Aquiles
+% Calcula promedio y desviacion estandar con los datos sin artefactos y se
+% aplica a todos los datos
+
 %ZSCORE Standardized z score.
 %   Z = ZSCORE(X) returns a centered, scaled version of X, the same size as X.
 %   For vector input X, Z is the vector of z-scores (X-MEAN(X)) ./ STD(X). For

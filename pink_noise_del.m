@@ -12,18 +12,18 @@ modelo_eval_mean = b_mean*entrada_x.^m_mean;
 
 for i = 1:size_time
     %% Eliminacion del ruido rosa con el promedio del espectro total
-    %salida(i,:) = entrada_y(i,:)./modelo_eval_mean;
+    salida(i,:) = entrada_y(i,:)./modelo_eval_mean;
     
     %% Eliminacion del ruido rosa mediante polyfit, modelo a*x.^m (usado antes)
-    [~,Ind_max]=max(entrada_y(i,:));
-    x=entrada_x(Ind_max:size_frec);
-    y=entrada_y(i, Ind_max:size_frec);
-    p = polyfit(log(x),log(y),1);
-    m = p(1);
-    b = exp(p(2));
+    %[~,Ind_max]=max(entrada_y(i,:));
+    %x=entrada_x(Ind_max:size_frec);
+    %y=entrada_y(i, Ind_max:size_frec);
+    %p = polyfit(log(x),log(y),1);
+    %m = p(1);
+    %b = exp(p(2));
 
-    modelo_eval = b*entrada_x.^m;
-    salida(i,:) = entrada_y(i,:)./modelo_eval;
+    %modelo_eval = b*entrada_x.^m;
+    %salida(i,:) = entrada_y(i,:)./modelo_eval;
 
     %ezplot(@(x) b*x.^m,[x(1) x(end)])
     %plot(x,y,'+r'); hold on

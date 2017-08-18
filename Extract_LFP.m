@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
-% Extract_LFP_2.m
+% Extract_LFP.m
 fprintf('\nExtraerLFP\n')
 %
 %
@@ -16,15 +16,8 @@ dir_signals = dir([path,'10*_CH*.continuous']);
 
 % Listado de los nombre de los archivos de los LFP
 dir_signals = char(natsortfiles({dir_signals.name})); % Ordena los nombres de los archivos correctamente
-%largo_dir = length(dir_signals);
-
-% Prefijo del nombre del registro (ej: 100_CH) para tomar solo canales que
-% se desean evaluar
-%ruta_con100 = dir_signals(1,1:6);
 
 % Nombre del archivo donde esta el registro de los canales que se desean
-% evluar
-%ruta_regEval = [ruta_con100,int2str(canales_eval(1)),'.continuous'];
 ruta_regEval = dir_signals(canales_eval(1),:);
 disp(ruta_regEval)
 
@@ -64,29 +57,15 @@ registroLFP.times.steps_m = time_step_m_tiempoTotal;
 
 % Eliminar los datos del primer LFP sobre los 960 segundos
 data_elim_maxTime = data_downS((time_step_m<registroLFP.times.end_m)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
-%registroLFP.channel(canales_eval(1)).data_artifacted = data_elim_maxTime;
-
-% Umbral para discriminar los artefactos
-%umbral = 5*mean(abs(data_elim_maxTime))/0.675;
-%registroLFP.channel(canales_eval(1)).threshold = umbral;
-
-% Remover artefactos
-%data_deartifacted = rmArtifacts_mean(data_elim_maxTime,umbral,...
-%    registroLFP.times.steps_m, registroLFP.times.pre_m, ...
-%    registroLFP.times.start_on_m, registroLFP.times.end_on_m, registroLFP.times.post_m);
     
 % Almacenamiento de los LFP en la estructura
 % Datos filtrados, downsampleados, acortados y sin artefactos
 registroLFP.channel(canales_eval(1)).data_raw = data_elim_maxTime;
 
-% Datos estandarizados con zscore
-%registroLFP.channel(canales_eval(1)).data = zscore(data_elim_maxTime);
-
 tic;
-for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
+for i = 2:length(canales_eval) 
 
     % Nombre del archivo donde esta el registro
-    %ruta_regEval = [ruta_con100,int2str(canales_eval(i)),'.continuous'];
     ruta_regEval = dir_signals(canales_eval(i),:);
     disp(ruta_regEval)
     
@@ -101,25 +80,12 @@ for i = 2:length(canales_eval) %canales_eval(2:end) % largo_dir
     
     % Eliminar los datos del LFP "i" sobre los 960 segundos
     data_elim_maxTime = data_downS((time_step_m<registroLFP.times.end_m)); % Tal vez eliminar los primeros segundos
-    %registroLFP.channel(canales_eval(i)).data_artifacted = data_elim_maxTime;
-    
-    % Umbral para discriminar los artefactos
-    %umbral = 5*mean(abs(data_elim_maxTime))/0.675;
-    %registroLFP.channel(canales_eval(i)).threshold = umbral;
-    
-    % Remover artefactos
-    %data_deartifacted = rmArtifacts_mean(data_elim_maxTime,umbral,...
-    %    registroLFP.times.steps_m, registroLFP.times.pre_m, ...
-    %    registroLFP.times.start_on_m, registroLFP.times.end_on_m, registroLFP.times.post_m);
-    
+     
     % Guardar los datos filtrados, downsampleados, acortados y sin artefactos
     % Almacenamiento de los LFP en la estructura
     % Datos filtrados, downsampleados, acortados y sin artefactos
     registroLFP.channel(canales_eval(i)).data_raw = data_elim_maxTime;
-    
-    % Datos estandarizados con zscore
-    %registroLFP.channel(canales_eval(i)).data = zscore(data_elim_maxTime);
-    
+        
 end
 toc;
 
@@ -132,3 +98,4 @@ clear timeRange time_step_m time_step_m_tiempoTotal time_max_reg_seg
 clear ruta_con100 ruta_regEval dir_signals channel_codes sampleRate canales_eval
 clear path path_name_registro slash_backslash inicio_new_dir1 inicio_new_dir2
 clear inicio_name_registro
+
