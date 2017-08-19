@@ -37,6 +37,9 @@ data_filt = filter(Hd,data);
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
 data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
 
+% Invertir de izquerda a derecha el registro ?
+%data_downS = flipud(data_downS);
+
 % TTL
 %a = load_open_ephys_data_faster('C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500\arturo_2017-06-09_15-24-39\100_ADC8.continuous');
 %b = filter(Hd,a);

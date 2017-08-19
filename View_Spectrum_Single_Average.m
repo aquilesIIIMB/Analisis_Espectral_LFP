@@ -58,7 +58,8 @@ for j = 1:largo_canales_eval
     axis xy
     ylabel('Frequency (Hz)')
     xlabel('Time (sec)');
-    ylim(registroLFP.multitaper.params.fpass)
+    %ylim(registroLFP.multitaper.params.fpass)
+    ylim([1 100])
     c=colorbar('southoutside');
     caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
