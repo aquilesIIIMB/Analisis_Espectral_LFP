@@ -117,7 +117,7 @@ registroLFP.multitaper.params.err = 0; % Error considerado
 registroLFP.multitaper.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.movingwin.window = 4.1; % Ventanas (En segundos) Probar con 2, se usa 4.1
+registroLFP.multitaper.movingwin.window = 2; % Ventanas (En segundos) Probar con 2, se usa 4.1
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Identificadores de las etapas que se han hecho y las que quedan

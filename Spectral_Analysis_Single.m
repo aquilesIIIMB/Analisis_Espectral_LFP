@@ -20,6 +20,8 @@ on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
 tiempo_total = registroLFP.times.end_m;
 
+% Ver si usar [pww,f_ww] = pwelch(x,1000,500,1000,1000);
+%             figure;semilogy(f_ww,pww)
 %% Calculo de la respuesta en frecuencia y espectrograma
 for i = 1:largo_canales_eval
     

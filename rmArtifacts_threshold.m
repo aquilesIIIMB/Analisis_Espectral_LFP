@@ -67,21 +67,31 @@ fueraUmbral_propag_post = x(:); %Son indices
 %% 
 %fueraUmbral = (fueraUmbral_pre | fueraUmbral_rup | fueraUmbral_on | fueraUmbral_rdown | fueraUmbral_post); 
 fueraUmbral_propag_logical = zeros(largo_data,1);
+fueraUmbral_propag_pre = fueraUmbral_propag_pre(fueraUmbral_propag_pre>0); % Para que no tenga indices negativos
+fueraUmbral_propag_post = fueraUmbral_propag_post(fueraUmbral_propag_post<=largo_data); % Para no tener datos sobre el largo de la señal
+
 fueraUmbral_propag_ind = unique([fueraUmbral_propag_pre;fueraUmbral_propag_rup;fueraUmbral_propag_on;fueraUmbral_propag_rdown;fueraUmbral_propag_post]);
+fueraUmbral_propag_ind = fueraUmbral_propag_ind((fueraUmbral_propag_ind>0) & (fueraUmbral_propag_ind<=largo_data));
+
+if isempty(fueraUmbral_propag_ind)
+    disp('Vacio')
+end
 fueraUmbral_propag_logical(fueraUmbral_propag_ind) = 1;
+fueraUmbral_propag_logical = fueraUmbral_propag_logical(1:largo_data); % Para que no sobrepase el limite de la señal debido al relleno
 fueraUmbral_propag_logical = (fueraUmbral_propag_logical > 0);
 %%
-data_all_changed(unique(fueraUmbral_propag_pre)) = s(1:length(unique(fueraUmbral_propag_pre)));
+%data_all_changed(unique(fueraUmbral_propag_pre)) = s(1:length(unique(fueraUmbral_propag_pre)));
 %%
-data_all_changed(unique(fueraUmbral_propag_rup)) = s(1:length(unique(fueraUmbral_propag_rup)));
+%data_all_changed(unique(fueraUmbral_propag_rup)) = s(1:length(unique(fueraUmbral_propag_rup)));
 %%
-data_all_changed(unique(fueraUmbral_propag_on)) = s(1:length(unique(fueraUmbral_propag_on)));
+%data_all_changed(unique(fueraUmbral_propag_on)) = s(1:length(unique(fueraUmbral_propag_on)));
 %%
-data_all_changed(unique(fueraUmbral_propag_rdown)) = s(1:length(unique(fueraUmbral_propag_rdown)));
+%data_all_changed(unique(fueraUmbral_propag_rdown)) = s(1:length(unique(fueraUmbral_propag_rdown)));
 %%
-data_all_changed(unique(fueraUmbral_propag_post)) = s(1:length(unique(fueraUmbral_propag_post)));
-%disp(length(data_all_changed)) %%% VER
+%data_all_changed(unique(fueraUmbral_propag_post)) = s(1:length(unique(fueraUmbral_propag_post)));
 %%
-data_all_changed = data_all_changed(1:largo_data);
+data_all_changed(fueraUmbral_propag_ind) = s(1:length(fueraUmbral_propag_ind));
+%%
+data_all_changed = data_all_changed(1:largo_data); % Para que no sobrepase el limite de la señal debido al relleno
 end
 

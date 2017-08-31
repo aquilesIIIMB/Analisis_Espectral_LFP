@@ -33,7 +33,7 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
         
         % Calcular el umbral
         % Tal vez hacer umbral por fase
-        umbral = 7*mean(abs(data_ref_artifacted))/0.675; % 3,4,5 amplitud
+        umbral = 5*mean(abs(data_ref_artifacted))/0.675; % 3,4,5 amplitud
         registroLFP.channel(canales_eval(j)).threshold = umbral; 
         
         % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites

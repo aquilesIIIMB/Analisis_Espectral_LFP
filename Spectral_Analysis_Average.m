@@ -11,7 +11,7 @@ if ~registroLFP.stage.referencing || ~registroLFP.stage.delete_channel
     
 end
 
-registroLFP.multitaper.movingwin.window = 2; % Ventanas (En segundos)
+registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos)
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 registroLFP.multitaper.params.trialave = 1; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
@@ -30,7 +30,7 @@ for m = 1:length(ia)%1:largo_dataAll
     i = ia(m);
 
     areas_actuales = find(ic == ic(i));
-    
+
     % Cargar datos de todos los registros de un area
     Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
     
