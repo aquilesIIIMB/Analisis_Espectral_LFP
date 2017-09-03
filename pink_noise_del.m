@@ -4,30 +4,31 @@ size_time = size(entrada_y,1);
 size_frec = size(entrada_y,2);
 salida = entrada_y;
 
-mean_spectrum = mean(entrada_y);
-p_mean = polyfit(log(entrada_x),log(mean_spectrum),1);
-m_mean = p_mean(1);
-b_mean = exp(p_mean(2));
-modelo_eval_mean = b_mean*entrada_x.^m_mean;  
+%mean_spectrum = mean(entrada_y);
+%p_mean = polyfit(log(entrada_x),log(mean_spectrum),1);
+%m_mean = p_mean(1);
+%b_mean = exp(p_mean(2));
+%modelo_eval_mean = b_mean*entrada_x.^m_mean;  
 
 for i = 1:size_time
     %% Eliminacion del ruido rosa con el promedio del espectro total
-    salida(i,:) = entrada_y(i,:)./modelo_eval_mean;
+    %salida(i,:) = entrada_y(i,:)./modelo_eval_mean;
     
     %% Eliminacion del ruido rosa mediante polyfit, modelo a*x.^m (usado antes)
-    %[~,Ind_max]=max(entrada_y(i,:));
-    %x=entrada_x(Ind_max:size_frec);
-    %y=entrada_y(i, Ind_max:size_frec);
-    %p = polyfit(log(x),log(y),1);
-    %m = p(1);
-    %b = exp(p(2));
+    [~,Ind_max]=max(entrada_y(i,:));
+    x=entrada_x(Ind_max:size_frec);
+    y=entrada_y(i, Ind_max:size_frec);
+    p = polyfit(log(x),log(y),1);
+    m = p(1);
+    b = exp(p(2));
 
-    %modelo_eval = b*entrada_x.^m;
-    %salida(i,:) = entrada_y(i,:)./modelo_eval;
+    modelo_eval = b*entrada_x.^m;
+    salida(i,:) = entrada_y(i,:)./modelo_eval;
 
     %ezplot(@(x) b*x.^m,[x(1) x(end)])
-    %plot(x,y,'+r'); hold on
-    %plot(x,b*x.^m); ylim([min(Spectral_on) max(Spectral_on)])
+    %figure;
+    %semilogy(x,y,'+r'); hold on
+    %semilogy(x,b*x.^m); %ylim([min(Spectral_on) max(Spectral_on)])
 
     %% Eliminacion del ruido rosa mediante fit, modelo a*x.^m
     %%%Malo en ON_STIM porque tiene muchos pulsos en harmonicos del

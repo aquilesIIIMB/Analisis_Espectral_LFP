@@ -81,6 +81,11 @@ else
 canales_eval = find(~[registroLFP.channel.removed]);
 slash_system = foldername(length(foldername));
 
+pre_m = registroLFP.times.pre_m;
+on_inicio_m = registroLFP.times.start_on_m;
+on_final_m = registroLFP.times.end_on_m;
+post_m = registroLFP.times.post_m;
+
 [C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
 
 %% Calculos para el analisis del promedio de las Areas
@@ -96,11 +101,6 @@ for m = 1:length(ia)
     
     t_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.tiempo;
     f_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.frecuencia; 
-    
-    new_pre_m = registroLFP.average_spectrum(m).times.pre_m_noartifacted;
-    new_on_inicio_m = registroLFP.average_spectrum(m).times.start_on_m_noartifacted;
-    new_on_final_m = registroLFP.average_spectrum(m).times.end_on_m_noartifacted;
-    new_post_m = registroLFP.average_spectrum(m).times.post_m_noartifacted;
     
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
@@ -130,10 +130,10 @@ for m = 1:length(ia)
     c=colorbar('southoutside');
     caxis([-10, 10]); %([-20, 15]) [-15, 20]
     hold on
-    line([new_pre_m*60.0 new_pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([new_on_inicio_m*60.0 new_on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([new_on_final_m*60.0 new_on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([new_post_m*60.0 new_post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     title(['Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}])
     ylabel(c,'Power (dB)')
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];

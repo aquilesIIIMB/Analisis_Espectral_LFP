@@ -34,34 +34,47 @@ for m = 1:length(ia)%1:largo_dataAll
     % Cargar datos de todos los registros de un area
     Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
     
-    % Eliminacion de los intervalos donde hay artefactos
-    ind_over_threshold_totals = (sum([registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold],2)>0);
-    Data_ref(ind_over_threshold_totals,:) = [];
-    total_time_noartifacted = registroLFP.times.steps_m(~ind_over_threshold_totals);
+    % Ponderacion de las señales del area segun sus zonas de no artefacto
+    Frec_sin = registroLFP.frec_sin_artifacts;    % hertz Freq: 110Hz
+    ind_over_threshold_totals = ~[registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold];
+    Data_ref_sum = sum(Data_ref.*ind_over_threshold_totals,2);
+    count_total = sum(ind_over_threshold_totals,2);
+    indices_cero = find(count_total == 0);
+    count_total(indices_cero) = 1;
+    Data_ref_sum = replacing_values(Data_ref_sum, indices_cero, Frec_sin);
+    Data_ref_pond = Data_ref_sum./count_total;
     
-    % Multitaper estimation para el spectrograma%%%%%%%%%%%%
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
+    % Multitaper estimation para el spectrograma
+    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
         
     % Se le quita el ruido rosa, dejando mas plano el espectro
     Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean); 
-  
-    % Nueva definicion de tiempos de las fases pre on post despues de eliminar los artefactos
-    new_total_time = linspace(0,(length(total_time_noartifacted)/1000)/60,length(total_time_noartifacted));
-    new_pre_m = max(new_total_time(total_time_noartifacted<pre_m));
-    new_on_inicio_m = min(new_total_time(total_time_noartifacted>on_inicio_m));
-    new_on_final_m = max(new_total_time(total_time_noartifacted<on_final_m));
-    new_post_m = min(new_total_time(total_time_noartifacted>post_m));
-    new_tiempo_total = max(new_total_time(total_time_noartifacted<tiempo_total));
-
-    % PSD sin normalizar por la frecuencia de la fase pre
-    Spectral_pre_mean = mean(Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0-30)),:),1);
-    Spectral_on_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_on_inicio_m*60.0+30) & t_Spectrogram_mean<(new_on_final_m*60.0-30),:),1);
-    Spectral_post_mean = mean(Spectrogram_mean(t_Spectrogram_mean>(new_post_m*60.0+30) & t_Spectrogram_mean<(new_tiempo_total*60),:),1);
+    
+    % Separacion por etapas el espectrograma    
+    Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0-30)),:);
+    [~,ind_max] = max(Spectrogram_pre_mean,[],2);
+    frec_ind_max = f_Spectrogram_mean(ind_max);
+    ind_noartefactos_Spec_pre = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    
+    Spectrogram_on_mean = Spectrogram_mean(t_Spectrogram_mean>(on_inicio_m*60.0+30) & t_Spectrogram_mean<(on_final_m*60.0-30),:);
+    [~,ind_max] = max(Spectrogram_on_mean,[],2);
+    frec_ind_max = f_Spectrogram_mean(ind_max);
+    ind_noartefactos_Spec_on = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    
+    Spectrogram_post_mean = Spectrogram_mean(t_Spectrogram_mean>(post_m*60.0+30) & t_Spectrogram_mean<(tiempo_total*60),:);
+    [~,ind_max] = max(Spectrogram_post_mean,[],2);
+    frec_ind_max = f_Spectrogram_mean(ind_max);
+    ind_noartefactos_Spec_post = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    
+    % PSD sin normalizar por la frecuencia de la fase pre (No contar los valores cercanos a la sinusoidal)
+    Spectral_pre_mean = mean(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
+    Spectral_on_mean = mean(Spectrogram_on_mean(ind_noartefactos_Spec_on,:),1);
+    Spectral_post_mean = mean(Spectrogram_post_mean(ind_noartefactos_Spec_post,:),1);
 
     % Spectrograma final
-    Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(new_pre_m*60.0)),:);
-    Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean,1);
-    Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
+    %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
+    Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
+    Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
     
     Spectrogram_mean = (Spectrogram_mean-ones(size(Spectrogram_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_mean))*diag(Desv_Spectrogram_pre_mean));
     Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));
@@ -80,14 +93,6 @@ for m = 1:length(ia)%1:largo_dataAll
     registroLFP.average_spectrum(m).psd.on.data = Spectral_on_mean;
     registroLFP.average_spectrum(m).psd.post.data = Spectral_post_mean;   
         
-    % Tiempos de los limites de cada fase
-    registroLFP.average_spectrum(m).times.pre_m_noartifacted = new_pre_m;
-    registroLFP.average_spectrum(m).times.start_on_m_noartifacted = new_on_inicio_m;
-    registroLFP.average_spectrum(m).times.end_on_m_noartifacted = new_on_final_m;
-    registroLFP.average_spectrum(m).times.post_m_noartifacted = new_post_m;
-    registroLFP.average_spectrum(m).times.end_m_noartifacted = new_tiempo_total; 
-    registroLFP.average_spectrum(m).times.steps_m_noartifacted = new_total_time;
-    
 end
 
 registroLFP.stage.spectral_analysis_average = 1;
@@ -104,8 +109,10 @@ clear Mean_Spectrogram_pre_mean Desv_Spectrogram_pre_mean pre_m on_inicio_m on_f
 clear Spectral_pre_mean Spectral_on_mean Spectral_post_mean post_m tiempo_total canales_eval largo_canales_eval
 clear Data_ref areas_actuales f_Spectrogram_mean t_Spectrogram_mean 
 clear Spectrogram_on_mean Spectrogram_pre_mean Spectrogram_post_mean
-clear new_total_time new_pre_m new_on_inicio_m new_on_final_m new_post_m
-clear new_tiempo_total total_time_noartifacted ind_over_threshold_totals
+clear Data_ref_pond Data_ref_sum frec_ind_max new_on_final_m new_post_m
+clear count_total total_time_noartifacted ind_over_threshold_totals
+clear ind_max ind_noartefactos_Spec_on ind_noartefactos_Spec_post ind_noartefactos_Spec_pre
+clear indices_cero Frec_sin Fc 
 
 
 % Descomentar

@@ -101,16 +101,16 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(800*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
+        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
         hold on;        
                 
     end
     legend(str_numCH)
     
     for q = 1:largo_areasActuales
-        linea_ref = refline([0 -(800*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
-        linea_ref = refline([0 -(800*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(1200*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
     end
     
@@ -120,7 +120,7 @@ for m = 1:length(ia)
     line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
     line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
 
-    xlim([0 registroLFP.times.end_m]);ylim([-(800*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -800+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)])
+    xlim([0 registroLFP.times.end_m]);ylim([-(1200*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -1200+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
     xlabel('Tiempo (minutos)'); ylabel('Amplitud')
     title([C(ic(i)),'LFP referenciado con artefactos en el tiempo '])
         
@@ -136,7 +136,7 @@ for m = 1:length(ia)
     for q = 1:largo_areasActuales
         
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(15*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data);
+        plot(registroLFP.times.steps_m(registroLFP.times.steps_m<registroLFP.times.end_m), -(20*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data);
         hold on;
                 
     end
@@ -148,7 +148,7 @@ for m = 1:length(ia)
     line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
     line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
 
-    xlim([0 registroLFP.times.end_m]);ylim([-(15*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -15+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
+    xlim([0 registroLFP.times.end_m]);ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
     xlabel('Tiempo (minutos)'); ylabel('Amplitud')
     title([C(ic(i)),'LFP referenciado, norm y sin artefactos en el tiempo '])
         

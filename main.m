@@ -14,10 +14,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+5000_300Hz\maravilla_2017-06-21_13-56-11\';
+path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\control+2500_300Hz\maravilla_2017-06-23_12-14-20\';
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
@@ -33,7 +33,7 @@ canales_eval = 1:64;
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
 
 %% Tiempo de inicio (segundos)
-tinicial = 39;
+tinicial = 20;
 
 %% Intervalos de tiempo del protocolo
 %timeRange = [5, 5, 5];

@@ -51,6 +51,8 @@ registroLFP.open_ephys = [];
 registroLFP.channel_codes = channel_codes;
 registroLFP.reference_type = tipo_de_referencia;
 registroLFP.desired_fs = 1000;
+registroLFP.frec_sin_artifacts = 90; % Frecuencia de la sinusoide que reemplaza a los artefactos
+registroLFP.amp_threshold = 8;
 
 % Datos de los canales
 registroLFP.channel.name = [];
