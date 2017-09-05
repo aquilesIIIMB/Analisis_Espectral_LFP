@@ -26,6 +26,8 @@ fprintf('El tipo de referencia es:\n\t%s\n', upper(tipo_de_referencia));
 pause(1)
 fprintf('El tiempo inicial es:\n\t%d segundos\n', tinicial);
 pause(1)
+fprintf('La amplitud del umbral de rechazo de artefactos es:\n\t%d \n', amplitud_umbral);
+pause(1)
 fprintf('Rangos de tiempo del experimento\n\tPre estimulacion: %d min\n\tEn estimulacion: %d min\n\tPost estimulacion: %d min\n', timeRange(1), timeRange(2), timeRange(3));
 pause(1)
 
@@ -52,7 +54,7 @@ registroLFP.channel_codes = channel_codes;
 registroLFP.reference_type = tipo_de_referencia;
 registroLFP.desired_fs = 1000;
 registroLFP.frec_sin_artifacts = 90; % Frecuencia de la sinusoide que reemplaza a los artefactos
-registroLFP.amp_threshold = 8;
+registroLFP.amp_threshold = amplitud_umbral;
 
 % Datos de los canales
 registroLFP.channel.name = [];

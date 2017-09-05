@@ -14,15 +14,21 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\control+2500_300Hz\maravilla_2017-06-23_12-14-20\';
+path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\orlando_2017-01-25_15-53-09\';
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
-%channel_codes = 'channel_codes_florencia_2.csv';
-channel_codes = 'channel_codes_florencia_PUC.csv';
+channel_codes = 'channel_codes_florencia_2.csv';
+%channel_codes = 'channel_codes_florencia_PUC.csv';
+
+%% Tiempo de inicio (segundos)
+tinicial = 17; % segundos
+
+%% Amplitud del umbral para remover artefactos
+amplitud_umbral = 8; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
@@ -31,9 +37,6 @@ canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
-
-%% Tiempo de inicio (segundos)
-tinicial = 20;
 
 %% Intervalos de tiempo del protocolo
 %timeRange = [5, 5, 5];

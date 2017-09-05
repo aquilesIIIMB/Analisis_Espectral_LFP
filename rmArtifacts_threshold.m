@@ -27,10 +27,10 @@ fueraUmbral_propag_post = index_spread(fueraUmbral_post, shift_left, shift_right
 fueraUmbral_propag_ind = unique([fueraUmbral_propag_pre;fueraUmbral_propag_rup;fueraUmbral_propag_on;fueraUmbral_propag_rdown;fueraUmbral_propag_post]);
 fueraUmbral_propag_ind = fueraUmbral_propag_ind((fueraUmbral_propag_ind>0) & (fueraUmbral_propag_ind<=largo_data));  % Para que no tenga indices negativos y Para no tener datos sobre el largo de la sennal
 
-if isempty(fueraUmbral_propag_ind)
-    disp('FueraUmbral_propag_ind Vacio, con umbral:')
-    disp(umbral)
-end
+%if isempty(fueraUmbral_propag_ind)
+%    disp('FueraUmbral_propag_ind Vacio, con umbral:')
+%    disp(umbral)
+%end
 
 fueraUmbral_propag_logical = zeros(largo_data,1);
 fueraUmbral_propag_logical(fueraUmbral_propag_ind) = 1;
