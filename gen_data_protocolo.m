@@ -4,7 +4,7 @@
 %%%% Definir que area es la lesionada segun potencia en beta del PSD
 show_injuredArea(registroLFP);
 
-area_lesionada = input('Cual es el area lesionada en este registro?[R o L]:  ','s'); %'R' o 'L'
+area_lesionada = input('Cual es el area lesionada en este registro?[L o R]:  ','s'); %'R' o 'L'
 ind_slash = find(foldername=='\' | foldername=='/');
 protocolo_name = foldername(ind_slash(1)+1:ind_slash(2)-1);
 %protocolo_name = input('Nombre del protocolo?[ex:+2500uA_300Hz]:  ','s'); %'+2500uA_300Hz'

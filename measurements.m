@@ -295,7 +295,7 @@ clear percent_power_band_post percent_power_band_pre phi potencia_max_base
 clear potencia_min_base power_band_base power_band_on power_band_post power_band_pre
 clear psd_base psd_on psd_post psd_pre psd_pre_beta S1 S12 S2 signal1
 clear signal2 sum_cohe_beta_on sum_cohe_beta_post sum_cohe_beta_pre
-clear t time_range
+clear t time_range k Coherency_on Coherency_pre Coherency_post
 
 
 

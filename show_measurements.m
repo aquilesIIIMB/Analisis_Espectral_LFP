@@ -1,6 +1,6 @@
 %%% show metricas
 
-% Band Power Beta
+% Band Power Beta (Puntos y linea)
 percent_power_band_pre_injured = [];
 percent_power_band_on_injured = [];
 percent_power_band_post_injured = [];
@@ -45,12 +45,12 @@ errorbar(percent_power_band_injured,percent_power_band_injured_error,'-s','LineW
 xt = 1:length({protocoloLFP.injured.area});
 set(gca, 'XTick', xt, 'XTickLabel', {protocoloLFP.injured.area})
 ylim([min([min(percent_power_band_injured-percent_power_band_injured_error),min(percent_power_band_uninjured-percent_power_band_uninjured_error)])-1 max([max(percent_power_band_injured+percent_power_band_injured_error),max(percent_power_band_uninjured+percent_power_band_uninjured_error)])+1])
-ylabel('Porcentaje de potencia en beta')
+ylabel('Percentage of Beta Power')
 %legend('Pre', 'Stim', 'Post','Location','southwest');
 legend('Pre', 'Stim', 'Post');
 legend('boxoff')
 grid on
-title('Comparacion del porcentaje de potencia en beta en el hemisferio lesionado')
+title(['Percentage of Beta Power in the Injured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
 
 subplot(2,1,2)
 %bar(percent_power_band_uninjured,'grouped');
@@ -59,12 +59,42 @@ errorbar(percent_power_band_uninjured,percent_power_band_uninjured_error,'-s','L
 xt = 1:length({protocoloLFP.injured.area});
 set(gca, 'XTick', xt, 'XTickLabel', {protocoloLFP.uninjured.area})
 ylim([min([min(percent_power_band_injured-percent_power_band_injured_error),min(percent_power_band_uninjured-percent_power_band_uninjured_error)])-1 max([max(percent_power_band_injured+percent_power_band_injured_error),max(percent_power_band_uninjured+percent_power_band_uninjured_error)])+1])
-ylabel('Porcentaje de potencia en beta')
+ylabel('Percentage of Beta Power')
 %legend('Pre', 'Stim', 'Post','Location','southwest');
 legend('Pre', 'Stim', 'Post');
 legend('boxoff')
 grid on
-title('Comparacion del porcentaje de potencia en beta en el hemisferio no lesionado')
+title(['Percentage of Beta Power in the Uninjured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
+
+% Band Power Beta (Barra)
+figure;
+subplot(2,1,1)
+bar(percent_power_band_injured,'grouped')
+%errorbar(percent_power_band_injured,percent_power_band_injured_error,'-s','LineWidth',2.0,'MarkerSize',7,'MarkerFaceColor','k')
+xt = get(gca, 'XTick');
+%xt = 1:length({protocoloLFP.injured.area});
+set(gca, 'XTick', xt, 'XTickLabel', {protocoloLFP.injured.area})
+ylim([min([min(percent_power_band_injured-percent_power_band_injured_error),min(percent_power_band_uninjured-percent_power_band_uninjured_error)])-1 max([max(percent_power_band_injured+percent_power_band_injured_error),max(percent_power_band_uninjured+percent_power_band_uninjured_error)])+1])
+ylabel('Percentage of Beta Power')
+%legend('Pre', 'Stim', 'Post','Location','southwest');
+legend('Pre', 'Stim', 'Post');
+legend('boxoff')
+grid on
+title(['Percentage of Beta Power in the Injured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
+
+subplot(2,1,2)
+bar(percent_power_band_uninjured,'grouped');
+%errorbar(percent_power_band_uninjured,percent_power_band_uninjured_error,'-s','LineWidth',2.0,'MarkerSize',7,'MarkerFaceColor','k')
+xt = get(gca, 'XTick');
+%xt = 1:length({protocoloLFP.injured.area});
+set(gca, 'XTick', xt, 'XTickLabel', {protocoloLFP.uninjured.area})
+ylim([min([min(percent_power_band_injured-percent_power_band_injured_error),min(percent_power_band_uninjured-percent_power_band_uninjured_error)])-1 max([max(percent_power_band_injured+percent_power_band_injured_error),max(percent_power_band_uninjured+percent_power_band_uninjured_error)])+1])
+ylabel('Percentage of Beta Power')
+%legend('Pre', 'Stim', 'Post','Location','southwest');
+legend('Pre', 'Stim', 'Post');
+legend('boxoff')
+grid on
+title(['Percentage of Beta Power in the Uninjured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
 
 
 % Coherencia agrupada
@@ -142,11 +172,11 @@ errorbar(mean_coherency_injured,mean_coherency_injured_error,'-s','LineWidth',2.
 xt = get(gca, 'XTick');
 set(gca, 'XTick', xt, 'XTickLabel', areas_coherency_injured)
 ylim([min([min(mean_coherency_injured-mean_coherency_injured_error),min(mean_coherency_uninjured-mean_coherency_uninjured_error)])-0.01 max([max(mean_coherency_injured+mean_coherency_injured_error),max(mean_coherency_uninjured+mean_coherency_uninjured_error)])+0.01])
-ylabel('Coherencia')
+ylabel('Mean Coherence')
 legend('Pre', 'Stim', 'Post');
 legend('boxoff')
 grid on
-title('Comparacion de la coherencia entre areas del hemisferio lesionado')
+title(['Mean Coherence in beta between Areas of the Injured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
 
 subplot(2,1,2)
 %plot(mean_coherency_uninjured,'o-','LineWidth',3.0,'MarkerSize',5,'MarkerFaceColor','k');
@@ -154,11 +184,11 @@ errorbar(mean_coherency_uninjured,mean_coherency_uninjured_error,'-s','LineWidth
 xt = get(gca, 'XTick');
 set(gca, 'XTick', xt, 'XTickLabel', areas_coherency_uninjured)
 ylim([min([min(mean_coherency_injured-mean_coherency_injured_error),min(mean_coherency_uninjured-mean_coherency_uninjured_error)])-0.01 max([max(mean_coherency_injured+mean_coherency_injured_error),max(mean_coherency_uninjured+mean_coherency_uninjured_error)])+0.01])
-ylabel('Coherencia')
+ylabel('Mean Coherence')
 legend('Pre', 'Stim', 'Post');
 legend('boxoff')
 grid on
-title('Comparacion de la coherencia entre areas del hemisferio no lesionado')
+title(['Mean Coherence in beta between Areas of the Uninjured Hemisphere ',strrep({protocoloLFP.name},'_',' ')])
 
 
 %Sumada
@@ -239,11 +269,11 @@ clear mean_coherency_injured_error mean_coherency_on_injured mean_coherency_on_i
 clear mean_coherency_on_uninjured mean_coherency_on_uninjured_error mean_coherency_post_injured
 clear mean_coherency_post_injured_error mean_coherency_post_uninjured mean_coherency_post_uninjured_error
 clear mean_coherency_pre_injured mean_coherency_pre_injured_error mean_coherency_pre_uninjured
-clear mean_coherency_uninjured_error p percent_power_band_injured percent_power_band_injured_error
+clear mean_coherency_uninjured_error p 
 clear mean_coherency_pre_uninjured_error mean_coherency_uninjured
 clear percent_power_band_on_injured percent_power_band_on_injured_error percent_power_band_on_uninjured
 clear percent_power_band_on_uninjured_error percent_power_band_post_injured percent_power_band_post_injured_error
 clear percent_power_band_post_uninjured percent_power_band_post_uninjured_error percent_power_band_pre_injured
 clear percent_power_band_pre_injured_error percent_power_band_pre_uninjured percent_power_band_pre_uninjured_error
-clear percent_power_band_uninjured percent_power_band_uninjured_error xt
+clear xt
 

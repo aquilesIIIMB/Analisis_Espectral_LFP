@@ -17,7 +17,7 @@ clear; close all
 %path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\orlando_2017-01-25_15-53-09\';
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/-5000/arturo_2017-06-19_12-22-33/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+5000/maravilla_2017-06-19_12-44-21/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
@@ -25,7 +25,7 @@ path = '/home/cmanalisis/Aquiles/Registros/Database/-5000/arturo_2017-06-19_12-2
 channel_codes = 'channel_codes_florencia_PUC.csv';
 
 %% Tiempo de inicio (segundos)
-tinicial = 32; % segundos
+tinicial = 15; % segundos
 
 %% Amplitud del umbral para remover artefactos
 amplitud_umbral = 9; % 8,9,10 desde el mas sucio al mas limpio

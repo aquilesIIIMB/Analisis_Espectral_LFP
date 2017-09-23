@@ -1,14 +1,17 @@
-% show señales, espectrogramas y psd de todo un protocolo
+% show seï¿½ales, espectrogramas y psd de todo un protocolo
 
-% Señales LFP
+% Seï¿½ales LFP
 signal_inj = [protocoloLFP.injured.area_signals];
 signal_uninj = [protocoloLFP.uninjured.area_signals];
 min_amp = min([min([signal_inj(:).data]), min([signal_uninj(:).data])]);
 max_amp = max([max([signal_inj(:).data]), max([signal_uninj(:).data])]);
+
+slash_system = foldername(length(foldername));
+
 for i = 1:length(protocoloLFP.injured)
     
     % Injured
-    lfp_data = protocoloLFP.injured(i).area_signals.data;
+    lfp_data = mean([protocoloLFP.injured(i).area_signals(:).data],2);
     time_data = protocoloLFP.injured(i).area_signals.time;
     
     fig_1 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -24,11 +27,20 @@ for i = 1:length(protocoloLFP.injured)
     
     xlim([0 max(time_data)])
     ylim([min_amp  max_amp])
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title(['LFP en el tiempo del area ',protocoloLFP.injured(i).area,' Lesionada'])
+    xlabel('Time [Minutes]'); ylabel('LFP')
+    title(['LFP of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')])
+    
+    % Guardar imagen de la figura
+    name_fig = ['LFP_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_1,folder_name_save,'png');
+    %saveas(fig_2,name_figure_save,'fig');
+    %waitforbuttonpress;
+    close(fig_1)
+    
     
     % Uninjured
-    lfp_data = protocoloLFP.uninjured(i).area_signals.data;
+    lfp_data = mean([protocoloLFP.uninjured(i).area_signals(:).data],2);
     time_data = protocoloLFP.uninjured(i).area_signals.time;
     
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -44,15 +56,16 @@ for i = 1:length(protocoloLFP.injured)
     
     xlim([0 max(time_data)])
     ylim([min_amp  max_amp])
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title(['LFP en el tiempo del area ',protocoloLFP.uninjured(i).area,' No Lesionada'])
+    xlabel('Time [Minutes]'); ylabel('LFP')
+    title(['LFP of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
         
     % Guardar imagen de la figura
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' LFP en bruto en el tiempo'];
-    %saveas(fig_2,name_figure_save,'png');
+    name_fig = ['LFP_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_2,folder_name_save,'png');
     %saveas(fig_2,name_figure_save,'fig');
     %waitforbuttonpress;
-    %close(fig_2)
+    close(fig_2)
     
 end
 
@@ -66,31 +79,7 @@ for i = 1:length(protocoloLFP.injured)
     t_Spectrogram_data = protocoloLFP.injured(i).spectrogram.time;
     f_Spectrogram_data = protocoloLFP.injured(i).spectrogram.frequency;
     
-    % Se le quita el ruido rosa, dejando mas plano el espectro
-    %spectrograma_data = pink_noise_del(f_Spectrogram_data, spectrograma_data); 
-    
-     % Separacion por etapas el espectrograma    
-    %Spectrogram_pre = spectrograma_data((t_Spectrogram_data<(6*60.0-30)),:);
-    %[~,ind_max] = max(Spectrogram_pre,[],2);
-    %frec_ind_max = f_Spectrogram_data(ind_max);
-    %ind_noartefactos_Spec_pre = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
-    
-    %Spectrogram_on = spectrograma_data(t_Spectrogram_data>(6*60.0+60) & t_Spectrogram_data<(12*60.0),:);
-    %[~,ind_max] = max(Spectrogram_on,[],2);
-    %frec_ind_max = f_Spectrogram_data(ind_max);
-    %ind_noartefactos_Spec_on = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
-    
-    %Spectrogram_post = spectrograma_data(t_Spectrogram_data>(12*60.0+90),:);
-    %[~,ind_max] = max(Spectrogram_post,[],2);
-    %frec_ind_max = f_Spectrogram_data(ind_max);
-    %ind_noartefactos_Spec_post = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
-
-    % Spectrograma final
-    %Mean_Spectrogram_pre_mean = mean(Spectrogram_pre(ind_noartefactos_Spec_pre,:),1);
-    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre(ind_noartefactos_Spec_pre,:),1);
-    
-    %spectrograma_data = (spectrograma_data-ones(size(spectrograma_data))*diag(Mean_Spectrogram_pre_mean))./(ones(size(spectrograma_data))*diag(Desv_Spectrogram_pre_mean));
-    %spectrograma_data = spectrograma_data-mean(mean(spectrograma_data))./std(std(spectrograma_data));
+    % spectrograma con valores positivos
     spectrograma_data = spectrograma_data-(min(min(spectrograma_data)));
     
     
@@ -101,7 +90,7 @@ for i = 1:length(protocoloLFP.injured)
     clim=prctile(reshape(db(spectrograma_data','power'),1,numel(spectrograma_data)),[5 99]);
     imagesc(t_Spectrogram_data,f_Spectrogram_data,db(spectrograma_data','power'),clim); colormap('jet');
     axis xy
-    ylabel('Frequency (Hz)')
+    ylabel('Frequency [Hz]')
     xlabel('Time (sec)');
     ylim([1 100])
     c=colorbar('southoutside');
@@ -113,12 +102,14 @@ for i = 1:length(protocoloLFP.injured)
     line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
     line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
     line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    title(['Espectrograma del area ',area_data,' Lesionada'])
-    ylabel(c,'Power (dB)')
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];
-    %saveas(fig_6,name_figure_save,'png');
-    %waitforbuttonpress;
-    %close(fig_6)    
+    title(['Spectrogram of the area ',area_data,' Injured ',strrep(protocoloLFP.name,'_',' ')])
+    ylabel(c,'Power [dB]')
+    
+    % Guardar imagen de la figura
+    name_fig = ['Spectrogram_of_the_area_',area_data,'_Injured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_5,folder_name_save,'png');
+    close(fig_5)
     
     
     % Uninjured
@@ -136,7 +127,7 @@ for i = 1:length(protocoloLFP.injured)
     clim=prctile(reshape(db(spectrograma_data','power'),1,numel(spectrograma_data)),[5 99]);
     imagesc(t_Spectrogram_data,f_Spectrogram_data,db(spectrograma_data','power'),clim); colormap('jet');
     axis xy
-    ylabel('Frequency (Hz)')
+    ylabel('Frequency [Hz]')
     xlabel('Time (sec)');
     ylim([1 100])
     c=colorbar('southoutside');
@@ -148,8 +139,14 @@ for i = 1:length(protocoloLFP.injured)
     line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
     line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
     line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    title(['Espectrograma del area ',area_data,' No Lesionada'])
-    ylabel(c,'Power (dB)')
+    title(['Spectrogram of the area ',area_data,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
+    ylabel(c,'Power [dB]')
+    
+    % Guardar imagen de la figura
+    name_fig = ['Spectrogram_of_the_area_',area_data,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_6,folder_name_save,'png');
+    close(fig_6)
     
 end
 
@@ -157,9 +154,12 @@ end
 for i = 1:length(protocoloLFP.injured)
     
     % Injured
-    Spectral_pre = protocoloLFP.injured(i).psd.pre.data;
-    Spectral_on = protocoloLFP.injured(i).psd.on.data;
-    Spectral_post = protocoloLFP.injured(i).psd.post.data;
+    pre_temp = reshape([protocoloLFP.injured(i).psd.pre(:).data], length(protocoloLFP.injured(i).psd.pre(1).data), length(protocoloLFP.injured(i).psd.pre));
+    on_temp = reshape([protocoloLFP.injured(i).psd.on(:).data], length(protocoloLFP.injured(i).psd.on(1).data), length(protocoloLFP.injured(i).psd.on));
+    post_temp = reshape([protocoloLFP.injured(i).psd.post(:).data], length(protocoloLFP.injured(i).psd.post(1).data), length(protocoloLFP.injured(i).psd.post));
+    Spectral_pre = mean(pre_temp,2);
+    Spectral_on = mean(on_temp,2);
+    Spectral_post = mean(post_temp,2);
     
     freq_psd = protocoloLFP.injured(i).psd.frequency; 
     
@@ -174,17 +174,23 @@ for i = 1:length(protocoloLFP.injured)
     xlim([1 100])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
-    xlabel('Frequency (Hz)'); ylabel('Power (dB)')
-    title(['PSD de los LFP del area ',protocoloLFP.injured(i).area,' Lesionada'])
-    %name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD de los LFP '];
-    %saveas(fig_5,name_figure_save,'png');
-    %waitforbuttonpress;
-    %close(fig_5)
+    xlabel('Frequency [Hz]'); ylabel('Power [dB]')
+    title(['PSD of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')])
+
+    % Guardar imagen de la figura
+    name_fig = ['PSD_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_4,folder_name_save,'png');
+    close(fig_4)
+    
     
     % Uninjured
-    Spectral_pre = protocoloLFP.uninjured(i).psd.pre.data;
-    Spectral_on = protocoloLFP.uninjured(i).psd.on.data;
-    Spectral_post = protocoloLFP.uninjured(i).psd.post.data;
+    pre_temp = reshape([protocoloLFP.uninjured(i).psd.pre(:).data], length(protocoloLFP.uninjured(i).psd.pre(1).data), length(protocoloLFP.uninjured(i).psd.pre));
+    on_temp = reshape([protocoloLFP.uninjured(i).psd.on(:).data], length(protocoloLFP.uninjured(i).psd.on(1).data), length(protocoloLFP.uninjured(i).psd.on));
+    post_temp = reshape([protocoloLFP.uninjured(i).psd.post(:).data], length(protocoloLFP.uninjured(i).psd.post(1).data), length(protocoloLFP.uninjured(i).psd.post));
+    Spectral_pre = mean(pre_temp,2);
+    Spectral_on = mean(on_temp,2);
+    Spectral_post = mean(post_temp,2);
     
     freq_psd = protocoloLFP.uninjured(i).psd.frequency; 
     
@@ -199,8 +205,14 @@ for i = 1:length(protocoloLFP.injured)
     xlim([1 100])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
-    xlabel('Frequency (Hz)'); ylabel('Power (dB)')
-    title(['PSD de los LFP del area ',protocoloLFP.uninjured(i).area,' No Lesionada'])
+    xlabel('Frequency [Hz]'); ylabel('Power [dB]')
+    title(['PSD of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
+    
+    % Guardar imagen de la figura
+    name_fig = ['PSD_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
+    folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+    saveas(fig_5,folder_name_save,'png');
+    close(fig_5)
 end
 
 % Coherencia individual
@@ -213,23 +225,29 @@ for i=1:length(protocoloLFP.injured)-1
     % Coherencia    
     for j = length(protocoloLFP.injured):-1:p
 
-    Coherency_pre_mean = protocoloLFP.coherency.injured.pre.data{i,j};
-    Coherency_on_mean = protocoloLFP.coherency.injured.on.data{i,j};
-    Coherency_post_mean = protocoloLFP.coherency.injured.post.data{i,j};
-    f = protocoloLFP.coherency.injured.frequency;
+        Coherency_pre_mean = protocoloLFP.coherency.injured.pre.data{i,j};
+        Coherency_on_mean = protocoloLFP.coherency.injured.on.data{i,j};
+        Coherency_post_mean = protocoloLFP.coherency.injured.post.data{i,j};
+        f = protocoloLFP.coherency.injured.frequency;
 
-    figure;
-    plot(f,Coherency_pre_mean,'LineWidth',2.0)
-    hold on
-    plot(f,Coherency_on_mean,'LineWidth',2.0)
-    plot(f,Coherency_post_mean,':','LineWidth',2.0)
-    grid on
-    xlim([0 100])
-    ylabel('Coherencia')
-    xlabel('Frecuencia [Hz]')
-    legend('pre','on','post')
-    title(['Coherencia de ', protocoloLFP.injured(i).area, ' vs ', protocoloLFP.injured(j).area, ' Lesionadas'])
-    
+        fig_7 = figure;
+        plot(f,Coherency_pre_mean,'LineWidth',2.0)
+        hold on
+        plot(f,Coherency_on_mean,'LineWidth',2.0)
+        plot(f,Coherency_post_mean,':','LineWidth',2.0)
+        grid on
+        xlim([0 100])
+        ylabel('Mean Coherence')
+        xlabel('Frequency [Hz]')
+        legend('pre','on','post')
+        title(['Mean Coherence in beta between ', protocoloLFP.injured(i).area, ' vs ', protocoloLFP.injured(j).area, ' Injured'])
+                
+        % Guardar imagen de la figura
+        name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Injured_',strrep(protocoloLFP.name,' ','_')];
+        folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+        saveas(fig_7,folder_name_save,'png');
+        close(fig_7) 
+
     end
     
     p=p+1;
@@ -245,23 +263,29 @@ for i=1:length(protocoloLFP.uninjured)-1
     % Coherencia    
     for j = length(protocoloLFP.uninjured):-1:p
 
-    Coherency_pre_mean = protocoloLFP.coherency.uninjured.pre.data{i,j};
-    Coherency_on_mean = protocoloLFP.coherency.uninjured.on.data{i,j};
-    Coherency_post_mean = protocoloLFP.coherency.uninjured.post.data{i,j};
-    f = protocoloLFP.coherency.uninjured.frequency;
+        Coherency_pre_mean = protocoloLFP.coherency.uninjured.pre.data{i,j};
+        Coherency_on_mean = protocoloLFP.coherency.uninjured.on.data{i,j};
+        Coherency_post_mean = protocoloLFP.coherency.uninjured.post.data{i,j};
+        f = protocoloLFP.coherency.uninjured.frequency;
 
-    figure;
-    plot(f,Coherency_pre_mean,'LineWidth',2.0)
-    hold on
-    plot(f,Coherency_on_mean,'LineWidth',2.0)
-    plot(f,Coherency_post_mean,':','LineWidth',2.0)
-    grid on
-    xlim([0 100])    
-    ylabel('Coherencia')
-    xlabel('Frecuencia [Hz]')
-    legend('pre','on','post')
-    title(['Coherencia de ', protocoloLFP.uninjured(i).area, ' vs ', protocoloLFP.uninjured(j).area, ' No Lesionadas'])
-    
+        fig_8 = figure;
+        plot(f,Coherency_pre_mean,'LineWidth',2.0)
+        hold on
+        plot(f,Coherency_on_mean,'LineWidth',2.0)
+        plot(f,Coherency_post_mean,':','LineWidth',2.0)
+        grid on
+        xlim([0 100])    
+        ylabel('Mean Coherence')
+        xlabel('Frecuencia [Hz]')
+        legend('pre','on','post')
+        title(['Mean Coherence in beta between ', protocoloLFP.uninjured(i).area, ' vs ', protocoloLFP.uninjured(j).area, ' Uninjured'])
+                
+        % Guardar imagen de la figura
+        name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Uninjured_',strrep(protocoloLFP.name,' ','_')];
+        folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
+        saveas(fig_8,folder_name_save,'png');
+        close(fig_8)
+
     end
     
     p=p+1;
