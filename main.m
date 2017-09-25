@@ -82,3 +82,25 @@ sonido_alarma;
 %
 % Guardar un mismo valor dentro de un vector de subcampo de una estructura
 %[registroLFP.channel([18;19]).removed] = deal(1);
+
+% Simular estimulacion
+% Mixta
+f = 1200; %// Hz
+f_c = 1/2; %// Hz
+T = 1 / f; %// Sampling period from f
+t = 0 : T : 19*60.0; %// Determine time values from 0 to 5 in steps of the sampling period
+
+y_ru = t(t< 30).*sin(2*pi*f_c*t(t< 30));
+y_rd = y_ru(end:-1:1);
+A = max(y_ru);
+y_stim = A.*sin(2*pi*f_c*t(t>6*60.0+30 & t< 12*60.0+30));
+y_pre = 0*t(t< 6*60.0);
+y_post = 0*t(t> 13*60.0);
+y = [y_pre,y_ru,y_stim,y_rd,y_post];
+
+%// Plot carrier signal and modulated signal
+figure;
+plot(y);
+grid;
+
+

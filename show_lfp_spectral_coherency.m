@@ -34,7 +34,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['LFP_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_1,folder_name_save,'png');
-    %saveas(fig_2,name_figure_save,'fig');
+    saveas(fig_1,folder_name_save,'fig');
     %waitforbuttonpress;
     close(fig_1)
     
@@ -63,7 +63,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['LFP_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_2,folder_name_save,'png');
-    %saveas(fig_2,name_figure_save,'fig');
+    saveas(fig_2,folder_name_save,'fig');
     %waitforbuttonpress;
     close(fig_2)
     
@@ -94,9 +94,9 @@ for i = 1:length(protocoloLFP.injured)
     xlabel('Time (sec)');
     ylim([1 100])
     c=colorbar('southoutside');
-    cmap = colormap('autumn(10)');
-    cmap = cmap(end:-1:1,:);
-    colormap(cmap);
+    %cmap = colormap('autumn(10)');
+    %cmap = cmap(end:-1:1,:);
+    %colormap(cmap);
     hold on
     line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
     line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
@@ -109,6 +109,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['Spectrogram_of_the_area_',area_data,'_Injured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_5,folder_name_save,'png');
+    saveas(fig_5,folder_name_save,'fig');
     close(fig_5)
     
     
@@ -146,6 +147,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['Spectrogram_of_the_area_',area_data,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_6,folder_name_save,'png');
+    saveas(fig_6,folder_name_save,'fig');
     close(fig_6)
     
 end
@@ -158,19 +160,22 @@ for i = 1:length(protocoloLFP.injured)
     on_temp = reshape([protocoloLFP.injured(i).psd.on(:).data], length(protocoloLFP.injured(i).psd.on(1).data), length(protocoloLFP.injured(i).psd.on));
     post_temp = reshape([protocoloLFP.injured(i).psd.post(:).data], length(protocoloLFP.injured(i).psd.post(1).data), length(protocoloLFP.injured(i).psd.post));
     Spectral_pre = mean(pre_temp,2);
+    Spectral_pre_all = pre_temp;
     Spectral_on = mean(on_temp,2);
+    Spectral_on_all = on_temp;
     Spectral_post = mean(post_temp,2);
+    Spectral_post_all = on_temp;
     
     freq_psd = protocoloLFP.injured(i).psd.frequency; 
     
     % Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(freq_psd,Spectral_pre)
+    semilogy(freq_psd,Spectral_pre,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_on)
+    semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_post)
+    semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
     xlim([1 100])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
@@ -181,6 +186,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['PSD_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_4,folder_name_save,'png');
+    saveas(fig_4,folder_name_save,'fig');
     close(fig_4)
     
     
@@ -197,11 +203,11 @@ for i = 1:length(protocoloLFP.injured)
     % Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(freq_psd,Spectral_pre)
+    semilogy(freq_psd,Spectral_pre,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_on)
+    semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_post)
+    semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
     xlim([1 100])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
@@ -212,6 +218,7 @@ for i = 1:length(protocoloLFP.injured)
     name_fig = ['PSD_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
     folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
     saveas(fig_5,folder_name_save,'png');
+    saveas(fig_5,folder_name_save,'fig');
     close(fig_5)
 end
 
@@ -246,6 +253,7 @@ for i=1:length(protocoloLFP.injured)-1
         name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Injured_',strrep(protocoloLFP.name,' ','_')];
         folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
         saveas(fig_7,folder_name_save,'png');
+        saveas(fig_7,folder_name_save,'fig');
         close(fig_7) 
 
     end
@@ -284,6 +292,7 @@ for i=1:length(protocoloLFP.uninjured)-1
         name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Uninjured_',strrep(protocoloLFP.name,' ','_')];
         folder_name_save = [inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo',slash_system,name_fig];
         saveas(fig_8,folder_name_save,'png');
+        saveas(fig_8,folder_name_save,'fig');
         close(fig_8)
 
     end

@@ -1,7 +1,7 @@
 % Show metricas de todos los registros
 
 % Protocolos que se evaluaran
-protocolos = [protocolo_control_p2500_300Hz;protocolo_p2500_300Hz];
+protocolos = [protocolo_300Hz;protocolo_p2500;protocolo_p2500_300Hz];
 
 %% Band Power Beta
 percent_power_band_injured_protocolos_total = {};
@@ -109,6 +109,7 @@ for ind_p = 1:length(protocolos)
     z = [string(a(:,3)),string(b(:,3)),string(c(:,3))];
     T_injure = table(area_t',x,y,z,...
         'VariableNames',{'Areas','Pre_Inj','Stim_Inj','Post_Inj'});
+    b_inj = b;
     
     a = string(cell2mat([percent_power_band_uninjured_protocolos_total(:,ind_p)])-cell2mat([percent_power_band_uninjured_error_protocolos_total(:,ind_p)]));
     b = string(cell2mat([percent_power_band_uninjured_protocolos_total(:,ind_p)]));
@@ -119,13 +120,20 @@ for ind_p = 1:length(protocolos)
     z = [string(a(:,3)),string(b(:,3)),string(c(:,3))];
     T_uninjure = table(area_t',x,y,z,...
         'VariableNames',{'Areas','Pre_Uninj','Stim_Uninj','Post_Uninj'});
+    b_uninj = b;
     
 
     disp('Porecentaje de Potencia PSD en beta')
     disp(strrep(protocolos(ind_p).name,'_',' '))
-    disp(T_injure)
+    disp(T_injure)    
+    fprintf('Promedio de %% Potencia en beta en Pre: %.2f\n',mean(str2double(b_inj(:,1))))
+    fprintf('Promedio de %% Potencia en beta en Stim: %.2f\n',mean(str2double(b_inj(:,2))))
+    fprintf('Promedio de %% Potencia en beta en Post: %.2f\n\n',mean(str2double(b_inj(:,3))))
     disp(T_uninjure)
-    disp(' ')
+    fprintf('Promedio de %% Potencia en beta en Pre: %.2f\n',mean(str2double(b_uninj(:,1))))
+    fprintf('Promedio de %% Potencia en beta en Stim: %.2f\n',mean(str2double(b_uninj(:,2))))
+    fprintf('Promedio de %% Potencia en beta en Post: %.2f\n\n\n',mean(str2double(b_uninj(:,3))))
+
 end
 
 
