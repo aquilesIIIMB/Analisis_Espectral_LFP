@@ -1,4 +1,4 @@
-% show se�ales, espectrogramas y psd de todo un protocolo
+ % show se�ales, espectrogramas y psd de todo un protocolo
 
 % Se�ales LFP
 signal_inj = [protocoloLFP.injured.area_signals];
@@ -69,6 +69,7 @@ for i = 1:length(protocoloLFP.injured)
     
 end
 
+
 % Espectrograma
 Frec_sin = 90; % confirmar dentro de Frec_sin = registroLFP.frec_sin_artifacts; 
 
@@ -82,13 +83,15 @@ for i = 1:length(protocoloLFP.injured)
     % spectrograma con valores positivos
     spectrograma_data = spectrograma_data-(min(min(spectrograma_data)));
     
+    % Suavizado
+    spect_smooth = imgaussfilt(db(spectrograma_data','power'),[1 2]);
     
     area_data = protocoloLFP.injured(i).area;
     
     %-------------------Plot---Mean Spectrogram------------------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-    clim=prctile(reshape(db(spectrograma_data','power'),1,numel(spectrograma_data)),[5 99]);
-    imagesc(t_Spectrogram_data,f_Spectrogram_data,db(spectrograma_data','power'),clim); colormap('jet');
+    clim=prctile(reshape(spect_smooth,1,numel(spectrograma_data)),[10 99]);
+    imagesc(t_Spectrogram_data,f_Spectrogram_data,spect_smooth,clim); colormap('jet');
     axis xy
     ylabel('Frequency [Hz]')
     xlabel('Time (sec)');
@@ -98,10 +101,10 @@ for i = 1:length(protocoloLFP.injured)
     %cmap = cmap(end:-1:1,:);
     %colormap(cmap);
     hold on
-    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
+    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
     title(['Spectrogram of the area ',area_data,' Injured ',strrep(protocoloLFP.name,'_',' ')])
     ylabel(c,'Power [dB]')
     
@@ -120,26 +123,28 @@ for i = 1:length(protocoloLFP.injured)
     
     spectrograma_data = spectrograma_data-(min(min(spectrograma_data)));
     
+    % Suavizado
+    spect_smooth = imgaussfilt(db(spectrograma_data','power'),[1 2]);
     
     area_data = protocoloLFP.uninjured(i).area;
     
     %-------------------Plot---Mean Spectrogram------------------------------------
     fig_6 = figure('units','normalized','outerposition',[0 0 1 1]);
-    clim=prctile(reshape(db(spectrograma_data','power'),1,numel(spectrograma_data)),[5 99]);
-    imagesc(t_Spectrogram_data,f_Spectrogram_data,db(spectrograma_data','power'),clim); colormap('jet');
+    clim=prctile(reshape(spect_smooth,1,numel(spectrograma_data)),[10 99]);
+    imagesc(t_Spectrogram_data,f_Spectrogram_data,spect_smooth,clim); colormap('jet');
     axis xy
     ylabel('Frequency [Hz]')
     xlabel('Time (sec)');
     ylim([1 100])
     c=colorbar('southoutside');
-    cmap = colormap('autumn(10)');
-    cmap = cmap(end:-1:1,:);
-    colormap(cmap);
+    %cmap = colormap('autumn(10)');
+    %cmap = cmap(end:-1:1,:);
+    %colormap(cmap);
     hold on
-    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
-    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',2.25,'Marker','.','LineStyle',':');
+    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
+    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
     title(['Spectrogram of the area ',area_data,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
     ylabel(c,'Power [dB]')
     
@@ -176,7 +181,8 @@ for i = 1:length(protocoloLFP.injured)
     semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
     semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
-    xlim([1 100])
+    xlim([1 50])
+    ylim([10^-1 10^1])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
     xlabel('Frequency [Hz]'); ylabel('Power [dB]')
@@ -208,7 +214,8 @@ for i = 1:length(protocoloLFP.injured)
     semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
     semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
-    xlim([1 100])
+    xlim([1 50])
+    ylim([10^-1 10^1])
     grid on
     legend('pre-stim', 'on-stim', 'post-stim')
     xlabel('Frequency [Hz]'); ylabel('Power [dB]')
