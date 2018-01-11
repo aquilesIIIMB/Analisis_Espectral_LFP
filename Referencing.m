@@ -33,12 +33,12 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
         
         % Calcular el umbral
         % Tal vez hacer umbral por fase
-        umbral = registroLFP.amp_threshold*mean(abs(data_ref_artifacted))/0.675; % 3,4,5 amplitud
+        umbral = registroLFP.amp_threshold * median(sort(abs(data_ref_artifacted)))/0.675; % 3,4,5 amplitud
         registroLFP.channel(canales_eval(j)).threshold = umbral; 
         
         % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
         Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
-        [data_ref_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(data_ref_artifacted, umbral,...
+        [data_ref_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(data_ref_artifacted, umbral,... %%% Mejorar la forma de hacer esta funcion!!!!
             registroLFP.times.steps_m, registroLFP.times.pre_m, ...
             registroLFP.times.start_on_m, registroLFP.times.end_on_m, registroLFP.times.post_m, registroLFP.times.end_m, Fc);
 

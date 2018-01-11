@@ -1,9 +1,10 @@
 % Show metricas de todos los registros
 
 % Protocolos que se evaluaran
-protocolos = [protocolo_20Hz;protocolo_150Hz;protocolo_300Hz;...
-    protocoloLFP_p375;protocolo_p2500;protocolo_p5000;...
-    protocolo_p375_300Hz;protocolo_p2500_300Hz;protocolo_p5000_300Hz];
+%protocolos = [protocolo_20Hz;protocolo_150Hz;protocolo_300Hz;...
+%    protocoloLFP_p375;protocolo_p2500;protocolo_p5000;...
+%    protocolo_p375_300Hz;protocolo_p2500_300Hz;protocolo_p5000_300Hz];
+protocolos = [protocolo_p2500; protocolo_p5000];
 
 %% Band Power Beta
 percent_power_band_injured_protocolos_total = {};

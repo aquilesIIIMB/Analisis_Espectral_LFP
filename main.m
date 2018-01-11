@@ -1,3 +1,4 @@
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % main.m
@@ -14,33 +15,33 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500_300Hz\orlando_2017-01-25_15-53-09\';
+path = 'D:\Descargas\Trabajo de titulo\Database\-2500_300Hz\arturo3_2017-07-04_15-48-06\';
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+5000/maravilla_2017-06-19_12-44-21/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+5000/maravilla_2017-06-19_12-44-21/';
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
 %channel_codes = 'channel_codes_florencia_2.csv';
 channel_codes = 'channel_codes_florencia_PUC.csv';
 
-%% Tiempo de inicio (segundos)
-tinicial = 15; % segundos
+%% Intervalos de tiempo del protocolo
+%timeRange = [5, 5, 5];
+timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
 amplitud_umbral = 9; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
-%canales_eval = [14:21,46:53];
-canales_eval = 1:64;
+canales_eval = [14:21,46:53];
+%canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'
 
-%% Intervalos de tiempo del protocolo
-timeRange = [5, 5, 5];
-%timeRange = [6, 6, 6]; %Mixtos
+%% Tiempo de inicio (segundos)
+%tinicial = 15; % segundos
 
 %% Fin de los parametros
 
@@ -85,22 +86,22 @@ sonido_alarma;
 
 % Simular estimulacion
 % Mixta
-f = 1200; %// Hz
-f_c = 1/2; %// Hz
-T = 1 / f; %// Sampling period from f
-t = 0 : T : 19*60.0; %// Determine time values from 0 to 5 in steps of the sampling period
+%f = 1200; %// Hz
+%f_c = 1/2; %// Hz
+%T = 1 / f; %// Sampling period from f
+%t = 0 : T : 19*60.0; %// Determine time values from 0 to 5 in steps of the sampling period
 
-y_ru = t(t< 30).*sin(2*pi*f_c*t(t< 30));
-y_rd = y_ru(end:-1:1);
-A = max(y_ru);
-y_stim = A.*sin(2*pi*f_c*t(t>6*60.0+30 & t< 12*60.0+30));
-y_pre = 0*t(t< 6*60.0);
-y_post = 0*t(t> 13*60.0);
-y = [y_pre,y_ru,y_stim,y_rd,y_post];
+%y_ru = t(t< 30).*sin(2*pi*f_c*t(t< 30));
+%y_rd = y_ru(end:-1:1);
+%A = max(y_ru);
+%y_stim = A.*sin(2*pi*f_c*t(t>6*60.0+30 & t< 12*60.0+30));
+%y_pre = 0*t(t< 6*60.0);
+%y_post = 0*t(t> 13*60.0);
+%y = [y_pre,y_ru,y_stim,y_rd,y_post];
 
-%// Plot carrier signal and modulated signal
-figure;
-plot(y);
-grid;
+% Plot carrier signal and modulated signal
+%figure;
+%plot(y);
+%grid;
 
 

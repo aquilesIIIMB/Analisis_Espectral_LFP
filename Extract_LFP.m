@@ -55,11 +55,11 @@ registroLFP.times.total_recorded_m = time_max_reg_seg/60.0;
 time_step_m = linspace(0,time_max_reg_seg/60,length(data_downS)); % minutos
 
 % Intervalo de tiempo total del protocolo
-time_step_m_tiempoTotal = time_step_m(time_step_m < registroLFP.times.end_m);
+time_step_m_tiempoTotal = time_step_m(time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60) - registroLFP.times.extra_time_s/60;
 registroLFP.times.steps_m = time_step_m_tiempoTotal;
 
 % Eliminar los datos del primer LFP sobre los 960 segundos
-data_elim_maxTime = data_downS((time_step_m<registroLFP.times.end_m)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
+data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
     
 % Almacenamiento de los LFP en la estructura
 % Datos filtrados, downsampleados, acortados y sin artefactos
@@ -82,7 +82,7 @@ for i = 2:length(canales_eval)
     data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
     
     % Eliminar los datos del LFP "i" sobre los 960 segundos
-    data_elim_maxTime = data_downS((time_step_m<registroLFP.times.end_m)); % Tal vez eliminar los primeros segundos
+    data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Tal vez eliminar los primeros segundos
      
     % Guardar los datos filtrados, downsampleados, acortados y sin artefactos
     % Almacenamiento de los LFP en la estructura

@@ -24,8 +24,6 @@ end
 pause(2)
 fprintf('El tipo de referencia es:\n\t%s\n', upper(tipo_de_referencia));
 pause(1)
-fprintf('El tiempo inicial es:\n\t%d segundos\n', tinicial);
-pause(1)
 fprintf('La amplitud del umbral de rechazo de artefactos es:\n\t%d \n', amplitud_umbral);
 pause(1)
 fprintf('Rangos de tiempo del experimento\n\tPre estimulacion: %d min\n\tEn estimulacion: %d min\n\tPost estimulacion: %d min\n', timeRange(1), timeRange(2), timeRange(3));
@@ -101,14 +99,43 @@ registroLFP.channel.psd.pre.data = [];
 registroLFP.channel.psd.on.data = [];
 registroLFP.channel.psd.post.data = [];
 
+% Datos para el tiempo 
+dir_pulse = dir([path,'10*_ADC8.continuous']);
+[data, timestamps, info] = load_open_ephys_data_faster(strcat(path, dir_pulse.name));
+pulse_rect = data>0;
+deriv_pulse = diff(pulse_rect);
+idx_change_pulse = find(deriv_pulse~=0)+1;
+fin_pre = idx_change_pulse(1);
+inicio_post = idx_change_pulse(end)-1;
+inicio_stim = idx_change_pulse(2)-1;
+fin_stim = idx_change_pulse(end-1);
+
+time_max_reg_seg = length(data) / info.header.sampleRate;
+time_step_s = linspace(0,time_max_reg_seg,length(data)); % minutos
+
+tiempo_fin_pre = time_step_s(fin_pre);
+tinicial = tiempo_fin_pre - timeRange(1)*60;
+tiempo_inicio_stim_sennal = time_step_s(inicio_stim);
+tiempo_fin_stim_sennal = time_step_s(fin_stim);
+tiempo_inicio_post = time_step_s(inicio_post);
+tiempo_fin_post = tiempo_inicio_post + timeRange(3)*60;
+
+tiempo_inicio_stim = tiempo_fin_pre + ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;
+tiempo_fin_stim = tiempo_inicio_post - ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;
+
+%tiempos_etapas = [tinicial, tiempo_fin_pre, tiempo_inicio_stim,
+%   tiempo_inicio_stim_sennal, tiempo_fin_stim_sennal, tiempo_fin_stim,
+%   tiempo_inicio_post, tiempo_fin_post]; % en segundos
+
 % Definiciones de tiempo y sus rangos de las fases
 registroLFP.times.phase_range_m = timeRange;
-registroLFP.times.start_s = tinicial; % VER! length(find(registroLFP.open_ephys.timestamps<1553009))/30000
-registroLFP.times.pre_m = (tinicial + timeRange(1)*60.0)/60.0;
-registroLFP.times.start_on_m = (tinicial + timeRange(1)*60.0 + 30)/60.0;
-registroLFP.times.end_on_m = (tinicial + timeRange(1)*60.0 + timeRange(2)*60.0 + 30)/60.0;
-registroLFP.times.post_m = (tinicial + timeRange(1)*60.0 + timeRange(2)*60.0 + 60)/60.0;
-registroLFP.times.end_m = (tinicial + timeRange(1)*60.0 + timeRange(2)*60.0 + timeRange(3)*60.0 + 60)/60.0; % tiempo total del protocolo
+registroLFP.times.extra_time_s = tinicial;
+registroLFP.times.start_s = 0; 
+registroLFP.times.pre_m = (tiempo_fin_pre - tinicial) / 60;
+registroLFP.times.start_on_m = (tiempo_inicio_stim - tinicial) / 60;
+registroLFP.times.end_on_m = (tiempo_fin_stim - tinicial) / 60;
+registroLFP.times.post_m = (tiempo_inicio_post - tinicial) / 60;
+registroLFP.times.end_m = (tiempo_fin_post - tinicial) / 60; % tiempo total del protocolo
 registroLFP.times.total_recorded_m = []; % tiempo de duracion del registro
 registroLFP.times.steps_m = [];
 
