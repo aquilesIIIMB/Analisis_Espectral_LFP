@@ -35,9 +35,9 @@ for i = 1:largo_canales_eval
     %Spectrogram = pink_noise_del(f_Spectrogram, Spectrogram);
     
     % PSD del LFP
-    Spectral_pre = mean(Spectrogram((t_Spectrogram<(pre_m*60.0-30)),:),1);
-    Spectral_on = mean(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+30) & t_Spectrogram<(on_final_m*60.0-30),:),1);    
-    Spectral_post = mean(Spectrogram(t_Spectrogram>(post_m*60.0+30) & t_Spectrogram<(tiempo_total*60),:),1);
+    Spectral_pre = median(Spectrogram((t_Spectrogram<(pre_m*60.0-30)),:),1);
+    Spectral_on = median(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+30) & t_Spectrogram<(on_final_m*60.0-30),:),1);    
+    Spectral_post = median(Spectrogram(t_Spectrogram>(post_m*60.0+30) & t_Spectrogram<(tiempo_total*60),:),1);
     
     registroLFP.channel(canales_eval(i)).spectrogram.data = Spectrogram;
     registroLFP.channel(canales_eval(i)).spectrogram.tiempo = t_Spectrogram;

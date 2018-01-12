@@ -22,6 +22,7 @@ pre_m = registroLFP.times.pre_m;
 on_inicio_m = registroLFP.times.start_on_m;
 on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
+tiempo_total = registroLFP.times.end_m;
 
 %% Graficos de la respuesta en frecuencia y espectrograma
 for j = 1:largo_canales_eval 
@@ -33,17 +34,35 @@ for j = 1:largo_canales_eval
     
     Spectral_pre = registroLFP.channel(canales_eval(j)).psd.pre.data;
     Spectral_on = registroLFP.channel(canales_eval(j)).psd.on.data;
-    Spectral_post = registroLFP.channel(canales_eval(j)).psd.post.data;
+    Spectral_post = registroLFP.channel(canales_eval(j)).psd.post.data;    
     
     %-------------------Plot---Sectral Frequency---------------------------
     fig_7 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(f_Spectrogram,Spectral_pre)
+    quantil_pre = quantile(Spectrogram((t_Spectrogram<(pre_m*60.0-30)),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_pre));
+    temp(:,1:4:end) = quantil_pre(:,1:4:end);
+    quantil_pre = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram, db(Spectral_pre, 'power'), db(quantil_pre(1,:), 'power'), db(quantil_pre(5,:), 'power'), 'Color', [0 0.4470 0.7410],'CapSize',20,'LineWidth',0.5)
     hold on
-    semilogy(f_Spectrogram,Spectral_on)    
+    p1 = plot(f_Spectrogram, db(Spectral_pre, 'power'), 'Color', [0 0.4470 0.7410],'LineWidth',3);
     hold on
-    semilogy(f_Spectrogram,Spectral_post)
-    xlim(registroLFP.multitaper.params.fpass)
-    legend('pre-stim', 'on-stim', 'post-stim')
+    quantil_on = quantile(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+30) & t_Spectrogram<(on_final_m*60.0-30),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_on));
+    temp(:,2:4:end) = quantil_on(:,2:4:end);
+    quantil_on = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram, db(Spectral_on, 'power'), db(quantil_on(1,:), 'power'), db(quantil_on(5,:), 'power'), 'Color', [0.85, 0.325, 0.098],'CapSize',20,'LineWidth',0.5)
+    hold on
+    p2 = plot(f_Spectrogram, db(Spectral_on, 'power'),'Color',[0.85, 0.325, 0.098],'LineWidth',3);
+    hold on
+    quantil_post = quantile(Spectrogram(t_Spectrogram>(post_m*60.0+30) & t_Spectrogram<(tiempo_total*60),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_post));
+    temp(:,3:4:end) = quantil_post(:,3:4:end);
+    quantil_post = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram, db(Spectral_post, 'power'), db(quantil_post(1,:), 'power'), db(quantil_post(5,:), 'power'), 'Color', [0.929, 0.694, 0.125],'CapSize',20,'LineWidth',0.5)
+    hold on
+    p3 = plot(f_Spectrogram, db(Spectral_post, 'power'),'Color',[0.929, 0.694, 0.125],'LineWidth',3);
+    xlim([1 100])
+    legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim')
     xlabel('Frecuencia [Hz]'); ylabel('Amplitud (dB)');
     title(['Respuesta en Frecuencia Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name])
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD del LFP'];
@@ -63,16 +82,17 @@ for j = 1:largo_canales_eval
     c=colorbar('southoutside');
     caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
-    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     title(['Espectrograma Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name])
     ylabel(c,'Power (dB)')
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' Espectrograma Multitaper del LFP de ',registroLFP.channel(canales_eval(j)).name];
     saveas(fig_8,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_8)
+
 end
 
 else
@@ -85,6 +105,7 @@ pre_m = registroLFP.times.pre_m;
 on_inicio_m = registroLFP.times.start_on_m;
 on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
+tiempo_total = registroLFP.times.end_m;
 
 [C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
 
@@ -105,13 +126,31 @@ for m = 1:length(ia)
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(f_Spectrogram_mean,Spectral_pre_mean)
+    quantil_pre = quantile(Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0-30)),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_pre));
+    temp(:,1:4:end) = quantil_pre(:,1:4:end);
+    quantil_pre = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram_mean, db(Spectral_pre_mean, 'power'), db(quantil_pre(1,:), 'power'), db(quantil_pre(5,:), 'power'), 'Color', [0 0.4470 0.7410],'CapSize',20,'LineWidth',0.5)
     hold on
-    semilogy(f_Spectrogram_mean,Spectral_on_mean)
+    p1 = plot(f_Spectrogram_mean, db(Spectral_pre_mean, 'power'), 'Color', [0 0.4470 0.7410],'LineWidth',3);
     hold on
-    semilogy(f_Spectrogram_mean,Spectral_post_mean)
+    quantil_on = quantile(Spectrogram_mean(t_Spectrogram_mean>(on_inicio_m*60.0+30) & t_Spectrogram_mean<(on_final_m*60.0-30),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_on));
+    temp(:,2:4:end) = quantil_on(:,2:4:end);
+    quantil_on = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram_mean, db(Spectral_on_mean, 'power'), db(quantil_on(1,:), 'power'), db(quantil_on(5,:), 'power'), 'Color', [0.85, 0.325, 0.098],'CapSize',20,'LineWidth',0.5)
+    hold on
+    p2 = plot(f_Spectrogram_mean, db(Spectral_on_mean, 'power'),'Color',[0.85, 0.325, 0.098],'LineWidth',3);
+    hold on
+    quantil_post = quantile(Spectrogram_mean(t_Spectrogram_mean>(post_m*60.0+30) & t_Spectrogram_mean<(tiempo_total*60),:),[.025 .25 .50 .75 .975]);
+    temp = ones(size(quantil_post));
+    temp(:,3:4:end) = quantil_post(:,3:4:end);
+    quantil_post = temp; % Para tener los datos cada 3 partiendo de 1
+    errorbar(f_Spectrogram_mean, db(Spectral_post_mean, 'power'), db(quantil_post(1,:), 'power'), db(quantil_post(5,:), 'power'), 'Color', [0.929, 0.694, 0.125],'CapSize',20,'LineWidth',0.5)
+    hold on
+    p3 = plot(f_Spectrogram_mean, db(Spectral_post_mean, 'power'),'Color',[0.929, 0.694, 0.125],'LineWidth',3);
     xlim([1 100])
-    legend('pre-stim', 'on-stim', 'post-stim')
+    legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim')
     xlabel('Frequency (Hz)'); ylabel('Power (dB)')
     title(['Respuesta en Frecuencia Multitaper Promedio de los LFP ',C{ic(i)}])
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD de los LFP '];
@@ -130,10 +169,10 @@ for m = 1:length(ia)
     c=colorbar('southoutside');
     caxis([-10, 10]); %([-20, 15]) [-15, 20]
     hold on
-    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',1.75,'Marker','.','LineStyle',':');
-    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     title(['Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}])
     ylabel(c,'Power (dB)')
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];

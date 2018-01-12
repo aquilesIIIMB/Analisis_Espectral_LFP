@@ -26,6 +26,7 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
     average = mean([registroLFP.channel.data_raw],2);
     
     for j = 1:largo_canales_eval 
+        %disp(canales_eval(j))
         % Referenciacion
         %data_ref_artifacted = flipud(registroLFP.channel(canales_eval(j)).data_raw - average);
         data_ref_artifacted = registroLFP.channel(canales_eval(j)).data_raw - average;
@@ -38,9 +39,7 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
         
         % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
         Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
-        [data_ref_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(data_ref_artifacted, umbral,... %%% Mejorar la forma de hacer esta funcion!!!!
-            registroLFP.times.steps_m, registroLFP.times.pre_m, ...
-            registroLFP.times.start_on_m, registroLFP.times.end_on_m, registroLFP.times.post_m, registroLFP.times.end_m, Fc);
+        [data_ref_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(data_ref_artifacted, umbral, Fc);
 
         registroLFP.channel(canales_eval(j)).data_noartifacted = data_ref_noartifacted; %%% Aumenta el numero de datos
         

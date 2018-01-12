@@ -71,7 +71,7 @@ for m = 1:length(ia)%1:largo_dataAll
     Spectral_on_mean = mean(Spectrogram_on_mean(ind_noartefactos_Spec_on,:),1);
     Spectral_post_mean = mean(Spectrogram_post_mean(ind_noartefactos_Spec_post,:),1);
 
-    % Spectrograma final
+    % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
     %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
     Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
     Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
