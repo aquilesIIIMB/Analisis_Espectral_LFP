@@ -15,7 +15,7 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\-2500_300Hz\arturo3_2017-07-04_15-48-06\';
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+5000/maravilla_2017-06-19_12-44-21/';
@@ -30,7 +30,7 @@ channel_codes = 'channel_codes_florencia_PUC.csv';
 timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-amplitud_umbral = 9; % 8,9,10 desde el mas sucio al mas limpio
+amplitud_umbral = 10; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;

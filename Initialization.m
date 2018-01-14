@@ -76,9 +76,10 @@ registroLFP.filter_param.fc2 = 150; % 300Hz
 
 % Datos de los espectrogramas promedio por area
 registroLFP.average_spectrum.area = [];
-registroLFP.average_spectrum.spectrogram.data = [];    
-registroLFP.average_spectrum.spectrogram.mean_spect_pre = [];
-registroLFP.average_spectrum.spectrogram.std_spect_pre = [];
+registroLFP.average_spectrum.spectrogram.data = [];
+registroLFP.average_spectrum.spectrogram.data_raw = [];
+registroLFP.average_spectrum.spectrogram.mean_spect_pre = []; %%%cambiar mean por median
+registroLFP.average_spectrum.spectrogram.std_spect_pre = [];  %%% Cambiar std por medida de distancia
 registroLFP.average_spectrum.spectrogram.tiempo = [];
 registroLFP.average_spectrum.spectrogram.frecuencia = [];  
 
@@ -120,8 +121,8 @@ tiempo_fin_stim_sennal = time_step_s(fin_stim);
 tiempo_inicio_post = time_step_s(inicio_post);
 tiempo_fin_post = tiempo_inicio_post + timeRange(3)*60;
 
-tiempo_inicio_stim = tiempo_fin_pre + ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;
-tiempo_fin_stim = tiempo_inicio_post - ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;
+tiempo_inicio_stim = tiempo_fin_pre + ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;  % Sirve para cualqier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
+tiempo_fin_stim = tiempo_inicio_post - ((tiempo_inicio_post - tiempo_fin_pre) - timeRange(2)*60) / 2;  % Sirve para cualquier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
 
 %tiempos_etapas = [tinicial, tiempo_fin_pre, tiempo_inicio_stim,
 %   tiempo_inicio_stim_sennal, tiempo_fin_stim_sennal, tiempo_fin_stim,
