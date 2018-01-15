@@ -42,17 +42,23 @@ for m = 1:length(ia)
     end
     
     % Lineas divisorias de cada fase 
-    line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
+    set(gca,'fontsize',20)
     xlim([0 registroLFP.times.end_m]);ylim([-(1000*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -1000+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title([C(ic(i)),'LFP en bruto en el tiempo '])
-    legend(str_numCH)
+    xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
+    title([C(ic(i)),'LFP en bruto en el tiempo '], 'FontSize', 24)
+    yticklabels(flip(str_numCH,1))
+    %lgd = legend(str_numCH);
+    %lgd.FontSize = 20;
+    %lgd.Orientation = 'horizontal';
+    %lgd.Location    = 'southOutside';
+    %lgd.Box = 'off';
         
     % Guardar imagen de la figura
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' LFP en bruto en el tiempo'];
@@ -69,7 +75,7 @@ for m = 1:length(ia)
         histo_diff = histogram(diff(registroLFP.channel(canales_eval(areas_actuales(q))).data_raw),1000); %200 1000
         grid on
         xlim([histo_diff.BinLimits]); ylim([0 3*10^4]);
-        xlabel('Amplitud de la derivada'); ylabel('Cantidad de muestras');
+        xlabel('Amplitud de la derivada [u.a.]'); ylabel('Cantidad de muestras');
         title([C(ic(i)),' Derivada LFP Estandarizado CH',int2str(canales_eval(areas_actuales(q)))])
     end
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,C{ic(i)},' Histograma de la derivada del LFP estandarizado en el tiempo'];
@@ -116,17 +122,23 @@ for m = 1:length(ia)
     end
     
     % Lineas divisorias de cada fase
-    line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
+    set(gca,'fontsize',20)
     xlim([0 registroLFP.times.end_m]);ylim([-(1200*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -1200+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title([C(ic(i)),'LFP referenciado con artefactos en el tiempo '])
-    legend(str_numCH)
+    xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
+    title([C(ic(i)),'LFP referenciado con artefactos en el tiempo '], 'FontSize', 24)
+    yticks(flip(1:size(str_numCH,1))*-1200)
+    yticklabels(flip(str_numCH,1))
+    %lgd = legend(str_numCH);
+    %lgd.FontSize = 20;
+    %lgd.Orientation = 'horizontal';
+    %lgd.Location    = 'southOutside';
         
     % Guardar imagen de la figura
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,'Referenciado ',C{ic(i)},' LFP con artefactos en el tiempo'];
@@ -146,17 +158,22 @@ for m = 1:length(ia)
     end
     
     % Lineas divisorias de cada fase
-    line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',1.25,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
+    set(gca,'fontsize',20)
     xlim([0 registroLFP.times.end_m]);ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
-    xlabel('Tiempo (minutos)'); ylabel('Amplitud')
-    title([C(ic(i)),'LFP referenciado, norm y sin artefactos en el tiempo '])
-    legend(str_numCH)
+    xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
+    title([C(ic(i)),'LFP referenciado, norm y sin artefactos en el tiempo '], 'FontSize', 24)
+    yticklabels(flip(str_numCH,1))
+    %lgd = legend(str_numCH);
+    %lgd.FontSize = 20;
+    %lgd.Orientation = 'horizontal';
+    %lgd.Location    = 'southOutside';
         
     % Guardar imagen de la figura
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'LFPs',slash_system,'Referenciado ',C{ic(i)},' LFP norm y sin artefactos en el tiempo'];
