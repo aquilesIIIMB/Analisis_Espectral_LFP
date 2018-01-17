@@ -53,6 +53,7 @@ for m = 1:length(ia)
     xlim([0 registroLFP.times.end_m]);ylim([-(1000*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -1000+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
     xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
     title([C(ic(i)),'LFP en bruto en el tiempo '], 'FontSize', 24)
+    yticks(flip(1:size(str_numCH,1))*-1000)
     yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;
@@ -169,6 +170,7 @@ for m = 1:length(ia)
     xlim([0 registroLFP.times.end_m]);ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
     xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
     title([C(ic(i)),'LFP referenciado, norm y sin artefactos en el tiempo '], 'FontSize', 24)
+    yticks(flip(1:size(str_numCH,1))*-20)
     yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;

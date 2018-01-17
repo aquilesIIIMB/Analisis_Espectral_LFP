@@ -15,22 +15,22 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500/maravilla_2017-06-09_15-51-41/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500/maravilla_2017-06-09_15-51-41/';
 
 %% Intervalos de tiempo del protocolo
-timeRange = [5, 5, 5];
-%timeRange = [6, 6, 6]; %Mixtos
+%timeRange = [5, 5, 5];
+timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
 amplitud_umbral = 10; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
-canales_eval = [14:21,46:53];
-%canales_eval = 1:64;
+%canales_eval = [14:21,46:53];
+canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal
 tipo_de_referencia = 'general'; % 'none', 'general', 'area'

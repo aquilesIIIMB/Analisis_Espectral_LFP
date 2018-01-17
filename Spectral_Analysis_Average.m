@@ -75,7 +75,7 @@ for m = 1:length(ia)%1:largo_dataAll
     % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
     %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
     Mean_Spectrogram_pre_mean = median(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
-    %%Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
+    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
     quantil_pre = quantile(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),[.05 .25 .50 .75 .95]);
     Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
     
@@ -120,5 +120,5 @@ clear indices_cero Frec_sin Fc
 
 
 % Descomentar
-save(path_name_registro,'-v7.3')
+%save(path_name_registro,'-v7.3')
 
