@@ -55,62 +55,62 @@ for j = 1:largo_canales_eval
     close(fig_7)
     
     %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
-    fig_10 = figure('units','points','position',[0,0,300,400]);
+    fig_10 = figure('units','points','position',[0,0,300,600]);
     quantil_pre = quantile(Spectrogram((t_Spectrogram<(pre_m*60.0-30)),:),[.025 .25 .50 .75 .975]);
     quantil_on = quantile(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+30) & t_Spectrogram<(on_final_m*60.0-30),:),[.025 .25 .50 .75 .975]);
     quantil_post = quantile(Spectrogram(t_Spectrogram>(post_m*60.0+30) & t_Spectrogram<(tiempo_total*60),:),[.025 .25 .50 .75 .975]);
-    x=f_Spectrogram;
-    y1=db(quantil_pre(2,:), 'power');
-    y2=db(quantil_pre(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_pre = fill(X,Y,[0 0.4470 0.7410]);                  %#plot filled area
-    alpha(area_ext_pre, .1)
-    hold on
-    y1=db(quantil_on(2,:), 'power');
-    y2=db(quantil_on(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_on = fill(X,Y,[0.85, 0.325, 0.098]);                  %#plot filled area
-    alpha(area_ext_on, .2)
-    hold on
-    y1=db(quantil_post(2,:), 'power');
-    y2=db(quantil_post(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_post = fill(X,Y,[0.466, 0.674, 0.188]);                  %#plot filled area
-    alpha(area_ext_post, .3)
-    hold on
+    %x=f_Spectrogram;
+    %y1=db(quantil_pre(2,:), 'power');
+    %y2=db(quantil_pre(4,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_pre = fill(X,Y,[0 0.4470 0.7410]);                  %#plot filled area
+    %alpha(area_ext_pre, .1)
+    %hold on
+    %y1=db(quantil_on(2,:), 'power');
+    %y2=db(quantil_on(4,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_on = fill(X,Y,[0.85, 0.325, 0.098]);                  %#plot filled area
+    %alpha(area_ext_on, .2)
+    %hold on
+    %y1=db(quantil_post(2,:), 'power');
+    %y2=db(quantil_post(4,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_post = fill(X,Y,[0.466, 0.674, 0.188]);                  %#plot filled area
+    %alpha(area_ext_post, .3)
+    %hold on
     plot(f_Spectrogram, db(Spectral_pre, 'power'), 'Color', [0 0.4470 0.7410],'LineWidth',3)
     hold on
     plot(f_Spectrogram, db(quantil_pre(1,:), 'power'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram, db(quantil_pre(5,:), 'power'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram, db(quantil_pre(2,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram, db(quantil_pre(4,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
-    hold on
+    %plot(f_Spectrogram, db(quantil_pre(2,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram, db(quantil_pre(4,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
+    %hold on
     plot(f_Spectrogram, db(Spectral_on, 'power'), 'Color', [0.85, 0.325, 0.098],'LineWidth',3)
     hold on
     plot(f_Spectrogram, db(quantil_on(1,:), 'power'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram, db(quantil_on(5,:), 'power'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram, db(quantil_on(2,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram, db(quantil_on(4,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
-    hold on
+    %plot(f_Spectrogram, db(quantil_on(2,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram, db(quantil_on(4,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
+    %hold on
     plot(f_Spectrogram, db(Spectral_post, 'power'), 'Color', [0.466, 0.674, 0.188],'LineWidth',3)
     hold on
     plot(f_Spectrogram, db(quantil_post(1,:), 'power'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram, db(quantil_post(5,:), 'power'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
-    hold on
-    plot(f_Spectrogram, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
-    xlim([8 20])
+    %hold on
+    %plot(f_Spectrogram, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
+    xlim([5 25])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
     set(gca,'fontsize',15)
@@ -223,58 +223,58 @@ for m = 1:length(ia)
     quantil_pre = quantile(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),[.025 .25 .50 .75 .975]);
     quantil_on = quantile(Spectrogram_on_mean(ind_noartefactos_Spec_on,:),[.025 .25 .50 .75 .975]);
     quantil_post = quantile(Spectrogram_post_mean(ind_noartefactos_Spec_post,:),[.025 .25 .50 .75 .975]);
-    x=f_Spectrogram_mean;
-    y1=db(quantil_pre(2,:), 'power');
-    y2=db(quantil_pre(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_pre = fill(X,Y,[0 0.4470 0.7410]);                  %#plot filled area
-    alpha(area_ext_pre, .1)
-    hold on
-    y1=db(quantil_on(2,:), 'power');
-    y2=db(quantil_on(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_on = fill(X,Y,[0.85, 0.325, 0.098]);                  %#plot filled area
-    alpha(area_ext_on, .2)
-    hold on
-    y1=db(quantil_post(2,:), 'power');
-    y2=db(quantil_post(4,:), 'power');
-    X=[x,fliplr(x)];                %#create continuous x value array for plotting
-    Y=[y1,fliplr(y2)];              %#create y values for out and then back
-    area_ext_post = fill(X,Y,[0.466, 0.674, 0.188]);                  %#plot filled area
-    alpha(area_ext_post, .3)
-    hold on
+    %x=f_Spectrogram_mean;
+    %y1=db(quantil_pre(1,:), 'power');
+    %y2=db(quantil_pre(5,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_pre = fill(X,Y,[0 0.4470 0.7410]);                  %#plot filled area
+    %alpha(area_ext_pre, .1)
+    %hold on
+    %y1=db(quantil_on(1,:), 'power');
+    %y2=db(quantil_on(5,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_on = fill(X,Y,[0.85, 0.325, 0.098]);                  %#plot filled area
+    %alpha(area_ext_on, .2)
+    %hold on
+    %y1=db(quantil_post(1,:), 'power');
+    %y2=db(quantil_post(5,:), 'power');
+    %X=[x,fliplr(x)];                %#create continuous x value array for plotting
+    %Y=[y1,fliplr(y2)];              %#create y values for out and then back
+    %area_ext_post = fill(X,Y,[0.466, 0.674, 0.188]);                  %#plot filled area
+    %alpha(area_ext_post, .3)
+    %hold on
     plot(f_Spectrogram_mean, db(Spectral_pre_mean, 'power'), 'Color', [0 0.4470 0.7410],'LineWidth',3)
     hold on
     plot(f_Spectrogram_mean, db(quantil_pre(1,:), 'power'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram_mean, db(quantil_pre(5,:), 'power'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, db(quantil_pre(2,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram_mean, db(quantil_pre(4,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
-    hold on
+    %plot(f_Spectrogram_mean, db(quantil_pre(2,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram_mean, db(quantil_pre(4,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
+    %hold on
     plot(f_Spectrogram_mean, db(Spectral_on_mean, 'power'), 'Color', [0.85, 0.325, 0.098],'LineWidth',3)
     hold on
     plot(f_Spectrogram_mean, db(quantil_on(1,:), 'power'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram_mean, db(quantil_on(5,:), 'power'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, db(quantil_on(2,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram_mean, db(quantil_on(4,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
-    hold on
+    %plot(f_Spectrogram_mean, db(quantil_on(2,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram_mean, db(quantil_on(4,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
+    %hold on
     plot(f_Spectrogram_mean, db(Spectral_post_mean, 'power'), 'Color', [0.466, 0.674, 0.188],'LineWidth',3)
     hold on
     plot(f_Spectrogram_mean, db(quantil_post(1,:), 'power'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
     plot(f_Spectrogram_mean, db(quantil_post(5,:), 'power'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
-    hold on
-    plot(f_Spectrogram_mean, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
-    xlim([8 20])
+    %plot(f_Spectrogram_mean, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
+    %hold on
+    %plot(f_Spectrogram_mean, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
+    xlim([5 25])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
     set(gca,'fontsize',15)
