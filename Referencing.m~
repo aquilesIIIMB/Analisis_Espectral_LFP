@@ -28,6 +28,7 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
     for j = 1:largo_canales_eval 
         %disp(canales_eval(j))
         % Referenciacion
+        %data_ref_artifacted = flipud(registroLFP.channel(canales_eval(j)).data_raw - average);
         data_ref = registroLFP.channel(canales_eval(j)).data_noartifacted - average;
         registroLFP.channel(canales_eval(j)).data = data_ref; 
               
@@ -46,20 +47,18 @@ elseif strcmp(registroLFP.reference_type, 'area') %% Referencia al promedio de c
         areas_actuales = find(ic == ic(i));
 
         largo_area_actual = length(areas_actuales);
-        data_noartifacted_area = [registroLFP.channel(canales_eval(areas_actuales)).data_noartifacted];
-        avarage_area = mean(data_noartifacted_area,2);
+        zdata = zscore([registroLFP.channel(canales_eval(areas_actuales)).data]);
+        avarage_area = mean(zdata,2);
           
         for j = 1:largo_area_actual
-            data_ref_noartifacted = data_noartifacted_area(:,j) - avarage_area;
-            registroLFP.channel(canales_eval(areas_actuales(j))).data = data_ref_noartifacted;
+            data_ref_noartifacted = zdata(:,j) - avarage_area;
+            registroLFP.channel(canales_eval(areas_actuales(j))).data_ref = data_ref_noartifacted;
         end
 
     end
 
 
 elseif strcmp(registroLFP.reference_type, 'sector') %% Referencia al promedio de los "sectores" (ex M1)
-    
-    disp('No Disponible')
 
 end  
 
