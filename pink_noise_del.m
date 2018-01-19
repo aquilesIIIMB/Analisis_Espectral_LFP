@@ -1,4 +1,4 @@
-function salida = pink_noise_del(entrada_x, entrada_y)
+function salida = pink_noise_del(entrada_x, entrada_y, idx_spect_artifacts)
 % dim(entrada_y) = tiempo x frecuencia
 size_time = size(entrada_y,1);
 size_frec = size(entrada_y,2);
@@ -11,6 +11,13 @@ salida = entrada_y;
 %modelo_eval_mean = b_mean*entrada_x.^m_mean;  
 
 for i = 1:size_time
+    
+    if find(i == idx_spect_artifacts)
+        %disp('paso')        
+        %disp(i)
+        continue;
+        
+    end
     %% Eliminacion del ruido rosa con el promedio del espectro total
     %salida(i,:) = entrada_y(i,:)./modelo_eval_mean;
     

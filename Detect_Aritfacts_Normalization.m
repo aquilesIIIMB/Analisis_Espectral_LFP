@@ -10,7 +10,6 @@ fprintf('\nRemoving artifacts and normalization\n')
 canales_eval = find(~[registroLFP.channel.removed]);
 
 largo_canales_eval = size(canales_eval,2);
-average = mean([registroLFP.channel.data_raw],2);
 
 for j = 1:largo_canales_eval 
     

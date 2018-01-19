@@ -45,42 +45,55 @@ for m = 1:length(ia)%1:largo_dataAll
     Data_ref_pond = Data_ref_sum./count_total;
     
     % Multitaper estimation para el spectrograma
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);     
+    %[Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);
+    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[1 0.5],registroLFP.multitaper.params);
     Spectrogram_mean_raw = Spectrogram_mean; 
-    
+    disp('dif tiempo')
+    disp(t_Spectrogram_mean(2)-t_Spectrogram_mean(1))
+    disp('dif freq')
+    disp(f_Spectrogram_mean(2)-f_Spectrogram_mean(1))
+    idx_spect_artifacts = unique(round(indices_cero*(length(t_Spectrogram_mean)/length(Data_ref_pond))));
+        
+    %disp(C(m))
     % Se le quita el ruido rosa, dejando mas plano el espectro
-    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean); 
+    Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean, idx_spect_artifacts); 
     
-    % Separacion por etapas el espectrograma    
-    Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0-30)),:);
-    [~,ind_max] = max(Spectrogram_pre_mean,[],2); % Indice de los maximos en cada bin de tiempo
-    frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
-    ind_noartefactos_Spec_pre = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+    % dB Spect
+    Spectrogram_mean = db(Spectrogram_mean','power')';
     
-    Spectrogram_on_mean = Spectrogram_mean(t_Spectrogram_mean>(on_inicio_m*60.0+30) & t_Spectrogram_mean<(on_final_m*60.0-30),:);
-    [~,ind_max] = max(Spectrogram_on_mean,[],2);
-    frec_ind_max = f_Spectrogram_mean(ind_max);
-    ind_noartefactos_Spec_on = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    % Separacion por etapas el espectrograma  
+    idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
+    Spectrogram_pre_mean = Spectrogram_mean(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
+    %[~,ind_max] = max(Spectrogram_pre_mean,[],2); % Indice de los maximos en cada bin de tiempo
+    %frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+    %ind_noartefactos_Spec_pre = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
     
-    Spectrogram_post_mean = Spectrogram_mean(t_Spectrogram_mean>(post_m*60.0+30) & t_Spectrogram_mean<(tiempo_total*60),:);
-    [~,ind_max] = max(Spectrogram_post_mean,[],2);
-    frec_ind_max = f_Spectrogram_mean(ind_max);
-    ind_noartefactos_Spec_post = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
+    Spectrogram_on_mean = Spectrogram_mean(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
+    %[~,ind_max] = max(Spectrogram_on_mean,[],2);
+    %frec_ind_max = f_Spectrogram_mean(ind_max);
+    %ind_noartefactos_Spec_on = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
+    
+    idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
+    Spectrogram_post_mean = Spectrogram_mean(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
+    %[~,ind_max] = max(Spectrogram_post_mean,[],2);
+    %frec_ind_max = f_Spectrogram_mean(ind_max);
+    %ind_noartefactos_Spec_post = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
     
     % PSD sin normalizar por la frecuencia de la fase pre (No contar los valores cercanos a la sinusoidal)
-    Spectral_pre_mean = median(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
-    Spectral_on_mean = median(Spectrogram_on_mean(ind_noartefactos_Spec_on,:),1);
-    Spectral_post_mean = median(Spectrogram_post_mean(ind_noartefactos_Spec_post,:),1);
-
+    Spectral_pre_mean = median(Spectrogram_pre_mean,1);
+    Spectral_on_mean = median(Spectrogram_on_mean,1);
+    Spectral_post_mean = median(Spectrogram_post_mean,1);
+    
     % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
     %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
-    Mean_Spectrogram_pre_mean = median(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
-    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),1);
-    quantil_pre = quantile(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),[.05 .25 .50 .75 .95]);
-    Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
+    Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean,1);
+    Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
+    %quantil_pre = quantile(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),[.05 .25 .50 .75 .95]);
+    %Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
     
     Spectrogram_mean = (Spectrogram_mean-ones(size(Spectrogram_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_mean))*diag(Desv_Spectrogram_pre_mean));
-    Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));
+    %Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));
     
     % Almacenamiento de los analisis
     % Datos de los especterogramas promedio
@@ -91,6 +104,7 @@ for m = 1:length(ia)%1:largo_dataAll
     registroLFP.average_spectrum(m).spectrogram.std_spect_pre = Desv_Spectrogram_pre_mean;
     registroLFP.average_spectrum(m).spectrogram.tiempo = t_Spectrogram_mean;
     registroLFP.average_spectrum(m).spectrogram.frecuencia = f_Spectrogram_mean; 
+    registroLFP.average_spectrum(m).spectrogram.ind_artifacts = idx_spect_artifacts; 
 
     % Datos de los PSD promedio
     registroLFP.average_spectrum(m).psd.pre.data = Spectral_pre_mean;

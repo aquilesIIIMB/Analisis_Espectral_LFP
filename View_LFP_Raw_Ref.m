@@ -110,7 +110,7 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_raw);
+        plot(registroLFP.times.steps_m, -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
         hold on;        
                 
     end
@@ -131,7 +131,7 @@ for m = 1:length(ia)
     %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(1200*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -1200+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)]) %revisar
+    xlim([0 registroLFP.times.end_m]);ylim([-(1200*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -1200+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
     xlabel('Tiempo (minutos)', 'FontSize', 24); ylabel('Amplitud [u.a.]', 'FontSize', 24)
     title([C(ic(i)),'LFP referenciado con artefactos en el tiempo '], 'FontSize', 24)
     yticks(flip(1:size(str_numCH,1))*-1200)
