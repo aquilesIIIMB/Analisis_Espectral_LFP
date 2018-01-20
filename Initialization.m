@@ -141,15 +141,15 @@ registroLFP.times.total_recorded_m = []; % tiempo de duracion del registro
 registroLFP.times.steps_m = [];
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
-registroLFP.multitaper.params.tapers = ([3 6]); % [TW K], (K <= to 2TW-1)
+registroLFP.multitaper.params.tapers = ([3 5]); % [TW K], (K <= to 2TW-1)
 registroLFP.multitaper.params.pad = 5; % Cantidad de puntos multiplos de dos sobre el largo de la se�al
 registroLFP.multitaper.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
-registroLFP.multitaper.params.fpass = [1 150]; % Rango de frecuencias
+registroLFP.multitaper.params.fpass = [4 100]; % Rango de frecuencias
 registroLFP.multitaper.params.err = 0; % Error considerado
 registroLFP.multitaper.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.movingwin.window = 2; % Ventanas (En segundos) Probar con 2, se usa 4.1
+registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos) Probar con 2, se usa 4.1
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Identificadores de las etapas que se han hecho y las que quedan
@@ -185,4 +185,10 @@ inicio_name_registro = slash_backslash(length(slash_backslash)-1);
 name_registro = path(inicio_name_registro+1:length(path)-1);
 registroLFP.name = name_registro;
 
-
+clear amplitud_umbral channel_codes confirmacion_Param
+clear data deriv_pulse dir_pulse fin_pre fin_stim idx_change_pulse
+clear info inicio_name_registro inicio_new_dir1 inicio_new_dir2 
+clear inicio_post inicio_stim k pulse_rect slash_backslash T tiempo_fin_post
+clear tiempo_fin_pre tiempo_fin_stim tiempo_fin_stim_sennal tiempo_inicio_post
+clear tiempo_inicio_stim tiempo_inicio_stim_sennal time_max_reg_seg time_step_s
+clear timeRange timestamps tinicial tipo_de_referencia

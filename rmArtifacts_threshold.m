@@ -7,16 +7,16 @@ largo_data = length(data);
 shift_left = 1100; % 50 100
 shift_right = 2200; % 50 200
 
-idx_over_inicial = find((data > umbral) | (data < -umbral));
+%idx_over_inicial = find((data > umbral) | (data < -umbral));
 data_over_logic_inicial = zeros(size(data));
-data_over_logic_inicial(idx_over_inicial) = 1;
+data_over_logic_inicial((data > umbral) | (data < -umbral)) = 1;
 data_over_logic_final = data_over_logic_inicial;
 
 %disp('Entro al shift_left')
 for i = 1:shift_left
     idx_over_now = find(data_over_logic_inicial > 0) - i;
     idx_over_now = unique(idx_over_now);
-    idx_over_now = idx_over_now(idx_over_now >= 0 & idx_over_now <= largo_data);
+    idx_over_now = idx_over_now(idx_over_now > 0 & idx_over_now <= largo_data);
     data_over_logic_final(idx_over_now) = 1;
 end
 

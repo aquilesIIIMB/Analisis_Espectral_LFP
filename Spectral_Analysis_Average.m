@@ -45,15 +45,19 @@ for m = 1:length(ia)%1:largo_dataAll
     Data_ref_pond = Data_ref_sum./count_total;
     
     % Multitaper estimation para el spectrograma
-    %[Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[1 0.5],registroLFP.multitaper.params);
+    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);
     Spectrogram_mean_raw = Spectrogram_mean; 
-    disp('dif tiempo')
-    disp(t_Spectrogram_mean(2)-t_Spectrogram_mean(1))
-    disp('dif freq')
-    disp(f_Spectrogram_mean(2)-f_Spectrogram_mean(1))
-    idx_spect_artifacts = unique(round(indices_cero*(length(t_Spectrogram_mean)/length(Data_ref_pond))));
-        
+    %disp('dif tiempo')
+    %disp(t_Spectrogram_mean(2)-t_Spectrogram_mean(1))
+    %disp('dif freq')
+    %disp(f_Spectrogram_mean(2)-f_Spectrogram_mean(1)
+    
+    %idx_spect_artifacts = unique(round(indices_cero*(length(t_Spectrogram_mean)/length(Data_ref_pond))));
+    [~,ind_max] = max(Spectrogram_mean,[],2); % Indice de los maximos en cada bin de tiempo
+    frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+    idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+    idx_spect_artifacts = find(~idx_spect_artifacts)';
+    
     %disp(C(m))
     % Se le quita el ruido rosa, dejando mas plano el espectro
     Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean, idx_spect_artifacts); 
@@ -87,10 +91,10 @@ for m = 1:length(ia)%1:largo_dataAll
     
     % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
     %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
-    Mean_Spectrogram_pre_mean = mean(Spectrogram_pre_mean,1);
-    Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
-    %quantil_pre = quantile(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:),[.05 .25 .50 .75 .95]);
-    %Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
+    Mean_Spectrogram_pre_mean = median(Spectrogram_pre_mean,1);
+    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
+    quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
+    Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
     
     Spectrogram_mean = (Spectrogram_mean-ones(size(Spectrogram_mean))*diag(Mean_Spectrogram_pre_mean))./(ones(size(Spectrogram_mean))*diag(Desv_Spectrogram_pre_mean));
     %Spectrogram_mean = Spectrogram_mean+abs(min(min(Spectrogram_mean)));

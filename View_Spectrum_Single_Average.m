@@ -43,12 +43,12 @@ for j = 1:largo_canales_eval
     p2 = plot(f_Spectrogram, db(Spectral_on, 'power'),'Color', [0.85, 0.325, 0.098],'LineWidth',3);
     hold on
     p3 = plot(f_Spectrogram, db(Spectral_post, 'power'),'Color', [0.466, 0.674, 0.188],'LineWidth',3);
-    xlim([1 100])
+    xlim([4 100])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
-    xlabel('Frecuencia [Hz]', 'FontSize', 24); ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['Respuesta en Frecuencia Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name], 'FontSize', 24)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Amplitude [dB]', 'FontSize', 24);
+    title(['PSD multitaper of LFP ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD del LFP'];
     saveas(fig_7,name_figure_save,'png');
     %waitforbuttonpress;
@@ -113,9 +113,19 @@ for j = 1:largo_canales_eval
     xlim([5 25])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
+    %[~, idx] = min(abs(f_Spectrogram-17.5));
+    %y1 = max([db(quantil_pre(5,idx), 'power'), db(quantil_on(5,idx), 'power'), db(quantil_post(5,idx), 'power')]);
+    %txt1 = 'Q = 0.975';
+    %text(f_Spectrogram(idx), y1*1.12, txt1,'FontSize',12,'HorizontalAlignment','center','FontWeight','bold')
+    
+    %[~, idx] = min(abs(f_Spectrogram-17.5));
+    %y2 = min([db(quantil_pre(1,idx), 'power'), db(quantil_on(1,idx), 'power'), db(quantil_post(1,idx), 'power')]);
+    %txt2 = 'Q = 0.025';
+    %text(f_Spectrogram(idx), y2*0.88, txt2,'FontSize',12,'HorizontalAlignment','center','FontWeight','bold')
+    
     set(gca,'fontsize',15)
-    xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['PSD en beta ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name], 'FontSize', 15)
+    xlabel('Frequency [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
+    title(['PSD multitaper in beta ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 15)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD en beta del LFP'];
     saveas(fig_10,name_figure_save,'png');
     %waitforbuttonpress;
@@ -126,11 +136,11 @@ for j = 1:largo_canales_eval
     clim=prctile(reshape(db(Spectrogram'+1,'power'),1,numel(Spectrogram)),[5 99]);
     imagesc(t_Spectrogram,f_Spectrogram,db(Spectrogram'+1,'power'),clim); colormap('jet');
     axis xy
-    ylabel('Frequency (Hz)', 'FontSize', 24)
-    xlabel('Time (sec)', 'FontSize', 24)
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
     %ylim(registroLFP.multitaper.params.fpass)
-    ylim([1 100])
+    ylim([4 100])
     c=colorbar('southoutside');
     caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
@@ -139,8 +149,8 @@ for j = 1:largo_canales_eval
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     %set(fig_8,'fontsize',20)
-    title(['Espectrograma Multitaper del LFP ',registroLFP.channel(canales_eval(j)).area,' ',registroLFP.channel(canales_eval(j)).name], 'FontSize', 24)
-    ylabel(c,'Power (dB)', 'FontSize', 17)
+    title(['Spectrogram multitaper of LFP ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 24)
+    ylabel(c,'Power [dB]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' Espectrograma Multitaper del LFP de ',registroLFP.channel(canales_eval(j)).name];
     saveas(fig_8,name_figure_save,'png');
@@ -188,13 +198,13 @@ for m = 1:length(ia)
     
     % Separacion por etapas el espectrograma  
     idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
-    Spectrogram_pre_mean = Spectrogram_mean(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
+    Spectrogram_pre_mean = Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
     
     idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
-    Spectrogram_on_mean = Spectrogram_mean(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
+    Spectrogram_on_mean = Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
     
     idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
-    Spectrogram_post_mean = Spectrogram_mean(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
+    Spectrogram_post_mean = Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
     
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
@@ -204,12 +214,13 @@ for m = 1:length(ia)
     p2 = plot(f_Spectrogram_mean, Spectral_on_mean,'Color', [0.85, 0.325, 0.098],'LineWidth',3);
     hold on
     p3 = plot(f_Spectrogram_mean, Spectral_post_mean,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
-    xlim([1 100])
+    xlim([4 100])
+    ylim([-5 5])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
-    xlabel('Frequency (Hz)', 'FontSize', 24); ylabel('Power (dB)', 'FontSize', 24)
-    title(['Respuesta en Frecuencia Multitaper Promedio de los LFP ',C{ic(i)}], 'FontSize', 24)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [u.a.]', 'FontSize', 24)
+    title(['Mean PSD Multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD de los LFP '];
     saveas(fig_5,name_figure_save,'png');
     %waitforbuttonpress;
@@ -274,9 +285,19 @@ for m = 1:length(ia)
     xlim([5 25])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
+    %[~, idx] = min(abs(f_Spectrogram_mean-17.5));
+    %y1 = max([quantil_pre(5,idx-200:idx+200), quantil_on(5,idx-200:idx+200), quantil_post(5,idx-200:idx+200)]);
+    %txt1 = 'Q = 0.975';
+    %text(f_Spectrogram_mean(idx), y1*1.15, txt1,'FontSize',12,'HorizontalAlignment','center','FontWeight','bold')
+    
+    %[~, idx] = min(abs(f_Spectrogram_mean-17.5));
+    %y2 = min([quantil_pre(1,idx-200:idx+200), quantil_on(1,idx-100:idx+200), quantil_post(1,idx-200:idx+200)]);
+    %txt2 = 'Q = 0.025';
+    %text(f_Spectrogram_mean(idx), y2*0.80, txt2,'FontSize',12,'HorizontalAlignment','center','FontWeight','bold')
+    
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['PSD en beta ',C{ic(i)}], 'FontSize', 24)
+    title(['Mean PSD multitaper in beta of ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD en beta de los LFP '];
     saveas(fig_11,name_figure_save,'png');
     %waitforbuttonpress;
@@ -291,23 +312,23 @@ for m = 1:length(ia)
     %dist_maxmin = max_spect - min_spect;
     cmap = colormap(parula(40));
     axis xy
-    ylabel('Frequency (Hz)', 'FontSize', 24)
-    xlabel('Time (sec)', 'FontSize', 24)
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
-    ylim([1 100])
+    ylim([4 100])
     c=colorbar('southoutside');
     alphamax = 0.3; % Cuanto se acerca el max al minimo 
     alphamin = 0; % Cuanto se acercca el minimo al maximo
     alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
     %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
-    caxis([-2 2])
+    caxis([-3 3])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Espectrograma Multitaper Promedio de los LFP ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalizado (u.a.)', 'FontSize', 17)
+    title(['Mean Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized (u.a.)', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];
     saveas(fig_6,name_figure_save,'png');
@@ -327,4 +348,4 @@ clear Spectral_pre Spectral_on Spectral_post
 clear Spectrogram_mean f_Spectrogram_mean t_Spectrogram_mean
 clear Spectral_post_mean Spectral_on_mean Spectral_pre_mean
 clear c j clim C i ia ic m new_pre_m new_on_inicio_m new_on_final_m new_post_m
-
+clear ans clear fig_10 lgd p1 p2 p3 quantil_on quantil_post quantil_pre tiempo_total

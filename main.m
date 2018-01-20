@@ -15,7 +15,7 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-26_11-30-41\'; %mixto
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
@@ -57,8 +57,6 @@ View_Spectrum_Single_Average;
 
 % Etapa de eliminacion de ch y lfp promedios
 Delete_CH;
-
-%Detect_Aritfacts_Normalization;
 
 Referencing;
 
