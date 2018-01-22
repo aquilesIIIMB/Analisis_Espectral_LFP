@@ -43,7 +43,7 @@ for j = 1:largo_canales_eval
     p2 = plot(f_Spectrogram, db(Spectral_on, 'power'),'Color', [0.85, 0.325, 0.098],'LineWidth',3);
     hold on
     p3 = plot(f_Spectrogram, db(Spectral_post, 'power'),'Color', [0.466, 0.674, 0.188],'LineWidth',3);
-    xlim([4 100])
+    xlim([1 100])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -125,7 +125,7 @@ for j = 1:largo_canales_eval
     
     set(gca,'fontsize',15)
     xlabel('Frequency [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['PSD multitaper in beta ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 15)
+    title(['PSD multitaper in beta ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 12)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD en beta del LFP'];
     saveas(fig_10,name_figure_save,'png');
     %waitforbuttonpress;
@@ -140,7 +140,7 @@ for j = 1:largo_canales_eval
     xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
     %ylim(registroLFP.multitaper.params.fpass)
-    ylim([4 100])
+    ylim([1 100])
     c=colorbar('southoutside');
     caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
@@ -187,34 +187,54 @@ for m = 1:length(ia)
     
     t_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.tiempo;
     f_Spectrogram_mean = registroLFP.average_spectrum(m).spectrogram.frecuencia; 
-    idx_spect_artifacts = registroLFP.average_spectrum(m).spectrogram.ind_artifacts; 
+    idx_spect_artifacts = registroLFP.average_spectrum(m).spectrogram.ind_artifacts;     
     
+    % Indices de cada etapa
+    idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
+    idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
+    idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
     
+    % dB Spect
+    %Spectrogram_mean_raw = db(Spectrogram_mean_raw','power')';
+    
+    %disp(C(m))
     % Se le quita el ruido rosa, dejando mas plano el espectro
     Spectrogram_mean_raw = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean_raw, idx_spect_artifacts); 
+    
+    % Nuevo Pink Noise
+    %[pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean_raw', [4 10;70 90]);
+
+    %pow_pinknoise_pre = pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))';
+    %pow_pinknoise_on = pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))';
+    %pow_pinknoise_post = pow_pinknoise(:,idx_post(~ismember(idx_post, idx_spect_artifacts)))';
+    
+    %Spectrogram_mean_raw_temp = Spectrogram_mean_raw - ones(size(Spectrogram_mean_raw))*diag(median(real(pow_pinknoise_pre)));
+    %Spectrogram_mean_raw_temp(idx_spect_artifacts,:) = Spectrogram_mean_raw(idx_spect_artifacts,:);
+    %Spectrogram_mean_raw = Spectrogram_mean_raw_temp;
     
     % dB Spect
     Spectrogram_mean_raw = db(Spectrogram_mean_raw','power')';
     
     % Separacion por etapas el espectrograma  
-    idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
-    Spectrogram_pre_mean = Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
-    
-    idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
-    Spectrogram_on_mean = Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
-    
-    idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
+    Spectrogram_pre_mean = Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);    
+    Spectrogram_on_mean = Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);    
     Spectrogram_post_mean = Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
+
+    
+    %Spectrogram_mean = pow_dBpink';
+    for p = 1:length(t_Spectrogram_mean)
+        Spectrogram_mean(p,:) = smooth(f_Spectrogram_mean, Spectrogram_mean(p,:),0.02, 'loess');
+    end
     
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-    p1 = plot(f_Spectrogram_mean, Spectral_pre_mean, 'Color', [0 0.4470 0.7410],'LineWidth',3);
+    p1 = plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_pre_mean,0.02, 'loess'), 'Color', [0 0.4470 0.7410],'LineWidth',3);
     hold on
-    p2 = plot(f_Spectrogram_mean, Spectral_on_mean,'Color', [0.85, 0.325, 0.098],'LineWidth',3);
+    p2 = plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_on_mean,0.02, 'loess'),'Color', [0.85, 0.325, 0.098],'LineWidth',3);
     hold on
-    p3 = plot(f_Spectrogram_mean, Spectral_post_mean,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
-    xlim([4 100])
+    p3 = plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_post_mean,0.02, 'loess'),'Color', [0.466, 0.674, 0.188],'LineWidth',3);
+    xlim([1 100])
     ylim([-5 5])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
@@ -253,31 +273,31 @@ for m = 1:length(ia)
     %area_ext_post = fill(X,Y,[0.466, 0.674, 0.188]);                  %#plot filled area
     %alpha(area_ext_post, .3)
     %hold on
-    plot(f_Spectrogram_mean, Spectral_pre_mean, 'Color', [0 0.4470 0.7410],'LineWidth',3)
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_pre_mean,0.021, 'loess'), 'Color', [0 0.4470 0.7410],'LineWidth',3)
     hold on
-    plot(f_Spectrogram_mean, quantil_pre(1,:), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_pre(1,:),0.02, 'loess'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, quantil_pre(5,:), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_pre(5,:),0.02, 'loess'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
     hold on
     %plot(f_Spectrogram_mean, db(quantil_pre(2,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
     %hold on
     %plot(f_Spectrogram_mean, db(quantil_pre(4,:), 'power'), '-', 'Color', [0 0.4470 0.7410],'LineWidth',1);
     %hold on
-    plot(f_Spectrogram_mean, Spectral_on_mean, 'Color', [0.85, 0.325, 0.098],'LineWidth',3)
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_on_mean,0.02, 'loess'), 'Color', [0.85, 0.325, 0.098],'LineWidth',3)
     hold on
-    plot(f_Spectrogram_mean, quantil_on(1,:), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_on(1,:),0.02, 'loess'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, quantil_on(5,:), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_on(5,:),0.02, 'loess'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
     hold on
     %plot(f_Spectrogram_mean, db(quantil_on(2,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
     %hold on
     %plot(f_Spectrogram_mean, db(quantil_on(4,:), 'power'), '-', 'Color', [0.85, 0.325, 0.098],'LineWidth',1);
     %hold on
-    plot(f_Spectrogram_mean, Spectral_post_mean, 'Color', [0.466, 0.674, 0.188],'LineWidth',3)
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, Spectral_post_mean,0.02, 'loess'), 'Color', [0.466, 0.674, 0.188],'LineWidth',3)
     hold on
-    plot(f_Spectrogram_mean, quantil_post(1,:), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(1,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
-    plot(f_Spectrogram_mean, quantil_post(5,:), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(5,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
     %plot(f_Spectrogram_mean, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
     %hold on
@@ -297,7 +317,7 @@ for m = 1:length(ia)
     
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['Mean PSD multitaper in beta of ',C{ic(i)}], 'FontSize', 24)
+    title(['Mean PSD multitaper in beta of ',C{ic(i)}], 'FontSize', 12)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD en beta de los LFP '];
     saveas(fig_11,name_figure_save,'png');
     %waitforbuttonpress;
@@ -315,13 +335,13 @@ for m = 1:length(ia)
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
-    ylim([4 100])
+    ylim([1 100])
     c=colorbar('southoutside');
     alphamax = 0.3; % Cuanto se acerca el max al minimo 
     alphamin = 0; % Cuanto se acercca el minimo al maximo
     alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
     %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
-    caxis([-3 3])
+    caxis([-2 2])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -349,3 +369,6 @@ clear Spectrogram_mean f_Spectrogram_mean t_Spectrogram_mean
 clear Spectral_post_mean Spectral_on_mean Spectral_pre_mean
 clear c j clim C i ia ic m new_pre_m new_on_inicio_m new_on_final_m new_post_m
 clear ans clear fig_10 lgd p1 p2 p3 quantil_on quantil_post quantil_pre tiempo_total
+clear alphamax alphamin alphashift_left cmap fig_11 idx_on idx_post idx_pre
+clear idx_spect_artifacts Spectrogram_mean_raw Spectrogram_on_mean 
+clear Spectrogram_post_mean Spectrogram_pre_mean Spectrogram_mean_raw_temp

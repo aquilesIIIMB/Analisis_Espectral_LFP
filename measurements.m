@@ -56,7 +56,7 @@ for i = 1:length(protocoloLFP.injured)
         freq_beta = freq(freq>=banda_beta(1) & freq<=banda_beta(2));
 
         % PSD pre
-        psd_pre = db(protocoloLFP.injured(i).psd.pre(k).data,'power');
+        psd_pre = protocoloLFP.injured(i).psd.pre(k).data;
         psd_pre_beta = psd_pre(freq>=banda_beta(1) & freq<=banda_beta(2));
         
         % Potencia base
@@ -67,10 +67,10 @@ for i = 1:length(protocoloLFP.injured)
         psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base;
 
         % PSD on
-        psd_on = db(protocoloLFP.injured(i).psd.on(k).data,'power');
+        psd_on = protocoloLFP.injured(i).psd.on(k).data;
         
         % PSD post
-        psd_post = db(protocoloLFP.injured(i).psd.post(k).data,'power');
+        psd_post = protocoloLFP.injured(i).psd.post(k).data;
 
         min_valor_psd = min([min(psd_pre), min(psd_on), min(psd_post)]);
         power_band_base = bandpower(psd_base-min_valor_psd,freq,banda_beta,'psd');
@@ -181,7 +181,7 @@ for i = 1:length(protocoloLFP.uninjured)
         freq = protocoloLFP.uninjured(i).psd.frequency;
         freq_beta = freq(freq>=banda_beta(1) & freq<=banda_beta(2));
 
-        psd_pre = db(protocoloLFP.uninjured(i).psd.pre(k).data,'power');
+        psd_pre = protocoloLFP.uninjured(i).psd.pre(k).data;
         psd_pre_beta = psd_pre(freq>=banda_beta(1) & freq<=banda_beta(2));
         potencia_min_base = psd_pre_beta(1);
         potencia_max_base = psd_pre_beta(end);
@@ -190,8 +190,8 @@ for i = 1:length(protocoloLFP.uninjured)
         psd_base = psd_pre;
         psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base;
 
-        psd_on = db(protocoloLFP.uninjured(i).psd.on(k).data,'power');
-        psd_post = db(protocoloLFP.uninjured(i).psd.post(k).data,'power');
+        psd_on = protocoloLFP.uninjured(i).psd.on(k).data;
+        psd_post = protocoloLFP.uninjured(i).psd.post(k).data;
 
         min_valor_psd = min([min(psd_pre), min(psd_on), min(psd_post)]);
         power_band_base = bandpower(psd_base-min_valor_psd,freq,banda_beta,'psd');

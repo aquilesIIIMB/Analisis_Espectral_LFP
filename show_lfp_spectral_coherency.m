@@ -1,6 +1,6 @@
- % show se�ales, espectrogramas y psd de todo un protocolo
+ % show sennales, espectrogramas y psd de todo un protocolo
 
-% Se�ales LFP
+% Sennales LFP
 signal_inj = [protocoloLFP.injured.area_signals];
 signal_uninj = [protocoloLFP.uninjured.area_signals];
 min_amp = min([min([signal_inj(:).data]), min([signal_uninj(:).data])]);
@@ -71,7 +71,7 @@ end
 
 
 % Espectrograma
-Frec_sin = 90; % confirmar dentro de Frec_sin = registroLFP.frec_sin_artifacts; 
+Frec_sin = 100; % confirmar dentro de Frec_sin = registroLFP.frec_sin_artifacts; 
 
 for i = 1:length(protocoloLFP.injured)
     

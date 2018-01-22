@@ -142,9 +142,9 @@ registroLFP.times.steps_m = [];
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
 registroLFP.multitaper.params.tapers = ([3 5]); % [TW K], (K <= to 2TW-1)
-registroLFP.multitaper.params.pad = 5; % Cantidad de puntos multiplos de dos sobre el largo de la se�al
+registroLFP.multitaper.params.pad = 4; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
 registroLFP.multitaper.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
-registroLFP.multitaper.params.fpass = [4 100]; % Rango de frecuencias
+registroLFP.multitaper.params.fpass = [1 100]; % Rango de frecuencias
 registroLFP.multitaper.params.err = 0; % Error considerado
 registroLFP.multitaper.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 

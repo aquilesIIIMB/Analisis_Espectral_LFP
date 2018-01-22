@@ -8,17 +8,24 @@ function show_injuredArea(registroLFP)
         freq = registroLFP.average_spectrum(i).spectrogram.frecuencia;
         freq_beta = freq(freq>=banda_beta(1) & freq<=banda_beta(2));
 
-        psd_pre = db(registroLFP.average_spectrum(i).psd.pre.data,'power');
+        psd_pre = registroLFP.average_spectrum(i).psd.pre.data;
         psd_pre_beta = psd_pre(freq>=banda_beta(1) & freq<=banda_beta(2));
         potencia_min_base = psd_pre_beta(1);
         potencia_max_base = psd_pre_beta(end);
-
-        base=interp1([min(freq_beta), max(freq_beta)],[potencia_min_base, potencia_max_base],freq_beta,'linear');
+        psd_pre_smooth = smooth(freq, psd_pre,0.05, 'loess');
+        
+        %base=interp1([min(freq_beta), max(freq_beta)],[potencia_min_base, potencia_max_base],freq_beta,'linear');
+        base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
         psd_base = psd_pre;
         psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base;
+        
+        figure;
+        plot(freq, psd_pre)
+        hold on
+        plot(freq, psd_base)
 
-        psd_on = db(registroLFP.average_spectrum(i).psd.on.data,'power');
-        psd_post = db(registroLFP.average_spectrum(i).psd.post.data,'power');
+        psd_on = registroLFP.average_spectrum(i).psd.on.data;
+        psd_post = registroLFP.average_spectrum(i).psd.post.data;
 
         min_valor_psd = min([min(psd_pre), min(psd_on), min(psd_post)]);
         power_band_base = bandpower(psd_base-min_valor_psd,freq,banda_beta,'psd');

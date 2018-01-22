@@ -117,4 +117,4 @@ registroLFP.stage.referencing = 1;
 % Eliminacion de variables no utilizadas
 clear data_ref zdata largo_area_actual areas_actuales C ia ic data_ref_artifacted data_ref_noartifacted
 clear umbral canales_eval average data_referenciado j largo_canales_eval ind_fueraUmbral
-
+clear avarage_area data_artifacted_area Fc i m

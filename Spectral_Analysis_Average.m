@@ -11,7 +11,7 @@ if ~registroLFP.stage.referencing || ~registroLFP.stage.delete_channel
     
 end
 
-registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos)
+registroLFP.multitaper.movingwin.window = 2; % Ventanas (En segundos)
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 registroLFP.multitaper.params.trialave = 1; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
@@ -58,27 +58,42 @@ for m = 1:length(ia)%1:largo_dataAll
     idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
     idx_spect_artifacts = find(~idx_spect_artifacts)';
     
+    % Indices de cada etapa
+    idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
+    idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
+    idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
+    
+    % dB Spect
+    %Spectrogram_mean = db(Spectrogram_mean','power')';
+    
     %disp(C(m))
     % Se le quita el ruido rosa, dejando mas plano el espectro
     Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean, idx_spect_artifacts); 
+    
+    % Nuevo Pink Noise
+    %[pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean', [4 10;70 90]);
+
+    %pow_pinknoise_pre = pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))';
+    %pow_pinknoise_on = pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))';
+    %pow_pinknoise_post = pow_pinknoise(:,idx_post(~ismember(idx_post, idx_spect_artifacts)))';
+    
+    %Spectrogram_mean = Spectrogram_mean - ones(size(Spectrogram_mean))*diag(median(real(pow_pinknoise_pre)));
+    %Spectrogram_mean(idx_spect_artifacts,:) = db(Spectrogram_mean_raw(idx_spect_artifacts,:),'power');
     
     % dB Spect
     Spectrogram_mean = db(Spectrogram_mean','power')';
     
     % Separacion por etapas el espectrograma  
-    idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
     Spectrogram_pre_mean = Spectrogram_mean(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
     %[~,ind_max] = max(Spectrogram_pre_mean,[],2); % Indice de los maximos en cada bin de tiempo
     %frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
     %ind_noartefactos_Spec_pre = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
     
-    idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
     Spectrogram_on_mean = Spectrogram_mean(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
     %[~,ind_max] = max(Spectrogram_on_mean,[],2);
     %frec_ind_max = f_Spectrogram_mean(ind_max);
     %ind_noartefactos_Spec_on = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
     
-    idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
     Spectrogram_post_mean = Spectrogram_mean(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
     %[~,ind_max] = max(Spectrogram_post_mean,[],2);
     %frec_ind_max = f_Spectrogram_mean(ind_max);
@@ -134,9 +149,10 @@ clear Spectrogram_on_mean Spectrogram_pre_mean Spectrogram_post_mean
 clear Data_ref_pond Data_ref_sum frec_ind_max new_on_final_m new_post_m
 clear count_total total_time_noartifacted ind_over_threshold_totals
 clear ind_max ind_noartefactos_Spec_on ind_noartefactos_Spec_post ind_noartefactos_Spec_pre
-clear indices_cero Frec_sin Fc 
+clear indices_cero Frec_sin Fc idx_on idx_post idx_pre idx_spect_artifacts
+clear quantil_pre Spectrogram_mean_raw
 
 
 % Descomentar
-%save(path_name_registro,'-v7.3')
+%%save(path_name_registro,'-v7.3')
 

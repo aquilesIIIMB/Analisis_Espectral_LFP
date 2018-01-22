@@ -148,7 +148,7 @@ for m = 1:length(ia)%1:largo_dataAll
     t_Spectrogram = t_Spectrogram(t_Spectrogram>inicio_s & t_Spectrogram<(tiempo_total*60.0))-min(t_Spectrogram);
 
     t_size = (sum(registroLFP.times.phase_range_m)*60.0+60)*2-1; % pensando en ventanas de 1s y pasos de 0.5s por eso por mult por 2
-    f_size = 610;
+    f_size = 3145;
     
     % Si el espectrograma se corta antes del tiempo final
     if t_size ~= length(t_Spectrogram)
