@@ -247,7 +247,7 @@ for m = 1:length(ia)
     close(fig_5)
     
     %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
-    fig_11 = figure('units','points','position',[0,0,300,600]);
+    fig_11 = figure('units','points','position',[0,0,250,600]);
     quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
     quantil_on = quantile(Spectrogram_on_mean,[.025 .25 .50 .75 .975]);
     quantil_post = quantile(Spectrogram_post_mean,[.025 .25 .50 .75 .975]);
@@ -303,6 +303,7 @@ for m = 1:length(ia)
     %hold on
     %plot(f_Spectrogram_mean, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
     xlim([5 25])
+    ylim([-10 10])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
     %[~, idx] = min(abs(f_Spectrogram_mean-17.5));
@@ -317,7 +318,7 @@ for m = 1:length(ia)
     
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['Mean PSD multitaper in beta of ',C{ic(i)}], 'FontSize', 12)
+    title(['Mean PSD multitaper in beta of ',C{ic(i)}], 'FontSize', 10)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD en beta de los LFP '];
     saveas(fig_11,name_figure_save,'png');
     %waitforbuttonpress;
@@ -341,7 +342,7 @@ for m = 1:length(ia)
     alphamin = 0; % Cuanto se acercca el minimo al maximo
     alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
     %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
-    caxis([-2 2])
+    caxis([-1 1])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');

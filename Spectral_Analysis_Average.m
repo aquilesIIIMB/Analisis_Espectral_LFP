@@ -34,7 +34,7 @@ for m = 1:length(ia)%1:largo_dataAll
     % Cargar datos de todos los registros de un area
     Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
     
-    % Ponderacion de las señales del area segun sus zonas de no artefacto
+    % Ponderacion de las seï¿½ales del area segun sus zonas de no artefacto
     Frec_sin = registroLFP.frec_sin_artifacts;    % hertz Freq: 120Hz
     ind_over_threshold_totals = ~[registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold];
     Data_ref_sum = sum(Data_ref.*ind_over_threshold_totals,2);
@@ -100,14 +100,22 @@ for m = 1:length(ia)%1:largo_dataAll
     %ind_noartefactos_Spec_post = ~((frec_ind_max > Frec_sin-5) & (frec_ind_max < Frec_sin+5));  
     
     % PSD sin normalizar por la frecuencia de la fase pre (No contar los valores cercanos a la sinusoidal)
-    Spectral_pre_mean = median(Spectrogram_pre_mean,1);
-    Spectral_on_mean = median(Spectrogram_on_mean,1);
-    Spectral_post_mean = median(Spectrogram_post_mean,1);
+    Spectral_pre_mean = mean(Spectrogram_pre_mean,1);
+    Spectral_on_mean = mean(Spectrogram_on_mean,1);
+    Spectral_post_mean = mean(Spectrogram_post_mean,1);
+    
+    % PSD con los maximos del cuantil    
+    %quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
+    %Spectral_pre_mean = quantil_pre(5,:);    
+    %quantil_on = quantile(Spectrogram_on_mean,[.025 .25 .50 .75 .975]);
+    %Spectral_on_mean = quantil_on(5,:);
+    %quantil_post = quantile(Spectrogram_post_mean,[.025 .25 .50 .75 .975]);
+    %Spectral_post_mean =quantil_post(5,:);
     
     % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
     %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
     Mean_Spectrogram_pre_mean = median(Spectrogram_pre_mean,1);
-    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
+    %%Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
     quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
     Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
     
