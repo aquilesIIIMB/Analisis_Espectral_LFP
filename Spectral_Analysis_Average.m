@@ -11,7 +11,7 @@ if ~registroLFP.stage.referencing || ~registroLFP.stage.delete_channel
     
 end
 
-registroLFP.multitaper.movingwin.window = 2; % Ventanas (En segundos)
+registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos)
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 registroLFP.multitaper.params.trialave = 1; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
@@ -158,9 +158,9 @@ clear Data_ref_pond Data_ref_sum frec_ind_max new_on_final_m new_post_m
 clear count_total total_time_noartifacted ind_over_threshold_totals
 clear ind_max ind_noartefactos_Spec_on ind_noartefactos_Spec_post ind_noartefactos_Spec_pre
 clear indices_cero Frec_sin Fc idx_on idx_post idx_pre idx_spect_artifacts
-clear quantil_pre Spectrogram_mean_raw
+clear quantil_pre Spectrogram_mean_raw p
 
 
 % Descomentar
-%%save(path_name_registro,'-v7.3')
+save(path_name_registro,'-v7.3')
 

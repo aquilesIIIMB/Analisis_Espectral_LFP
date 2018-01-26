@@ -15,17 +15,17 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; %mixto
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 
 %% Intervalos de tiempo del protocolo
 %timeRange = [5, 5, 5];
 timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-amplitud_umbral = 10; % 8,9,10 desde el mas sucio al mas limpio
+amplitud_umbral = 12; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
@@ -68,6 +68,9 @@ View_Spectrum_Single_Average;
 toc;
 
 sonido_alarma;
+
+%%% Cambiar el umbral, ver los parametros del multitapers y entregar el PSD
+%%% sin pink noise
 
 % Tipo de errores:
 % Index exceeds matrix dimensions. ---> Revisar "path" y "dir_signals"

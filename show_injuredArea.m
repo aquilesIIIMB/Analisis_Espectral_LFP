@@ -3,29 +3,57 @@ function show_injuredArea(registroLFP)
     banda_beta = [8, 20];
     percent_power_band = [];
     areas = {};
+    
+    pre_m = registroLFP.times.pre_m;
+    on_inicio_m = registroLFP.times.start_on_m;
+    on_final_m = registroLFP.times.end_on_m;
+    post_m = registroLFP.times.post_m;
+    tiempo_total = registroLFP.times.end_m;
 
     for i = 1:length(registroLFP.average_spectrum)
+        Spectrogram_mean_raw = registroLFP.average_spectrum(i).spectrogram.data_raw;
+    
+        t_Spectrogram_mean = registroLFP.average_spectrum(i).spectrogram.tiempo;
+        f_Spectrogram_mean = registroLFP.average_spectrum(i).spectrogram.frecuencia; 
+        idx_spect_artifacts = registroLFP.average_spectrum(i).spectrogram.ind_artifacts;     
+
+        % Indices de cada etapa
+        idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
+        idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
+        idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
+
+        % dB Spect
+        %Spectrogram_mean_raw = db(Spectrogram_mean_raw','power')';
+
+        % PSD sin Pink Noise
+        PSD_pre_mean_raw = mean(Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:),1);    
+        PSD_on_mean_raw = mean(Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:),1);    
+        PSD_post_mean_raw = mean(Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:),1);
         freq = registroLFP.average_spectrum(i).spectrogram.frecuencia;
-        freq_beta = freq(freq>=banda_beta(1) & freq<=banda_beta(2));
-
-        psd_pre = registroLFP.average_spectrum(i).psd.pre.data;
-        psd_pre_beta = psd_pre(freq>=banda_beta(1) & freq<=banda_beta(2));
-        potencia_min_base = psd_pre_beta(1);
-        potencia_max_base = psd_pre_beta(end);
-        psd_pre_smooth = smooth(freq, psd_pre,0.05, 'loess');
         
-        %base=interp1([min(freq_beta), max(freq_beta)],[potencia_min_base, potencia_max_base],freq_beta,'linear');
-        base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
+        
+        psd_pre = PSD_pre_mean_raw;%registroLFP.average_spectrum(i).psd.pre.data;
+       %base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
+        %PSD_pre_mean_raw_temp = PSD_pre_mean_raw;
+        %PSD_pre_mean_raw_temp(freq>=banda_beta(1) & freq<=banda_beta(2)) = [];
+        %freq_temp = freq;
+        %freq_temp(freq>=banda_beta(1) & freq<=banda_beta(2)) = [];
+        %[~,idx_max] = max(PSD_pre_mean_raw_temp);
+        
+        %base = interp1(freq_temp(idx_max:end),PSD_pre_mean_raw_temp(idx_max:end),freq(idx_max:end),'pchip');
+        [~, ~, base] = convert_to_dBpink(freq, PSD_pre_mean_raw', [1 100]);
+
         psd_base = psd_pre;
-        psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base;
+        %psd_base(idx_max:end) = base;
+        psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base(freq>=banda_beta(1) & freq<=banda_beta(2));
         
-        figure;
-        plot(freq, psd_pre)
-        hold on
-        plot(freq, psd_base)
+        %figure;
+        %plot(freq, psd_pre)
+        %hold on
+        %plot(freq, psd_base)
 
-        psd_on = registroLFP.average_spectrum(i).psd.on.data;
-        psd_post = registroLFP.average_spectrum(i).psd.post.data;
+        psd_on = PSD_on_mean_raw;%registroLFP.average_spectrum(i).psd.on.data;
+        psd_post = PSD_post_mean_raw;%registroLFP.average_spectrum(i).psd.post.data;
 
         min_valor_psd = min([min(psd_pre), min(psd_on), min(psd_post)]);
         power_band_base = bandpower(psd_base-min_valor_psd,freq,banda_beta,'psd');
@@ -51,6 +79,10 @@ function show_injuredArea(registroLFP)
     fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(percent_power_band(1:5,:)))
     fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(percent_power_band(6:10,:)))    
     
+    y_max = max([max(percent_power_band(1:5,:)) max(percent_power_band(6:10,:))]);
+    y_min = min([min(percent_power_band(1:5,:)) min(percent_power_band(6:10,:))]);
+    y_max = y_max + abs(y_max)*0.1;
+    y_min = y_min - abs(y_min)*0.1;
     figure;
     subplot(2,1,1)
     bar(percent_power_band(1:5,:),'grouped');
@@ -58,12 +90,14 @@ function show_injuredArea(registroLFP)
     set(gca, 'XTick', xt, 'XTickLabel', areas(1:5))
     legend('Pre', 'Stim', 'Post');
     grid on
+    ylim([y_min y_max])
     subplot(2,1,2)
     bar(percent_power_band(6:10,:),'grouped');
     xt = get(gca, 'XTick');
     set(gca, 'XTick', xt, 'XTickLabel', areas(6:10))
     legend('Pre', 'Stim', 'Post');
     grid on
+    ylim([y_min y_max])
     
 end
 

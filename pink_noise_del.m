@@ -1,4 +1,4 @@
-function salida = pink_noise_del(entrada_x, entrada_y, idx_spect_artifacts)
+function [salida, modelo_eval] = pink_noise_del(entrada_x, entrada_y, idx_spect_artifacts)
 % dim(entrada_y) = tiempo x frecuencia
 size_time = size(entrada_y,1);
 size_frec = size(entrada_y,2);

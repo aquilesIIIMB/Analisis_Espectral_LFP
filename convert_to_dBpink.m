@@ -39,3 +39,4 @@ for iSpectra = 1:size(pow,2)
 end
 % Convert to dBpink:
 pow_dBpink = 10*log10(pow./pow_pinknoise);
+

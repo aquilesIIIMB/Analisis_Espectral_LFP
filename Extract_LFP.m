@@ -28,11 +28,14 @@ disp(ruta_regEval)
 sampleRate = registroLFP.open_ephys.info.header.sampleRate;
 
 % Disenno del filtro pasa banda
-d = fdesign.bandpass('N,F3dB1,F3dB2',registroLFP.filter_param.n,registroLFP.filter_param.fc1,registroLFP.filter_param.fc2,sampleRate);
-Hd = design(d,'butter'); 
+%d = fdesign.bandpass('N,F3dB1,F3dB2',registroLFP.filter_param.n,registroLFP.filter_param.fc1,registroLFP.filter_param.fc2,sampleRate);
+%Hd = design(d,'butter'); 
+Hd = designfilt(registroLFP.filter_param.type,'FilterOrder',registroLFP.filter_param.n, ...
+'HalfPowerFrequency',registroLFP.filter_param.fc,'DesignMethod',registroLFP.filter_param.design_method,'SampleRate',sampleRate);
 
 % Filtrado del primer LFP
-data_filt = filter(Hd,data);
+%data_filt = filter(Hd,data);
+data_filt = filtfilt(Hd,data);
 
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
 data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
@@ -48,7 +51,7 @@ data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
 %plot(t_downS,b_downS)
 
 % Tiempo maximo de registro
-time_max_reg_seg = length(data)/30000;
+time_max_reg_seg = length(data)/sampleRate;
 registroLFP.times.total_recorded_m = time_max_reg_seg/60.0;
 
 % Tiempo total en minutos de lo registrado
@@ -76,7 +79,8 @@ for i = 2:length(canales_eval)
     [data, ~, ~] = load_open_ephys_data_faster(strtrim([path,ruta_regEval]));
     
     % Filtrado del LFP "i"
-    data_filt = filter(Hd,data);
+    %data_filt = filter(Hd,data);
+    data_filt = filtfilt(Hd,data);
     
     % Downsamplear el LFP "i" para llevar los registros a la tasa de muestro requerida
     data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
@@ -101,4 +105,14 @@ clear timeRange time_step_m time_step_m_tiempoTotal time_max_reg_seg
 clear ruta_con100 ruta_regEval dir_signals channel_codes sampleRate canales_eval
 clear path path_name_registro slash_backslash inicio_new_dir1 inicio_new_dir2
 clear inicio_name_registro
+
+
+%Hd = designfilt('lowpassiir','FilterOrder',40, ...
+%'HalfPowerFrequency',150,'DesignMethod','butter','SampleRate',sampleRate);
+%fvtool(Hd)
+
+%bpFilt = designfilt('bandpassiir','FilterOrder',40, ...
+%         'HalfPowerFrequency1',1,'HalfPowerFrequency2',150, ...
+%         'SampleRate',30000);
+%fvtool(bpFilt)
 

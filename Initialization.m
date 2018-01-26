@@ -69,10 +69,11 @@ registroLFP.channel.ind_over_threshold = [];
 registroLFP.channel.removed = [];
 
 % Datos del filtro
-registroLFP.filter_param.type = 'Band pass';
-registroLFP.filter_param.n = 20; % grado del filtro
-registroLFP.filter_param.fc1 = 1; % 3Hz
-registroLFP.filter_param.fc2 = 150; % 300Hz
+registroLFP.filter_param.type = 'lowpassiir';
+registroLFP.filter_param.n = 15; % grado del filtro
+%registroLFP.filter_param.fc1 = 1; % 3Hz
+registroLFP.filter_param.fc = 150; % 300Hz
+registroLFP.filter_param.design_method = 'butter'; % 300Hz
 
 % Datos de los espectrogramas promedio por area
 registroLFP.average_spectrum.area = [];
@@ -141,8 +142,8 @@ registroLFP.times.total_recorded_m = []; % tiempo de duracion del registro
 registroLFP.times.steps_m = [];
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
-registroLFP.multitaper.params.tapers = ([3 5]); % [TW K], (K <= to 2TW-1)
-registroLFP.multitaper.params.pad = 1; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
+registroLFP.multitaper.params.tapers = ([3 3]); % [TW K], (K <= to 2TW-1)
+registroLFP.multitaper.params.pad = 3; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
 registroLFP.multitaper.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
 registroLFP.multitaper.params.fpass = [1 100]; % Rango de frecuencias
 registroLFP.multitaper.params.err = 0; % Error considerado
