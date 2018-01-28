@@ -13,24 +13,20 @@ function show_injuredArea(registroLFP)
     for i = 1:length(registroLFP.average_spectrum)
         Spectrogram_mean_raw = registroLFP.average_spectrum(i).spectrogram.data_raw;
     
-        t_Spectrogram_mean = registroLFP.average_spectrum(i).spectrogram.tiempo;
-        f_Spectrogram_mean = registroLFP.average_spectrum(i).spectrogram.frecuencia; 
+        time = registroLFP.average_spectrum(i).spectrogram.tiempo;
+        freq = registroLFP.average_spectrum(i).spectrogram.frecuencia; 
+        area_actual = registroLFP.average_spectrum(i).area{1};
         idx_spect_artifacts = registroLFP.average_spectrum(i).spectrogram.ind_artifacts;     
 
         % Indices de cada etapa
-        idx_pre = find(t_Spectrogram_mean<(pre_m*60.0-5));
-        idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
-        idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
-
-        % dB Spect
-        %Spectrogram_mean_raw = db(Spectrogram_mean_raw','power')';
+        idx_pre = find(time<(pre_m*60.0-5));
+        idx_on = find(time>(on_inicio_m*60.0+5) & time<(on_final_m*60.0-5));
+        idx_post = find(time>(post_m*60.0+5) & time<(tiempo_total*60));
 
         % PSD sin Pink Noise
         PSD_pre_mean_raw = mean(Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:),1);    
         PSD_on_mean_raw = mean(Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:),1);    
-        PSD_post_mean_raw = mean(Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:),1);
-        freq = registroLFP.average_spectrum(i).spectrogram.frecuencia;
-        
+        PSD_post_mean_raw = mean(Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:),1);        
         
         psd_pre = PSD_pre_mean_raw;%registroLFP.average_spectrum(i).psd.pre.data;
        %base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
@@ -47,10 +43,14 @@ function show_injuredArea(registroLFP)
         %psd_base(idx_max:end) = base;
         psd_base(freq>=banda_beta(1) & freq<=banda_beta(2)) = base(freq>=banda_beta(1) & freq<=banda_beta(2));
         
-        %figure;
-        %plot(freq, psd_pre)
-        %hold on
-        %plot(freq, psd_base)
+        figure;
+        plot(freq, psd_pre)
+        hold on
+        plot(freq, psd_base)
+        hold on
+        plot(freq, base)
+        ylim([-inf max(psd_pre)*1.1])
+        title(area_actual)
 
         psd_on = PSD_on_mean_raw;%registroLFP.average_spectrum(i).psd.on.data;
         psd_post = PSD_post_mean_raw;%registroLFP.average_spectrum(i).psd.post.data;
@@ -65,7 +65,6 @@ function show_injuredArea(registroLFP)
         percent_power_band_on = (100*power_band_on/power_band_base)-100;
         percent_power_band_post = (100*power_band_post/power_band_base)-100;
 
-        area_actual = registroLFP.average_spectrum(i).area{1};
         areas = {areas{:},area_actual};
         percent_power_band = [percent_power_band; [percent_power_band_pre,percent_power_band_on,percent_power_band_post]];
 

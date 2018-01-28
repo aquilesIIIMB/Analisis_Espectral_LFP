@@ -370,7 +370,7 @@ for m = 1:length(ia)
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     title(['Mean Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power (u.a.)', 'FontSize', 17)
+    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];
     saveas(fig_6,name_figure_save,'png');

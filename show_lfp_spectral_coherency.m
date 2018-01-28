@@ -5,8 +5,20 @@ signal_inj = [protocoloLFP.injured.area_signals];
 signal_uninj = [protocoloLFP.uninjured.area_signals];
 min_amp = min([min([signal_inj(:).data]), min([signal_uninj(:).data])]);
 max_amp = max([max([signal_inj(:).data]), max([signal_uninj(:).data])]);
+max_lim_y = max([abs(min_amp), abs(max_amp)]);
 
-slash_system = foldername(length(foldername));
+%slash_system = foldername(length(foldername));
+
+% Crear carpeta para guardar las imagnes 35:end
+slash_system_idx = find(path_name_registro=='\' | path_name_registro=='/');
+slash_system = path_name_registro(slash_system_idx(1));
+%inicio_new_dir1 = slash_system(length(slash_system)-3);
+%inicio_new_dir2 = slash_system(length(slash_system)-2);
+%foldername = path(inicio_new_dir2:length(path)); % /+375/arturo2_2017-06-02_12-58-57/
+%inicio_foldername = path(1:inicio_new_dir1); % /home/cmanalisis/Aquiles/Registros/
+if ~exist(foldername, 'dir')
+    mkdir([inicio_foldername,'Imagenes',slash_system, strrep(strrep(protocoloLFP.name,' ',''),'control','control '), slash_system,'Imagenes Protocolo']);
+end
 
 for i = 1:length(protocoloLFP.injured)
     
@@ -20,15 +32,16 @@ for i = 1:length(protocoloLFP.injured)
     hold on;                  
     
     % Lineas divisorias de cada fase
-    line([6 6], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([6.5 6.5], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([12.5 12.5], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([13 13], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1) protocoloLFP.times.phase_range_m(1)],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)+0.5 protocoloLFP.times.phase_range_m(1)+0.5],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)*2+0.5 protocoloLFP.times.phase_range_m(1)*2+0.5],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)*2+1 protocoloLFP.times.phase_range_m(1)*2+1],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     
     xlim([0 max(time_data)])
-    ylim([min_amp  max_amp])
-    xlabel('Time [Minutes]'); ylabel('LFP')
-    title(['LFP of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')])
+    ylim([-max_lim_y  max_lim_y])
+    set(gca,'fontsize',20)
+    xlabel('Time [Min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
+    title(['LFP of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
     
     % Guardar imagen de la figura
     name_fig = ['LFP_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
@@ -49,15 +62,16 @@ for i = 1:length(protocoloLFP.injured)
     hold on;                  
     
     % Lineas divisorias de cada fase
-    line([6 6], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([6.5 6.5], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([12.5 12.5], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    line([13 13], get(gca, 'ylim'),'Color','black','LineWidth',1.5,'Marker','.','LineStyle',':');
-    
+    line([protocoloLFP.times.phase_range_m(1) protocoloLFP.times.phase_range_m(1)],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)+0.5 protocoloLFP.times.phase_range_m(1)+0.5],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)*2+0.5 protocoloLFP.times.phase_range_m(1)*2+0.5],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([protocoloLFP.times.phase_range_m(1)*2+1 protocoloLFP.times.phase_range_m(1)*2+1],[-max_lim_y  max_lim_y],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+      
     xlim([0 max(time_data)])
-    ylim([min_amp  max_amp])
-    xlabel('Time [Minutes]'); ylabel('LFP')
-    title(['LFP of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
+    ylim([-max_lim_y  max_lim_y])
+    set(gca,'fontsize',20)
+    xlabel('Time [Min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
+    title(['LFP of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
         
     % Guardar imagen de la figura
     name_fig = ['LFP_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
@@ -93,20 +107,21 @@ for i = 1:length(protocoloLFP.injured)
     clim=prctile(reshape(spect_smooth,1,numel(spectrograma_data)),[10 99]);
     imagesc(t_Spectrogram_data,f_Spectrogram_data,spect_smooth,clim); colormap('jet');
     axis xy
-    ylabel('Frequency [Hz]')
-    xlabel('Time (sec)');
+    set(gca,'fontsize',20)
+    ylabel('Frequency [Hz]', 'FontSize', 24);
+    xlabel('Time [s]', 'FontSize', 24);
     ylim([1 100])
     c=colorbar('southoutside');
     %cmap = colormap('autumn(10)');
     %cmap = cmap(end:-1:1,:);
     %colormap(cmap);
     hold on
-    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    title(['Spectrogram of the area ',area_data,' Injured ',strrep(protocoloLFP.name,'_',' ')])
-    ylabel(c,'Power [dB]')
+    line([protocoloLFP.times.phase_range_m(1)*60 protocoloLFP.times.phase_range_m(1)*60], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60+30 protocoloLFP.times.phase_range_m(1)*60+30], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60*2+30 protocoloLFP.times.phase_range_m(1)*60*2+30], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60*2+60 protocoloLFP.times.phase_range_m(1)*60*2+60], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Spectrogram of the area ',area_data,' Injured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
+    ylabel(c,'Power [dB]', 'FontSize', 17)
     
     % Guardar imagen de la figura
     name_fig = ['Spectrogram_of_the_area_',area_data,'_Injured_',strrep(protocoloLFP.name,' ','_')];
@@ -133,20 +148,21 @@ for i = 1:length(protocoloLFP.injured)
     clim=prctile(reshape(spect_smooth,1,numel(spectrograma_data)),[10 99]);
     imagesc(t_Spectrogram_data,f_Spectrogram_data,spect_smooth,clim); colormap('jet');
     axis xy
-    ylabel('Frequency [Hz]')
-    xlabel('Time (sec)');
+    set(gca,'fontsize',20)
+    ylabel('Frequency [Hz]', 'FontSize', 24);
+    xlabel('Time [s]', 'FontSize', 24);
     ylim([1 100])
     c=colorbar('southoutside');
     %cmap = colormap('autumn(10)');
     %cmap = cmap(end:-1:1,:);
     %colormap(cmap);
     hold on
-    line([6*60.0-10 6*60.0-10], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([6*60.0+40 6*60.0+40], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([12*60.0+20 12*60.0+20], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    line([12*60.0+70 12*60.0+70], get(gca, 'ylim'),'Color','black','LineWidth',5.0,'Marker','.','LineStyle','--');
-    title(['Spectrogram of the area ',area_data,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
-    ylabel(c,'Power [dB]')
+    line([protocoloLFP.times.phase_range_m(1)*60 protocoloLFP.times.phase_range_m(1)*60], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60+30 protocoloLFP.times.phase_range_m(1)*60+30], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60*2+30 protocoloLFP.times.phase_range_m(1)*60*2+30], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([protocoloLFP.times.phase_range_m(1)*60*2+60 protocoloLFP.times.phase_range_m(1)*60*2+60], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Spectrogram of the area ',area_data,' Uninjured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
+    ylabel(c,'Normalized Power [u.a.]')
     
     % Guardar imagen de la figura
     name_fig = ['Spectrogram_of_the_area_',area_data,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
@@ -165,28 +181,30 @@ for i = 1:length(protocoloLFP.injured)
     on_temp = reshape([protocoloLFP.injured(i).psd.on(:).data], length(protocoloLFP.injured(i).psd.on(1).data), length(protocoloLFP.injured(i).psd.on));
     post_temp = reshape([protocoloLFP.injured(i).psd.post(:).data], length(protocoloLFP.injured(i).psd.post(1).data), length(protocoloLFP.injured(i).psd.post));
     Spectral_pre = mean(pre_temp,2);
-    Spectral_pre_all = pre_temp;
+    %Spectral_pre_all = pre_temp;
     Spectral_on = mean(on_temp,2);
-    Spectral_on_all = on_temp;
+    %Spectral_on_all = on_temp;
     Spectral_post = mean(post_temp,2);
-    Spectral_post_all = on_temp;
+    %Spectral_post_all = post_temp;
     
     freq_psd = protocoloLFP.injured(i).psd.frequency; 
     
     % Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(freq_psd,Spectral_pre,'LineWidth',3.0)
+    plot(freq_psd,Spectral_pre,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
+    plot(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
-    xlim([1 50])
-    ylim([10^-1 10^1])
+    plot(freq_psd,Spectral_post,'LineWidth',3.0)
+    xlim([1 100])
+    ylim([-5 5])
     grid on
-    legend('pre-stim', 'on-stim', 'post-stim')
-    xlabel('Frequency [Hz]'); ylabel('Power [dB]')
-    title(['PSD of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')])
+    set(gca,'fontsize',20)
+    lgd = legend('pre-stim', 'on-stim', 'post-stim');
+    lgd.FontSize = 20;
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [dB]', 'FontSize', 24)
+    title(['PSD of the area ',protocoloLFP.injured(i).area,' Injured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
 
     % Guardar imagen de la figura
     name_fig = ['PSD_of_the_area_',protocoloLFP.injured(i).area,'_Injured_',strrep(protocoloLFP.name,' ','_')];
@@ -209,17 +227,19 @@ for i = 1:length(protocoloLFP.injured)
     % Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-    semilogy(freq_psd,Spectral_pre,'LineWidth',3.0)
+    plot(freq_psd,Spectral_pre,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_on,'LineWidth',3.0)
+    plot(freq_psd,Spectral_on,'LineWidth',3.0)
     hold on
-    semilogy(freq_psd,Spectral_post,'LineWidth',3.0)
-    xlim([1 50])
-    ylim([10^-1 10^1])
+    plot(freq_psd,Spectral_post,'LineWidth',3.0)
+    xlim([1 100])
+    ylim([-5 5])
     grid on
-    legend('pre-stim', 'on-stim', 'post-stim')
-    xlabel('Frequency [Hz]'); ylabel('Power [dB]')
-    title(['PSD of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')])
+    set(gca,'fontsize',20)
+    lgd = legend('pre-stim', 'on-stim', 'post-stim');
+    lgd.FontSize = 20;
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [dB]', 'FontSize', 24)
+    title(['PSD of the area ',protocoloLFP.uninjured(i).area,' Uninjured ',strrep(protocoloLFP.name,'_',' ')], 'FontSize', 24)
     
     % Guardar imagen de la figura
     name_fig = ['PSD_of_the_area_',protocoloLFP.uninjured(i).area,'_Uninjured_',strrep(protocoloLFP.name,' ','_')];
@@ -244,17 +264,20 @@ for i=1:length(protocoloLFP.injured)-1
         Coherency_post_mean = protocoloLFP.coherency.injured.post.data{i,j};
         f = protocoloLFP.coherency.injured.frequency;
 
-        fig_7 = figure;
+        fig_7 = figure('units','normalized','outerposition',[0 0 1 1]);
         plot(f,Coherency_pre_mean,'LineWidth',2.0)
         hold on
         plot(f,Coherency_on_mean,'LineWidth',2.0)
-        plot(f,Coherency_post_mean,':','LineWidth',2.0)
+        plot(f,Coherency_post_mean,'LineWidth',2.0)
         grid on
         xlim([0 100])
-        ylabel('Mean Coherence')
-        xlabel('Frequency [Hz]')
-        legend('pre','on','post')
-        title(['Mean Coherence in beta between ', protocoloLFP.injured(i).area, ' vs ', protocoloLFP.injured(j).area, ' Injured'])
+        ylim([0.3 0.9])
+        set(gca,'fontsize',20)
+        ylabel('Mean Coherence', 'FontSize', 24)
+        xlabel('Frequency [Hz]', 'FontSize', 24)
+        lgd = legend('pre','on','post');
+        lgd.FontSize = 20;
+        title(['Mean Coherence in beta between ', protocoloLFP.injured(i).area, ' vs ', protocoloLFP.injured(j).area, ' Injured'], 'FontSize', 24)
                 
         % Guardar imagen de la figura
         name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Injured_',strrep(protocoloLFP.name,' ','_')];
@@ -283,17 +306,20 @@ for i=1:length(protocoloLFP.uninjured)-1
         Coherency_post_mean = protocoloLFP.coherency.uninjured.post.data{i,j};
         f = protocoloLFP.coherency.uninjured.frequency;
 
-        fig_8 = figure;
+        fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
         plot(f,Coherency_pre_mean,'LineWidth',2.0)
         hold on
         plot(f,Coherency_on_mean,'LineWidth',2.0)
-        plot(f,Coherency_post_mean,':','LineWidth',2.0)
+        plot(f,Coherency_post_mean,'LineWidth',2.0)
         grid on
-        xlim([0 100])    
-        ylabel('Mean Coherence')
-        xlabel('Frecuencia [Hz]')
-        legend('pre','on','post')
-        title(['Mean Coherence in beta between ', protocoloLFP.uninjured(i).area, ' vs ', protocoloLFP.uninjured(j).area, ' Uninjured'])
+        xlim([0 100]) 
+        ylim([0.3 0.9])
+        set(gca,'fontsize',20)
+        ylabel('Mean Coherence', 'FontSize', 24)
+        xlabel('Frecuencia [Hz]', 'FontSize', 24)
+        lgd = legend('pre','on','post');        
+        lgd.FontSize = 20;
+        title(['Mean Coherence in beta between ', protocoloLFP.uninjured(i).area, ' vs ', protocoloLFP.uninjured(j).area, ' Uninjured'], 'FontSize', 24)
                 
         % Guardar imagen de la figura
         name_fig = ['Mean_Coherence_in_beta_between_', protocoloLFP.injured(i).area, '_vs_', protocoloLFP.injured(j).area, '_Uninjured_',strrep(protocoloLFP.name,' ','_')];

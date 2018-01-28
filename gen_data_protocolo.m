@@ -95,10 +95,10 @@ if ~exist('protocoloLFP','var')
 end
     
 if ~strcmp(protocoloLFP.name, protocolo_name)
-    error('A�adiendo registro a protoclo de otro nombre')
+    error('Annadiendo registro a protoclo de otro nombre')
 end
 
-disp('A�adiendo informacion al protocolo')
+disp('Annadiendo informacion al protocolo')
 
 % Guardar el nombre del regsitro a cargar
 if isempty([protocoloLFP.register_checked.name])
@@ -128,12 +128,14 @@ for m = 1:length(ia)%1:largo_dataAll
     % Cargar datos de todos los registros de un area
     Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
     mean_data = mean(Data_ref,2);
-    mean_data = mean_data(tiempo_sennal>inicio_s/60.0 & tiempo_sennal<tiempo_total);
-    time_data = tiempo_sennal(tiempo_sennal>inicio_s/60.0 & tiempo_sennal<tiempo_total);
-    time_data = time_data - min(time_data);
+    %mean_data = mean_data(tiempo_sennal>inicio_s/60.0 & tiempo_sennal<tiempo_total);
+    %time_data = tiempo_sennal(tiempo_sennal>inicio_s/60.0 & tiempo_sennal<tiempo_total);
+    %time_data = time_data - min(time_data);
+    mean_data = mean_data(tiempo_sennal<=(sum(registroLFP.times.phase_range_m)+1));
+    time_data = tiempo_sennal(tiempo_sennal<=(sum(registroLFP.times.phase_range_m)+1));
     
-    mean_data = imresize(mean_data,[19*60*1000,1]);
-    time_data = imresize(time_data,[1,19*60*1000]);
+    %mean_data = imresize(mean_data,[19*60*1000,1]);
+    %time_data = imresize(time_data,[1,19*60*1000]);
     
     % Spectrograma (se resize para definir un tama�o) 
     areas_spect = [registroLFP.average_spectrum.area];
@@ -144,23 +146,33 @@ for m = 1:length(ia)%1:largo_dataAll
     t_Spectrogram = registroLFP.average_spectrum(indx_spectrum).spectrogram.tiempo;
     f_Spectrogram = registroLFP.average_spectrum(indx_spectrum).spectrogram.frecuencia;
     
-    spectrograma = spectrograma(t_Spectrogram>inicio_s & t_Spectrogram<(tiempo_total*60.0),:);
-    t_Spectrogram = t_Spectrogram(t_Spectrogram>inicio_s & t_Spectrogram<(tiempo_total*60.0))-min(t_Spectrogram);
+    %spectrograma = spectrograma(t_Spectrogram>inicio_s & t_Spectrogram<(tiempo_total*60.0),:);
+    %t_Spectrogram = t_Spectrogram(t_Spectrogram>inicio_s & t_Spectrogram<(tiempo_total*60.0)) - min(t_Spectrogram);
+    spectrograma = spectrograma(t_Spectrogram<=(sum(registroLFP.times.phase_range_m)+1)*60.0,:);
+    t_Spectrogram = t_Spectrogram(t_Spectrogram<=(sum(registroLFP.times.phase_range_m)+1)*60.0);
 
-    t_size = (sum(registroLFP.times.phase_range_m)*60.0+60)*2-1; % pensando en ventanas de 1s y pasos de 0.5s por eso por mult por 2
-    f_size = 3145;
+    %t_size = (sum(registroLFP.times.phase_range_m)*60.0+60)*2-1; % pensando en ventanas de 1s y pasos de 0.5s por eso por mult por 2
+    %f_size = 3145;
+
+    if isempty(protocoloLFP.injured(1).spectrogram.frequency)        
+        t_size = length(t_Spectrogram);
+        f_size = length(f_Spectrogram);
+    else
+        t_size = length(protocoloLFP.injured(1).spectrogram.time);
+        f_size = length(protocoloLFP.injured(1).spectrogram.frequency);
+    end
     
     % Si el espectrograma se corta antes del tiempo final
     if t_size ~= length(t_Spectrogram)
         t_size = length(t_Spectrogram);
-        if t_size < (registroLFP.times.phase_range_m(1)*2.5)*60*2 
-            error('Al menos deben haber 3 min de la etapa post estimulacion')
+        if max(t_Spectrogram) < (registroLFP.times.phase_range_m(1)*2.5)*60+60 
+            error('Al menos debe haber la mitad de tiempo de la etapa post estimulacion')
         end
     end
     
     t_Spectrogram = t_Spectrogram(1:t_size);
     t_Spectrogram = t_Spectrogram-min(t_Spectrogram);
-    f_Spectrogram = imresize(f_Spectrogram,[1,f_size]); disp(length(f_Spectrogram));
+    f_Spectrogram = imresize(f_Spectrogram,[1,f_size]); %disp(length(f_Spectrogram));
     spectrograma = imresize(spectrograma, [t_size,f_size]);
     %spectrograma = spectrograma(1:t_size,1:f_size);
     
@@ -255,5 +267,5 @@ clear areas_totales C canales_eval Data_ref f_size f_Spectrogram i ia ic
 clear idx_data idx_injured idx_registerName idx_uninjured ind_slash indx_spectrum
 clear inicio_s m mean_data on_final_m on_inicio_m post_m pre_m 
 clear Spectral_on Spectral_post Spectral_pre spectrograma t_size t_Spectrogram
-clear tiempo_sennal tiempo_total time_data protocolo_name
-
+clear tiempo_sennal tiempo_total time_data protocolo_name ans
+close all

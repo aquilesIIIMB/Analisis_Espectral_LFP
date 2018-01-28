@@ -25,7 +25,7 @@ path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17
 timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-amplitud_umbral = 12; % 8,9,10 desde el mas sucio al mas limpio
+amplitud_umbral = 10; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
