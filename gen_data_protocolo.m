@@ -134,13 +134,13 @@ for m = 1:length(ia)%1:largo_dataAll
     mean_data = mean_data(tiempo_sennal<=(sum(registroLFP.times.phase_range_m)+1));
     time_data = tiempo_sennal(tiempo_sennal<=(sum(registroLFP.times.phase_range_m)+1));
     
-    %mean_data = imresize(mean_data,[19*60*1000,1]);
-    %time_data = imresize(time_data,[1,19*60*1000]);
+    mean_data = imresize(mean_data,[(sum(registroLFP.times.phase_range_m)+1)*60*1000,1]);
+    time_data = imresize(time_data,[1,(sum(registroLFP.times.phase_range_m)+1)*60*1000]);
     
-    % Spectrograma (se resize para definir un tama�o) 
+    % Spectrograma (se resize para definir un tamanno) 
     areas_spect = [registroLFP.average_spectrum.area];
     indx_spectrum = find(strcmp(areas_spect,area));
-    disp(areas_spect{indx_spectrum})
+    %disp(areas_spect{indx_spectrum})
     
     spectrograma = registroLFP.average_spectrum(indx_spectrum).spectrogram.data;
     t_Spectrogram = registroLFP.average_spectrum(indx_spectrum).spectrogram.tiempo;
@@ -170,7 +170,8 @@ for m = 1:length(ia)%1:largo_dataAll
         end
     end
     
-    t_Spectrogram = t_Spectrogram(1:t_size);
+    %t_Spectrogram = t_Spectrogram(1:t_size);
+    t_Spectrogram = imresize(t_Spectrogram,[1,t_size]);
     t_Spectrogram = t_Spectrogram-min(t_Spectrogram);
     f_Spectrogram = imresize(f_Spectrogram,[1,f_size]); %disp(length(f_Spectrogram));
     spectrograma = imresize(spectrograma, [t_size,f_size]);
@@ -267,5 +268,5 @@ clear areas_totales C canales_eval Data_ref f_size f_Spectrogram i ia ic
 clear idx_data idx_injured idx_registerName idx_uninjured ind_slash indx_spectrum
 clear inicio_s m mean_data on_final_m on_inicio_m post_m pre_m 
 clear Spectral_on Spectral_post Spectral_pre spectrograma t_size t_Spectrogram
-clear tiempo_sennal tiempo_total time_data protocolo_name ans
-close all
+clear tiempo_sennal tiempo_total time_data protocolo_name ans old_spectrograma
+close all 

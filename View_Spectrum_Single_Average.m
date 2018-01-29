@@ -230,6 +230,8 @@ for m = 1:length(ia)
     %    Spectrogram_mean(:,p) = smooth(t_Spectrogram_mean, Spectrogram_mean(:,p),0.1, 'rloess');
     %end
     
+    Spectrogram_mean = imresize(Spectrogram_mean, [length(t_Spectrogram_mean), 200]);
+    
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -359,9 +361,9 @@ for m = 1:length(ia)
     set(gca,'fontsize',20)
     ylim([1 100])
     c=colorbar('southoutside');
-    alphamax = 0.3; % Cuanto se acerca el max al minimo 
-    alphamin = 0; % Cuanto se acercca el minimo al maximo
-    alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
+    %alphamax = 0.3; % Cuanto se acerca el max al minimo 
+    %alphamin = 0; % Cuanto se acercca el minimo al maximo
+    %alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
     %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
     caxis([-0.5 0.5])
     hold on

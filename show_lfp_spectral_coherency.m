@@ -3,6 +3,7 @@
 % Sennales LFP
 signal_inj = [protocoloLFP.injured.area_signals];
 signal_uninj = [protocoloLFP.uninjured.area_signals];
+% Data tiene q tener el mismo largo, guiarse por el largo minimo
 min_amp = min([min([signal_inj(:).data]), min([signal_uninj(:).data])]);
 max_amp = max([max([signal_inj(:).data]), max([signal_uninj(:).data])]);
 max_lim_y = max([abs(min_amp), abs(max_amp)]);
