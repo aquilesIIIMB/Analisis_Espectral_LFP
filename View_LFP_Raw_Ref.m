@@ -110,15 +110,15 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
+        plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
         hold on;        
                 
     end
     
     for q = 1:largo_areasActuales
-        linea_ref = refline([0 -(1200*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
-        linea_ref = refline([0 -(1200*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
+        linea_ref = refline([0 -(10*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
         hold on;
     end
     
@@ -131,10 +131,10 @@ for m = 1:length(ia)
     %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(1200*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -1200+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
+    xlim([0 registroLFP.times.end_m]);ylim([-(10*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -10+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') LFP referenced with artifacts '], 'FontSize', 24)
-    yticks(flip(1:size(str_numCH,1))*-1200)
+    yticks(flip(1:size(str_numCH,1))*-10)
     yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;

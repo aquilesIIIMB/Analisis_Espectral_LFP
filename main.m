@@ -15,7 +15,7 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; %mixto
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\DUSTIN01_2018-01-31_13-03-34\'; %mixto
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
@@ -25,12 +25,12 @@ path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15
 timeRange = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-amplitud_umbral = 9; % 8,9,10 desde el mas sucio al mas limpio
+amplitud_umbral = [10, 7, 7]; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %canales_eval = 33:40;
-%canales_eval = [14:21,46:53];
-canales_eval = 1:64;
+canales_eval = [14:21,46:53];
+%canales_eval = 1:64;
 
 %% Como se va a referenciar cada canal
 tipo_de_referencia = 'area'; % 'none', 'general', 'area'
@@ -38,7 +38,8 @@ tipo_de_referencia = 'area'; % 'none', 'general', 'area'
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv';
 %channel_codes = 'channel_codes_florencia_2.csv';
-channel_codes = 'channel_codes_florencia_PUC.csv';
+%channel_codes = 'channel_codes_florencia_PUC.csv';
+channel_codes = 'channel_codes_Rata_R01.csv';
 
 %% Fin de los parametros
 

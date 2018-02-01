@@ -29,23 +29,31 @@ tiempo_total = registroLFP.times.end_m;
 for m = 1:length(ia)%1:largo_dataAll  
     i = ia(m);
 
-    areas_actuales = find(ic == ic(i));
+    %areas_actuales = find(ic == ic(i));
 
     % Cargar datos de todos los registros de un area
-    Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
+    %Data_ref = [registroLFP.channel(canales_eval(areas_actuales)).data];
+    Data_ref = registroLFP.area(m).data;
+    %ind_over_threshold_totals = registroLFP.area(m).ind_over_threshold;        
     
-    % Ponderacion de las se�ales del area segun sus zonas de no artefacto
-    Frec_sin = registroLFP.frec_sin_artifacts;    % hertz Freq: 120Hz
-    ind_over_threshold_totals = ~[registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold];
-    Data_ref_sum = sum(Data_ref.*ind_over_threshold_totals,2);
-    count_total = sum(ind_over_threshold_totals,2);
-    indices_cero = find(count_total == 0);
-    count_total(indices_cero) = 1;
-    Data_ref_sum = replacing_values(Data_ref_sum, indices_cero, Frec_sin);
-    Data_ref_pond = Data_ref_sum./count_total;
+    % Ponderacion de las sennales del area segun sus zonas de no artefacto
+    %Frec_sin = registroLFP.frec_sin_artifacts;    % hertz Freq: 120Hz
+    %ind_over_threshold_totals = ~[registroLFP.channel(canales_eval(areas_actuales)).ind_over_threshold];
+    %Data_ref_sum = sum(Data_ref.*ind_over_threshold_totals,2);
+    %count_total = sum(ind_over_threshold_totals,2);
+    %indices_cero = find(count_total == 0);
+    %count_total(indices_cero) = 1;
+    %Data_ref_sum = replacing_values(Data_ref_sum, indices_cero, Frec_sin);
+    %Data_ref_pond = Data_ref_sum./count_total;
+    
+    % Realizar el sacado de artefactos aca y por etapa;
+    %umbral = registroLFP.amp_threshold * median(sort(abs(Data_ref_pond)))/0.675; % 3,4,5 amplitud
+    % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
+    %Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
+    %[Data_ref_pond_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(Data_ref_pond, umbral, Fc);
     
     % Multitaper estimation para el spectrograma
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref_pond,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);
+    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params);
     Spectrogram_mean_raw = Spectrogram_mean; 
     %disp('dif tiempo')
     %disp(t_Spectrogram_mean(2)-t_Spectrogram_mean(1))

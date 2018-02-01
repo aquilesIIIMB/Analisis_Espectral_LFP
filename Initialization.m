@@ -142,7 +142,7 @@ registroLFP.times.total_recorded_m = []; % tiempo de duracion del registro
 registroLFP.times.steps_m = [];
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
-registroLFP.multitaper.params.tapers = ([3 3]); % [TW K], (K <= to 2TW-1)
+registroLFP.multitaper.params.tapers = ([3 4]); % [TW K], (K <= to 2TW-1)
 registroLFP.multitaper.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
 registroLFP.multitaper.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
 registroLFP.multitaper.params.fpass = [1 100]; % Rango de frecuencias
@@ -150,7 +150,7 @@ registroLFP.multitaper.params.err = 0; % Error considerado
 registroLFP.multitaper.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos) Probar con 2, se usa 4.1
+registroLFP.multitaper.movingwin.window = 1; % Ventanas (En segundos)
 registroLFP.multitaper.movingwin.winstep = registroLFP.multitaper.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Identificadores de las etapas que se han hecho y las que quedan

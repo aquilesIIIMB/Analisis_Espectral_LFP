@@ -325,7 +325,7 @@ for m = 1:length(ia)
     %plot(f_Spectrogram_mean, db(quantil_post(2,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
     %hold on
     %plot(f_Spectrogram_mean, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
-    xlim([5 25])
+    xlim([5 35])
     ylim([-10 10])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
@@ -365,7 +365,7 @@ for m = 1:length(ia)
     %alphamin = 0; % Cuanto se acercca el minimo al maximo
     %alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
     %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
-    caxis([-0.5 0.5])
+    caxis([-1 1])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -378,6 +378,38 @@ for m = 1:length(ia)
     saveas(fig_6,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_6)
+    
+    %-------------------Plot---Mean Spectrogram------------------------------------
+    fig_3 = figure('units','normalized','outerposition',[0 0 1 1]);
+    clim=prctile(reshape(Spectrogram_mean_raw',1,numel(Spectrogram_mean_raw)),[5 99]);
+    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_mean_raw',clim); 
+    %min_spect = min(min(db(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:)'+1,'power')));
+    %max_spect = max(max(db(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:)'+1,'power')));
+    %dist_maxmin = max_spect - min_spect;
+    cmap = colormap(parula(40));
+    axis xy
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
+    set(gca,'fontsize',20)
+    ylim([1 100])
+    c=colorbar('southoutside');
+    %alphamax = 0.3; % Cuanto se acerca el max al minimo 
+    %alphamin = 0; % Cuanto se acercca el minimo al maximo
+    %alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
+    %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
+    caxis([-3 3])
+    hold on
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Mean raw Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
+    set(c,'fontsize',17)
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma en bruto Multitaper de los LFP '];
+    saveas(fig_3,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_3)
     
 end
     
