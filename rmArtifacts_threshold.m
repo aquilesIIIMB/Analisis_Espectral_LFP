@@ -4,7 +4,7 @@ function [data_all_changed, fueraUmbral_propag_logical] = rmArtifacts_threshold(
 % alteraron por estar sobre el umbral y su propagacion hacia adelante y atras
 data_all_changed = data;
 largo_data = length(data);
-shift_left = 1100; % 50 100
+shift_left = 500; % 50 100
 shift_right = 2200; % 50 200
 
 %idx_over_inicial = find((data > umbral) | (data < -umbral));

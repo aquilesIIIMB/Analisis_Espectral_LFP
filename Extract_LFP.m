@@ -63,10 +63,17 @@ registroLFP.times.steps_m = time_step_m_tiempoTotal;
 
 % Eliminar los datos del primer LFP sobre los 960 segundos
 data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
+
+% Calcular el umbral
+umbral = registroLFP.amp_threshold * median(sort(abs(data_elim_maxTime)))/0.675;
+
+% Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
+Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
+[~, ind_fueraUmbral] = rmArtifacts_threshold(data_elim_maxTime, umbral, Fc);
     
 % Almacenamiento de los LFP en la estructura
-% Datos filtrados, downsampleados, acortados y sin artefactos
-registroLFP.channel(canales_eval(1)).data_raw = data_elim_maxTime;
+% Datos filtrados, downsampleados, acortados y estandarizados con zscore de los datos bajo el umbral 
+registroLFP.channel(canales_eval(1)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
 
 tic;
 for i = 2:length(canales_eval) 
@@ -87,11 +94,17 @@ for i = 2:length(canales_eval)
     
     % Eliminar los datos del LFP "i" sobre los 960 segundos
     data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Tal vez eliminar los primeros segundos
+    
+    % Calcular el umbral
+    umbral = registroLFP.amp_threshold * median(sort(abs(data_elim_maxTime)))/0.675;
+    
+    [~, ind_fueraUmbral] = rmArtifacts_threshold(data_elim_maxTime, umbral, Fc);
+
      
     % Guardar los datos filtrados, downsampleados, acortados y sin artefactos
     % Almacenamiento de los LFP en la estructura
     % Datos filtrados, downsampleados, acortados y sin artefactos
-    registroLFP.channel(canales_eval(i)).data_raw = data_elim_maxTime;
+    registroLFP.channel(canales_eval(i)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
         
 end
 toc;

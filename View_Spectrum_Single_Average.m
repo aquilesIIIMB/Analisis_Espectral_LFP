@@ -134,7 +134,7 @@ for j = 1:largo_canales_eval
     %-------------------Plot---Spectrogram------------------------------------
     fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(db(Spectrogram'+1,'power'),1,numel(Spectrogram)),[5 99]);
-    imagesc(t_Spectrogram,f_Spectrogram,db(Spectrogram'+1,'power'),clim); colormap('jet');
+    imagesc(t_Spectrogram,f_Spectrogram,db(Spectrogram'+1,'power'),clim); colormap(parula(40));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -142,7 +142,7 @@ for j = 1:largo_canales_eval
     %ylim(registroLFP.multitaper.params.fpass)
     ylim([1 100])
     c=colorbar('southoutside');
-    caxis([0, 30]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
+    caxis([0, 0.15]); %[0, 30] [-10, 10] [-20, 15] [-15, 20]
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -231,6 +231,7 @@ for m = 1:length(ia)
     %end
     
     Spectrogram_mean = imresize(Spectrogram_mean, [length(t_Spectrogram_mean), 200]);
+    Spectrogram_mean_raw = imresize(Spectrogram_mean_raw, [length(t_Spectrogram_mean), 200]);
     
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
@@ -241,7 +242,7 @@ for m = 1:length(ia)
     hold on
     p3 = plot(f_Spectrogram_mean, Spectral_post_mean,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
     xlim([1 100])
-    ylim([-5 5])
+    ylim([-10 10])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -326,7 +327,7 @@ for m = 1:length(ia)
     %hold on
     %plot(f_Spectrogram_mean, db(quantil_post(4,:), 'power'), '-', 'Color', [0.466, 0.674, 0.188],'LineWidth',1);
     xlim([5 35])
-    ylim([-10 10])
+    ylim([-25 15])
     %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     %lgd.FontSize = 20;
     %[~, idx] = min(abs(f_Spectrogram_mean-17.5));
@@ -348,6 +349,8 @@ for m = 1:length(ia)
     close(fig_11)
 
     %-------------------Plot---Mean Spectrogram------------------------------------
+    f_Spectrogram_mean = imresize(f_Spectrogram_mean,[1,200]);
+
     fig_6 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(Spectrogram_mean',1,numel(Spectrogram_mean)),[5 99]);
     imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_mean',clim); 
@@ -411,6 +414,42 @@ for m = 1:length(ia)
     %waitforbuttonpress;
     close(fig_3)
     
+    %-------------------Plot---Mean Spectrogram------------------------------------
+    Spectrogram_mean_raw(Spectrogram_mean_raw>3) = 3;
+    Spectrogram_mean_raw(Spectrogram_mean_raw<-3) = -3;
+    Spectrogram_mean(Spectrogram_mean>1) = 1;
+    Spectrogram_mean(Spectrogram_mean<-1) = -1;
+    Spectrogram_destacado = (Spectrogram_mean.*3+Spectrogram_mean_raw);
+    fig_15 = figure('units','normalized','outerposition',[0 0 1 1]);
+    clim=prctile(reshape(Spectrogram_destacado',1,numel(Spectrogram_destacado)),[5 99]);
+    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_destacado',clim); 
+    %min_spect = min(min(db(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:)'+1,'power')));
+    %max_spect = max(max(db(Spectrogram_pre_mean(ind_noartefactos_Spec_pre,:)'+1,'power')));
+    %dist_maxmin = max_spect - min_spect;
+    cmap = colormap(parula(40));
+    axis xy
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
+    set(gca,'fontsize',20)
+    ylim([1 100])
+    c=colorbar('southoutside');
+    %alphamax = 0.3; % Cuanto se acerca el max al minimo 
+    %alphamin = 0; % Cuanto se acercca el minimo al maximo
+    %alphashift_left = 0.5; % Cuanto se corre a la izquierda los valores
+    %caxis([alphamin * dist_maxmin + min_spect - alphashift_left*dist_maxmin, max_spect - alphamax * dist_maxmin]); %[-10, 10] ([-20, 15]) [-15, 20]
+    caxis([-6 6])
+    hold on
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Mean raw Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
+    set(c,'fontsize',17)
+    name_figure_save = [inicio_foldername,'Imagenes',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma destacado Multitaper de los LFP '];
+    saveas(fig_15,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_15)
 end
     
 end

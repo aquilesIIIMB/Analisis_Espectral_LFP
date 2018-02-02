@@ -49,7 +49,9 @@ mu = mean(x_dearifacted,dim);
 sigma = std(x_dearifacted,flag,dim);
 sigma0 = sigma;
 sigma0(sigma0==0) = 1;
-z = x;
-z((~ind_over_threshold)) = bsxfun(@minus,x((~ind_over_threshold)), mu);
-z((~ind_over_threshold)) = bsxfun(@rdivide, z((~ind_over_threshold)), sigma0);
+%z = x;
+%z((~ind_over_threshold)) = bsxfun(@minus,x((~ind_over_threshold)), mu);
+%z((~ind_over_threshold)) = bsxfun(@rdivide, z((~ind_over_threshold)), sigma0);
+z = bsxfun(@minus, x, mu);
+z = bsxfun(@rdivide, z, sigma0);
 

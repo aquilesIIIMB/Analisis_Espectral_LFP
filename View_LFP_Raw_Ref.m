@@ -36,7 +36,7 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(1000*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_raw);
+        plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_raw);
         hold on;       
                 
     end
@@ -50,10 +50,10 @@ for m = 1:length(ia)
     %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(1000*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -1000+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
+    xlim([0 registroLFP.times.end_m]);ylim([-(10*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -10+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') Raw LFP'], 'FontSize', 24)
-    yticks(flip(1:size(str_numCH,1))*-1000)
+    yticks(flip(1:size(str_numCH,1))*-10)
     yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;
@@ -108,34 +108,43 @@ for m = 1:length(ia)
     
     
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
-    for q = 1:largo_areasActuales        
+    %for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
-        hold on;        
+    %plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_ref);
+    plot(registroLFP.times.steps_m, registroLFP.area(m).data_raw);
+    hold on;        
                 
-    end
+    %end
     
-    for q = 1:largo_areasActuales
-        linea_ref = refline([0 -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
-        hold on;
-        linea_ref = refline([0 -(10*q)-registroLFP.channel(canales_eval(areas_actuales(q))).threshold]); linea_ref.Color = 'r'; linea_ref.LineStyle = '--';
-        hold on;
-    end
+    %for q = 1:largo_areasActuales
+    plot([0 registroLFP.times.phase_range_m(1)], [registroLFP.area(m).threshold(1) registroLFP.area(m).threshold(1)],'r--','LineWidth',2.0);
+    hold on;
+    plot([registroLFP.times.phase_range_m(1) registroLFP.times.phase_range_m(1)*2+1], [registroLFP.area(m).threshold(2) registroLFP.area(m).threshold(2)],'r--','LineWidth',2.0); 
+    hold on;
+    plot([registroLFP.times.phase_range_m(1)*2+1 registroLFP.times.phase_range_m(1)*3+1], [registroLFP.area(m).threshold(3) registroLFP.area(m).threshold(3)],'r--','LineWidth',2.0); 
+    hold on;
+    plot([0 registroLFP.times.phase_range_m(1)], [-registroLFP.area(m).threshold(1) -registroLFP.area(m).threshold(1)],'r--','LineWidth',2.0); 
+    hold on;
+    plot([registroLFP.times.phase_range_m(1) registroLFP.times.phase_range_m(1)*2+1], [-registroLFP.area(m).threshold(2) -registroLFP.area(m).threshold(2)],'r--','LineWidth',2.0); 
+    hold on;
+    plot([registroLFP.times.phase_range_m(1)*2+1 registroLFP.times.phase_range_m(1)*3+1], [-registroLFP.area(m).threshold(3) -registroLFP.area(m).threshold(3)],'r--','LineWidth',2.0); 
+    hold on;
+    %end
     
     % Lineas divisorias de cada fase
     %line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(10*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -10+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
+    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2]);%ylim([-(10*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_ref)  -10+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_ref)]) %revisar
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') LFP referenced with artifacts '], 'FontSize', 24)
-    yticks(flip(1:size(str_numCH,1))*-10)
-    yticklabels(flip(str_numCH,1))
+    %yticks(flip(1:size(str_numCH,1))*-10)
+    %yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;
     %lgd.Orientation = 'horizontal';
@@ -150,28 +159,30 @@ for m = 1:length(ia)
     
 
     fig_1 = figure('units','normalized','outerposition',[0 0 1 1]);
-    for q = 1:largo_areasActuales
+    %for q = 1:largo_areasActuales
         
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(20*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data);
-        hold on;
+        %plot(registroLFP.times.steps_m, -(20*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data);
+    plot(registroLFP.times.steps_m, registroLFP.area(m).data);
+    hold on;
                 
-    end
+    %end
     
     % Lineas divisorias de cada fase
     %line([registroLFP.times.start_s/60 registroLFP.times.start_s/60], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
     %line([registroLFP.times.end_m registroLFP.times.end_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
+    %xlim([0 registroLFP.times.end_m]);ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
+    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2]);%ylim([-(20*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data)  -20+max(registroLFP.channel(canales_eval(areas_actuales(1))).data)])
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') LFP referenced, norm & without artifacts '], 'FontSize', 24)
-    yticks(flip(1:size(str_numCH,1))*-20)
-    yticklabels(flip(str_numCH,1))
+    %yticks(flip(1:size(str_numCH,1))*-20)
+    %yticklabels(flip(str_numCH,1))
     %lgd = legend(str_numCH);
     %lgd.FontSize = 20;
     %lgd.Orientation = 'horizontal';
