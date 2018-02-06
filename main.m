@@ -1,4 +1,3 @@
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % main.m
@@ -9,37 +8,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear; close all
 
-%%% !!Que falta: 
-%% Para mejorar lo de los artefactos, restar el lado derecho con el izquierdo
-
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\RUSH2_2018-01-31_15-51-21\'; 
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; 
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 
 %% Intervalos de tiempo del protocolo
-%timeRange = [5, 5, 5];
-timeRange = [6, 6, 6]; %Mixtos
+%timeRanges = [5, 5, 5]; %DC or AC
+timeRanges = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-amplitud_umbral = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
+threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
-%canales_eval = 33:40;
-%canales_eval = [14:21,46:53];
-canales_eval = 1:64;
-
-%% Como se va a referenciar cada canal
-tipo_de_referencia = 'area'; % 'none', 'general', 'area'
+eval_channels = [2:5,14:21,34:37,46:53];
+%eval_channels = [14:21,46:53];
+%eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv'; % Flo
 %channel_codes = 'channel_codes_florencia_2.csv'; % Flo Esgrima UCH
-%channel_codes = 'channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
-channel_codes = 'channel_codes_Rata_R01.csv'; % Caro
+channel_codes = 'channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
+%channel_codes = 'channel_codes_Rata_R01.csv'; % Caro
 
 %% Fin de los parametros
 
@@ -52,9 +45,9 @@ Extract_LFP;
 
 View_LFP_Raw_Ref;
 
-Spectral_Analysis_Single;
+Spectral_Channel;
 
-View_Spectrum_Single_Average;
+View_Spectrum_Channel_Area;
 
 % Etapa de eliminacion de ch y lfp promedios
 Delete_CH;
@@ -63,9 +56,13 @@ Referencing;
 
 View_LFP_Raw_Ref;
 
-Spectral_Analysis_Average;
+Spectral_Area;
 
-View_Spectrum_Single_Average;
+View_Spectrum_Channel_Area;
+
+Coherence_Area;
+
+View_Coherence_Area;
 toc;
 
 sonido_alarma;

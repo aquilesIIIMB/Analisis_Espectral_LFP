@@ -1,12 +1,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Spectral_Analysis_Single.m
-fprintf('\nAnalisis Espectral Individual\n')
+% Spectral_Channel.m
+fprintf('\nAnalisis Espectral por Canal\n')
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if ~registroLFP.stage.view_lfp 
+if ~registroLFP.analysis_stages.view_lfp 
     error('Falta el bloque de visualizacion');
     
 end
@@ -20,8 +20,6 @@ on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
 tiempo_total = registroLFP.times.end_m;
 
-% Ver si usar [pww,f_ww] = pwelch(x,1000,500,1000,1000);
-%             figure;semilogy(f_ww,pww)
 %% Calculo de la respuesta en frecuencia y espectrograma
 for i = 1:largo_canales_eval
     
@@ -29,19 +27,17 @@ for i = 1:largo_canales_eval
     Data = registroLFP.channel(canales_eval(i)).data_raw;
     
     % Multitaper estimation para el spectrograma
-    [Spectrogram,t_Spectrogram,f_Spectrogram]= mtspecgramc(Data,[registroLFP.multitaper.movingwin.window registroLFP.multitaper.movingwin.winstep],registroLFP.multitaper.params); 
-    
-    % Se le quita el ruido rosa, dejando mas plano el espectro
-    %Spectrogram = pink_noise_del(f_Spectrogram, Spectrogram);
+    [Spectrogram,t_Spectrogram,f_Spectrogram]= mtspecgramc(Data,[registroLFP.multitaper.spectrogram.movingwin.window registroLFP.multitaper.spectrogram.movingwin.winstep],registroLFP.multitaper.spectrogram.params); 
     
     % PSD del LFP
     Spectral_pre = median(Spectrogram((t_Spectrogram<(pre_m*60.0-5)),:),1);
     Spectral_on = median(Spectrogram(t_Spectrogram>(on_inicio_m*60.0+5) & t_Spectrogram<(on_final_m*60.0-5),:),1);    
     Spectral_post = median(Spectrogram(t_Spectrogram>(post_m*60.0+5) & t_Spectrogram<(tiempo_total*60),:),1);
     
+    % Almacenar datos
     registroLFP.channel(canales_eval(i)).spectrogram.data = Spectrogram;
-    registroLFP.channel(canales_eval(i)).spectrogram.tiempo = t_Spectrogram;
-    registroLFP.channel(canales_eval(i)).spectrogram.frecuencia = f_Spectrogram;
+    registroLFP.channel(canales_eval(i)).spectrogram.time = t_Spectrogram;
+    registroLFP.channel(canales_eval(i)).spectrogram.frequency = f_Spectrogram;
     
     registroLFP.channel(canales_eval(i)).psd.pre.data = Spectral_pre;
     registroLFP.channel(canales_eval(i)).psd.on.data = Spectral_on;
@@ -49,11 +45,8 @@ for i = 1:largo_canales_eval
     
 end
 
-registroLFP.stage.spectral_analysis_single = 1;
+registroLFP.analysis_stages.spectral_channel = 1;
 
-% Eliminacion de variables no utilizadas
-clear Spectrogram Spectrogram_pre Spectrogram_on Spectrogram_post i Data
-clear Mean_Spectrogram_pre Desv_Spectrogram_pre pre_m on_inicio_m on_final_m
-clear Spectral_pre Spectral_on Spectral_post post_m tiempo_total canales_eval largo_canales_eval
-clear t_Spectrogram f_Spectrogram
+% Eliminacion de variables que no se van a guardar
+clearvars -except registroLFP path name_registro foldername inicio_foldername
 

@@ -31,7 +31,7 @@ function show_injuredArea(registroLFP)
         psd_pre = PSD_pre_mean_raw;%registroLFP.average_spectrum(i).psd.pre.data;        
         psd_on = PSD_on_mean_raw;%registroLFP.average_spectrum(i).psd.on.data;
         psd_post = PSD_post_mean_raw;%registroLFP.average_spectrum(i).psd.post.data;
-       %base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
+        %base=interp1(freq(freq>=min(freq_beta) & freq<=40),psd_pre_smooth(freq>=min(freq_beta) & freq<=40),freq_beta,'spline');
         %PSD_pre_mean_raw_temp = PSD_pre_mean_raw;
         %PSD_pre_mean_raw_temp(freq>=banda_beta(1) & freq<=banda_beta(2)) = [];
         %freq_temp = freq;

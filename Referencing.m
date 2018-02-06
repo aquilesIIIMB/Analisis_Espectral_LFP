@@ -8,11 +8,11 @@ fprintf('\nReferencing\n')
 % Referenciacion de cada canal
 %registroLFP.stage.referencing = 0; % temporal test
 
-if ~registroLFP.stage.extract_lfp 
+if ~registroLFP.analysis_stages.extract_lfp 
     error('Falta el bloque de extraccion de LFP');
     
 else
-    if ~registroLFP.stage.delete_channel && registroLFP.stage.referencing
+    if ~registroLFP.analysis_stages.delete_channel && registroLFP.analysis_stages.referencing
         error('Falta el bloque de eliminacion de canal');
     end
 end
@@ -21,24 +21,20 @@ canales_eval = find(~[registroLFP.channel.removed]);
 
 if strcmp(registroLFP.reference_type, 'none') %% Sin referencia
 
+    
 elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio general
     largo_canales_eval = size(canales_eval,2);
     average = mean([registroLFP.channel.data_raw],2);
     
     for j = 1:largo_canales_eval 
-        %disp(canales_eval(j))
-        % Referenciacion
-        %data_ref = registroLFP.channel(canales_eval(j)).data_noartifacted - average;
-        %registroLFP.channel(canales_eval(j)).data = data_ref; 
 
         % Referenciacion
-        %data_ref_artifacted = flipud(registroLFP.channel(canales_eval(j)).data_raw - average);
         data_ref_artifacted = registroLFP.channel(canales_eval(j)).data_raw - average;
         registroLFP.channel(canales_eval(j)).data_ref = data_ref_artifacted; 
         
         % Calcular el umbral
         % Tal vez hacer umbral por fase
-        umbral = registroLFP.amp_threshold * median(sort(abs(data_ref_artifacted)))/0.675; % 3,4,5 amplitud
+        umbral = registroLFP.amp_threshold(1) * median(sort(abs(data_ref_artifacted)))/0.675;
         registroLFP.channel(canales_eval(j)).threshold = umbral; 
         
         % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
@@ -56,8 +52,6 @@ elseif strcmp(registroLFP.reference_type, 'general') %% Referencia al promedio g
     end
     
 
-
-% Se puede referenciar no solo por la misma area sino por la zona M1!
 elseif strcmp(registroLFP.reference_type, 'area') %% Referencia al promedio de cada area (ex M1L)
     % indices de las mismas areas
     [C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
@@ -70,49 +64,22 @@ elseif strcmp(registroLFP.reference_type, 'area') %% Referencia al promedio de c
         largo_area_actual = length(areas_actuales);
         data_artifacted_area = [registroLFP.channel(canales_eval(areas_actuales)).data_raw];
         average_area = mean(data_artifacted_area,2);
-        %average_area = mean(zscore(data_artifacted_area),2);
-          
-        %for j = 1:largo_area_actual 
-        %    ind_over_threshold = registroLFP.channel(canales_eval(areas_actuales(j))).ind_over_threshold;
-        %    data_ref_noartifacted = data_noartifacted_area(:,j);
-        %    data_ref_noartifacted(~ind_over_threshold) = data_noartifacted_area((~ind_over_threshold),j) - avarage_area(~ind_over_threshold);
-        %    registroLFP.channel(canales_eval(areas_actuales(j))).data = data_ref_noartifacted;
-        %end
         
         for j = 1:largo_area_actual 
             data_ref_artifacted = registroLFP.channel(canales_eval(areas_actuales(j))).data_raw - average_area;
-            %data_ref_artifacted = zscore(registroLFP.channel(canales_eval(areas_actuales(j))).data_raw) - average_area;
             registroLFP.channel(canales_eval(areas_actuales(j))).data_ref = sign(mean(data_ref_artifacted)).*data_ref_artifacted; 
-            
-            % Calcular el umbral
-            % Tal vez hacer umbral por fase
-            %umbral = registroLFP.amp_threshold * median(sort(abs(data_ref_artifacted)))/0.675; % 3,4,5 amplitud
-            %registroLFP.channel(canales_eval(areas_actuales(j))).threshold = umbral; 
-
-            % Eliminacion de artefactos % De aqui se obtiene una sennal sin artefactos, recalcular los limites
-            %Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
-            %[data_ref_noartifacted, ind_fueraUmbral] = rmArtifacts_threshold(data_ref_artifacted, umbral, Fc);
-
-            %registroLFP.channel(canales_eval(areas_actuales(j))).data_noartifacted = data_ref_noartifacted; %%% Aumenta el numero de datos
-
-            % Datos estandarizados con zscore de los datos bajo el umbral 
-            %registroLFP.channel(canales_eval(areas_actuales(j))).data = zscore_noartifacted(data_ref_noartifacted,ind_fueraUmbral);
-            %registroLFP.channel(canales_eval(j)).data = zscore(data_referenciado);
-
-            % Almacenar los indices de los valores sobre el umbral
-            %registroLFP.channel(canales_eval(areas_actuales(j))).ind_over_threshold = ind_fueraUmbral;    
             
         end
         
         Data_area = zscore(mean([registroLFP.channel(canales_eval(areas_actuales)).data_ref],2)); % guardar
         registroLFP.area(m).data_raw = Data_area;
         
-        Data_area_pre = Data_area(registroLFP.times.steps_m<(registroLFP.times.phase_range_m(1)));
-        Data_area_on = Data_area(registroLFP.times.steps_m>(registroLFP.times.phase_range_m(1)) & registroLFP.times.steps_m<(registroLFP.times.phase_range_m(1)*2+1));
-        Data_area_post = Data_area(registroLFP.times.steps_m>(registroLFP.times.phase_range_m(1)*2+1));
+        Data_area_pre = Data_area(registroLFP.times.steps_m<(registroLFP.times.stages_timeRanges_m(1)));
+        Data_area_on = Data_area(registroLFP.times.steps_m>(registroLFP.times.stages_timeRanges_m(1)) & registroLFP.times.steps_m<(registroLFP.times.stages_timeRanges_m(1)*2+1));
+        Data_area_post = Data_area(registroLFP.times.steps_m>(registroLFP.times.stages_timeRanges_m(1)*2+1));
         
         % Realizar el sacado de artefactos aca y por etapa;
-        umbral_pre = registroLFP.amp_threshold(1) * median(sort(abs(Data_area_pre)))/0.675; % 3,4,5 amplitud 30
+        umbral_pre = registroLFP.amp_threshold(1) * median(sort(abs(Data_area_pre)))/0.675;
         umbral_on = registroLFP.amp_threshold(2) * median(sort(abs(Data_area_on)))/0.675;
         umbral_post = registroLFP.amp_threshold(3) * median(sort(abs(Data_area_post)))/0.675;
         registroLFP.area(m).threshold = [umbral_pre, umbral_on, umbral_post]; 
@@ -127,7 +94,7 @@ elseif strcmp(registroLFP.reference_type, 'area') %% Referencia al promedio de c
         ind_fueraUmbral = [ind_fueraUmbral_pre; ind_fueraUmbral_on; ind_fueraUmbral_post];
         
         %Nombre del area
-        registroLFP.area(m).name = C(m);
+        registroLFP.area(m).name = C{m};
         
         % Datos estandarizados con zscore de los datos bajo el umbral 
         registroLFP.area(m).data = Data_area_noartifacted; %zscore_noartifacted(Data_area_noartifacted, ind_fueraUmbral);
@@ -141,14 +108,20 @@ elseif strcmp(registroLFP.reference_type, 'area') %% Referencia al promedio de c
 
 elseif strcmp(registroLFP.reference_type, 'sector') %% Referencia al promedio de los "sectores" (ex M1)
     
-    disp('No Disponible')
+    disp('Not available')
+    
+elseif strcmp(registroLFP.reference_type, 'hemisphere') %% Referencia al promedio del hemisferio 
+    
+    disp('Not available')
+    
+elseif strcmp(registroLFP.reference_type, 'bi-channel') %% Referencia entre par de canales de la misma area
+    
+    disp('Not available')
 
 end  
 
-registroLFP.stage.referencing = 1;
+registroLFP.analysis_stages.referencing = 1;
 
-% Eliminacion de variables no utilizadas
-clear data_ref zdata largo_area_actual areas_actuales C ia ic data_ref_artifacted data_ref_noartifacted
-clear umbral canales_eval average data_referenciado j largo_canales_eval ind_fueraUmbral
-clear avarage_area data_artifacted_area Fc i m
+% Eliminacion de variables que no se van a guardar
+clearvars -except registroLFP path name_registro foldername inicio_foldername
 

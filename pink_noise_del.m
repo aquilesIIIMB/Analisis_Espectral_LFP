@@ -1,8 +1,9 @@
-function [salida, modelo_eval] = pink_noise_del(entrada_x, entrada_y, idx_spect_artifacts)
+function [salida, modelo_salida] = pink_noise_del(entrada_x, entrada_y, idx_spect_artifacts)
 % dim(entrada_y) = tiempo x frecuencia
 size_time = size(entrada_y,1);
 size_frec = size(entrada_y,2);
 salida = entrada_y;
+modelo_salida = zeros(size(entrada_y));
 
 %mean_spectrum = mean(entrada_y);
 %p_mean = polyfit(log(entrada_x),log(mean_spectrum),1);
@@ -31,6 +32,7 @@ for i = 1:size_time
 
     modelo_eval = b*entrada_x.^m;
     salida(i,:) = entrada_y(i,:)./modelo_eval;
+    modelo_salida(i,:) = modelo_eval;
 
     %ezplot(@(x) b*x.^m,[x(1) x(end)])
     %figure;

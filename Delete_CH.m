@@ -8,7 +8,7 @@ fprintf('\nEliminacionCH\n')
 % Eliminar los canales no validos y volver a calcular
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if ~registroLFP.stage.view_spectrum 
+if ~registroLFP.analysis_stages.view_spectrum 
     error('Falta el bloque de visualizacion de LFP');
 
 end
@@ -22,12 +22,12 @@ Ch_del = [];
 % Confirma que ya se seleccionaron los canales
 while 1
     try
-        confirmacion_Param = input('Ya seleccionaste los canales a eliminar?[Type si]:  ','s');
+        confirmation = input('Ya seleccionaste los canales a eliminar?[Type si]:  ','s');
     catch
         continue;
     end
 
-    if strcmp(confirmacion_Param,'si')  
+    if strcmp(confirmation,'si')  
         fprintf('\nEliminemos Canales \n\n');
         break
     end
@@ -61,9 +61,9 @@ for k = 1:length(canales_eval_selected)
 end
 fprintf('\n');
 
-registroLFP.stage.delete_channel = 1;
+registroLFP.analysis_stages.delete_channel = 1;
 
-% Eliminacion de variables no utilizadas
-clear Ch_del confirmacion_Param canales_eval_selected k Ch_del_actual
+% Eliminacion de variables que no se van a guardar
+clearvars -except registroLFP path name_registro foldername inicio_foldername
 
     

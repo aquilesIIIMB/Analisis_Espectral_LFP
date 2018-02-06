@@ -7,9 +7,10 @@ fprintf('\nExtraerLFP\n')
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Extraer lfp de los registros de cada canal
-if ~registroLFP.stage.initialization
+if ~registroLFP.analysis_stages.initialization
    error('Falta el bloque de inicializacion') 
 end
+
 % Prefijo de los archivos dentro de la ruta, obtiene todos los canales, los
 % que se quieren evaluar y los que no
 dir_signals = dir([path,'10*_CH*.continuous']);
@@ -18,7 +19,7 @@ dir_signals = dir([path,'10*_CH*.continuous']);
 dir_signals = char(natsortfiles({dir_signals.name})); % Ordena los nombres de los archivos correctamente
 
 % Nombre del archivo donde esta el registro de los canales que se desean
-ruta_regEval = dir_signals(canales_eval(1),:);
+ruta_regEval = dir_signals(eval_channels(1),:);
 disp(ruta_regEval)
 
 % Obtener la informacion del primer archivo
@@ -39,16 +40,6 @@ data_filt = filtfilt(Hd,data);
 
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
 data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
-
-% Invertir de izquerda a derecha el registro ?
-%data_downS = flipud(data_downS);
-
-% TTL
-%a = load_open_ephys_data_faster('C:\Users\Aquiles\Downloads\Trabajo de titulo\Database\+2500\arturo_2017-06-09_15-24-39\100_ADC8.continuous');
-%b = filter(Hd,a);
-%b_downS = downsample(b,sampleRate/registroLFP.desired_fs);
-%t_downS = linspace(0,(length(b_downS)/1000)/60.0,length(b_downS));
-%plot(t_downS,b_downS)
 
 % Tiempo maximo de registro
 time_max_reg_seg = length(data)/sampleRate;
@@ -73,13 +64,13 @@ Fc = registroLFP.frec_sin_artifacts;      % hertz Freq: 110Hz
     
 % Almacenamiento de los LFP en la estructura
 % Datos filtrados, downsampleados, acortados y estandarizados con zscore de los datos bajo el umbral 
-registroLFP.channel(canales_eval(1)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
+registroLFP.channel(eval_channels(1)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
 
 tic;
-for i = 2:length(canales_eval) 
+for i = 2:length(eval_channels) 
 
     % Nombre del archivo donde esta el registro
-    ruta_regEval = dir_signals(canales_eval(i),:);
+    ruta_regEval = dir_signals(eval_channels(i),:);
     disp(ruta_regEval)
     
     % Obtener la informacion del archivo "i"
@@ -104,21 +95,15 @@ for i = 2:length(canales_eval)
     % Guardar los datos filtrados, downsampleados, acortados y sin artefactos
     % Almacenamiento de los LFP en la estructura
     % Datos filtrados, downsampleados, acortados y sin artefactos
-    registroLFP.channel(canales_eval(i)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
+    registroLFP.channel(eval_channels(i)).data_raw = zscore_noartifacted(data_elim_maxTime, ind_fueraUmbral); %data_elim_maxTime;
         
 end
 toc;
 
-registroLFP.stage.extract_lfp = 1;
+registroLFP.analysis_stages.extract_lfp = 1;
 
-% Eliminacion de variables no utilizadas
-clear data data_filt data_downS data_elim_maxTime umbral data_deartifacted
-clear i d Hd k confirmacion_Param largo_dir T tinicial tipo_de_referencia
-clear timeRange time_step_m time_step_m_tiempoTotal time_max_reg_seg
-clear ruta_con100 ruta_regEval dir_signals channel_codes sampleRate canales_eval
-clear path path_name_registro slash_backslash inicio_new_dir1 inicio_new_dir2
-clear inicio_name_registro
-
+% Eliminacion de variables que no se guardaran
+clearvars -except registroLFP path name_registro foldername inicio_foldername
 
 %Hd = designfilt('lowpassiir','FilterOrder',40, ...
 %'HalfPowerFrequency',150,'DesignMethod','butter','SampleRate',sampleRate);
