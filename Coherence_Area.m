@@ -10,7 +10,8 @@ if ~registroLFP.analysis_stages.referencing || ~registroLFP.analysis_stages.dele
     error('Falta el bloque de eliminacion de canales y referenciacion');
     
 end
-
+% !!!!!!!!!!!! Modificar para que no asuma q los primeros registros son de
+% izquierda
 canales_eval = find(~[registroLFP.channel.removed]);
 
 pre_m = registroLFP.times.pre_m;
@@ -21,7 +22,7 @@ tiempo_total = registroLFP.times.end_m;
 
 % Tomar las areas que hay, si hay una sola, no ejecutar
 %% Calculos para el analisis del promedio de las Areas
-[C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
+[C,ia,ic] = unique({registroLFP.area.name},'stable');
 num_areas_izq = 0;
 num_areas_der = 0;
 
@@ -45,6 +46,7 @@ for i=1:num_areas_izq-1
         signal2 = registroLFP.area(j).data;
         [C,phi,S12,S1,S2,t,f]=cohgramc(signal1,signal2,[registroLFP.multitaper.coherenciogram.movingwin.window registroLFP.multitaper.coherenciogram.movingwin.winstep],registroLFP.multitaper.coherenciogram.params);
         C = imresize(C, [length(t), 200]);
+        phi = imresize(phi, [length(t), 200]);
         f = imresize(f,[1,200]);
 
         [~,ind_max] = max(C,[],2); % Indice de los maximos en cada bin de tiempo
@@ -61,16 +63,28 @@ for i=1:num_areas_izq-1
         C_pre_mean = C(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
         C_on_mean = C(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
         C_post_mean = C(idx_post(~ismember(idx_post, idx_spect_artifacts)),:); 
+        
+        phi_pre_mean = phi(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
+        phi_on_mean = phi(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
+        phi_post_mean = phi(idx_post(~ismember(idx_post, idx_spect_artifacts)),:); 
 
         % PSD sin normalizar por la frecuencia de la fase pre (No contar los valores cercanos a la sinusoidal)
         Coherence_pre_mean = mean(C_pre_mean,1);
         Coherence_on_mean = mean(C_on_mean,1);
         Coherence_post_mean = mean(C_post_mean,1);
         
+        Phase_pre_mean = mean(phi_pre_mean,1);
+        Phase_on_mean = mean(phi_on_mean,1);
+        Phase_post_mean = mean(phi_post_mean,1);
+        
         % Smooth
         Coherence_pre_mean = smooth(f, Coherence_pre_mean,0.05,'rloess');
         Coherence_on_mean = smooth(f, Coherence_on_mean,0.05,'rloess');
         Coherence_post_mean = smooth(f, Coherence_post_mean,0.05,'rloess');
+        
+        Phase_pre_mean = smooth(f, Phase_pre_mean,0.05,'rloess');
+        Phase_on_mean = smooth(f, Phase_on_mean,0.05,'rloess');
+        Phase_post_mean = smooth(f, Phase_post_mean,0.05,'rloess');
        
         % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
         %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
@@ -96,6 +110,10 @@ for i=1:num_areas_izq-1
         registroLFP.average_sync{i,j}.coherence.on.data = Coherence_on_mean;
         registroLFP.average_sync{i,j}.coherence.post.data = Coherence_post_mean;
         
+        registroLFP.average_sync{i,j}.phase.pre.data = Phase_pre_mean;
+        registroLFP.average_sync{i,j}.phase.on.data = Phase_on_mean;
+        registroLFP.average_sync{i,j}.phase.post.data = Phase_post_mean;
+        
 
     end
     p=p+1;
@@ -112,6 +130,7 @@ for i=1:num_areas_der-1
         signal2 = registroLFP.area(j+num_areas_izq).data;
         [C,phi,S12,S1,S2,t,f]=cohgramc(signal1,signal2,[registroLFP.multitaper.coherenciogram.movingwin.window registroLFP.multitaper.coherenciogram.movingwin.winstep],registroLFP.multitaper.coherenciogram.params);
         C = imresize(C, [length(t), 200]);
+        phi = imresize(phi, [length(t), 200]);
         f = imresize(f,[1,200]);
 
         [~,ind_max] = max(C,[],2); % Indice de los maximos en cada bin de tiempo
@@ -128,16 +147,28 @@ for i=1:num_areas_der-1
         C_pre_mean = C(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
         C_on_mean = C(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
         C_post_mean = C(idx_post(~ismember(idx_post, idx_spect_artifacts)),:); 
+        
+        phi_pre_mean = phi(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
+        phi_on_mean = phi(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
+        phi_post_mean = phi(idx_post(~ismember(idx_post, idx_spect_artifacts)),:); 
 
         % PSD sin normalizar por la frecuencia de la fase pre (No contar los valores cercanos a la sinusoidal)
         Coherence_pre_mean = mean(C_pre_mean,1);
         Coherence_on_mean = mean(C_on_mean,1);
         Coherence_post_mean = mean(C_post_mean,1);
         
+        Phase_pre_mean = mean(phi_pre_mean,1);
+        Phase_on_mean = mean(phi_on_mean,1);
+        Phase_post_mean = mean(phi_post_mean,1);
+        
         % Smooth
         Coherence_pre_mean = smooth(f, Coherence_pre_mean,0.05,'rloess');
         Coherence_on_mean = smooth(f, Coherence_on_mean,0.05,'rloess');
         Coherence_post_mean = smooth(f, Coherence_post_mean,0.05,'rloess');
+        
+        Phase_pre_mean = smooth(f, Phase_pre_mean,0.05,'rloess');
+        Phase_on_mean = smooth(f, Phase_on_mean,0.05,'rloess');
+        Phase_post_mean = smooth(f, Phase_post_mean,0.05,'rloess');
         
         % Spectrograma final %%%%%%%%%%% Ver si mean es mejor q median para normalizar (probar) preguntarle a rodrigo 
         %Spectrogram_pre_mean = Spectrogram_mean((t_Spectrogram_mean<(pre_m*60.0)),:);
@@ -162,6 +193,10 @@ for i=1:num_areas_der-1
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.pre.data = Coherence_pre_mean;
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.on.data = Coherence_on_mean;
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.post.data = Coherence_post_mean;
+        
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.pre.data = Phase_pre_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.on.data = Phase_on_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.post.data = Phase_post_mean;
            
     end
     p=p+1;

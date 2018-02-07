@@ -68,7 +68,7 @@ for i=1:num_areas_izq-1
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Mean coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)
+        title(['Coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)
         ylabel(c,'Coherence', 'FontSize', 17)
         set(c,'fontsize',17)       
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2},' coherenciograma multitaper'];
@@ -91,7 +91,7 @@ for i=1:num_areas_izq-1
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Normalized mean coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)
+        title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)
         ylabel(c,'Normalized Coherence', 'FontSize', 17)
         set(c,'fontsize',17)       
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2},' coherenciograma normalizada multitaper'];
@@ -108,11 +108,11 @@ for i=1:num_areas_izq-1
         xlim([0 100])
         ylim([0.2 0.8])
         set(gca,'fontsize',20)
-        ylabel('Mean Coherence', 'FontSize', 24)
+        ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)
         lgd = legend('pre','on','post');
         lgd.FontSize = 20;
-        title(['Mean coherence between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)         
+        title(['Coherence between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)         
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2},' promedio coherence'];
         saveas(fig_5,name_figure_save,'png');
         %waitforbuttonpress;
@@ -155,7 +155,7 @@ for i=1:num_areas_der-1
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Mean coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
+        title(['Coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
         ylabel(c,'Coherence', 'FontSize', 17)
         set(c,'fontsize',17)
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2},' coherenciograma multitaper'];
@@ -178,7 +178,7 @@ for i=1:num_areas_der-1
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Normalized mean coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
+        title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
         ylabel(c,'Normalized Coherence', 'FontSize', 17)
         set(c,'fontsize',17)
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2},' coherenciograma normalizada multitaper'];
@@ -195,11 +195,11 @@ for i=1:num_areas_der-1
         xlim([0 100])
         ylim([0.2 0.8])
         set(gca,'fontsize',20)
-        ylabel('Mean Coherence', 'FontSize', 24)
+        ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)
         lgd = legend('pre','on','post');
         lgd.FontSize = 20;
-        title(['Mean coherence between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
+        title(['Coherence between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2},' promedio coherence'];
         saveas(fig_6,name_figure_save,'png');
         %waitforbuttonpress;
@@ -212,5 +212,3 @@ end
 
 % Eliminacion de variables que no se van a guardar
 clearvars -except registroLFP path name_registro foldername inicio_foldername
-
-!!!!!!!!!! Arreglar las legendas de los graficos

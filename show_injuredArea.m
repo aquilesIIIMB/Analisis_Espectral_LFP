@@ -1,6 +1,6 @@
 %%% Probar que area es la lesionada
-function show_injuredArea(registroLFP)
-    banda_beta = [8, 20];
+function percent_power_band = show_injuredArea(registroLFP, banda_beta, visualization)
+    %banda_beta = [8, 20];
     percent_power_band = [];
     areas = {};
     
@@ -9,13 +9,27 @@ function show_injuredArea(registroLFP)
     on_final_m = registroLFP.times.end_on_m;
     post_m = registroLFP.times.post_m;
     tiempo_total = registroLFP.times.end_m;
+    
+    [C,~,~] = unique({registroLFP.area.name},'stable');
+    num_areas_izq = 0;
+    num_areas_der = 0;
+
+    for k = 1:length(C)
+        area_actual = C{k};
+        hemisferio = area_actual(end);
+        if strcmp(hemisferio,'L')
+            num_areas_izq = num_areas_izq + 1;
+        elseif strcmp(hemisferio,'R')
+            num_areas_der = num_areas_der + 1;
+        end
+    end
 
     for i = 1:length(registroLFP.average_spectrum)
         Spectrogram_mean_raw = registroLFP.average_spectrum(i).spectrogram.data_raw;
     
-        time = registroLFP.average_spectrum(i).spectrogram.tiempo;
-        freq = registroLFP.average_spectrum(i).spectrogram.frecuencia; 
-        area_actual = registroLFP.average_spectrum(i).area{1};
+        time = registroLFP.average_spectrum(i).spectrogram.time;
+        freq = registroLFP.average_spectrum(i).spectrogram.frequency; 
+        area_actual = registroLFP.average_spectrum(i).area;
         idx_spect_artifacts = registroLFP.average_spectrum(i).spectrogram.ind_artifacts;     
 
         % Indices de cada etapa
@@ -72,48 +86,52 @@ function show_injuredArea(registroLFP)
         areas = {areas{:},area_actual};
         percent_power_band = [percent_power_band; [percent_power_band_pre,percent_power_band_on,percent_power_band_post]];
 
-        figure;
-        plot(freq, psd_pre)
-        hold on
-        plot(freq, psd_base_pre)
-        hold on
-        plot(freq, base_pre)
-        %hold on
-        %plot(freq, psd_on)
-        %hold on
-        %plot(freq, psd_post)
-        ylim([-inf max(psd_pre)*1.1])
-        title(area_actual)
-        
-        fprintf('%s\n', area_actual)
-        fprintf('Porcentaje de banda beta en pre: %.2f \n', percent_power_band_pre)
-        fprintf('Porcentaje de banda beta en on: %.2f \n', percent_power_band_on)
-        fprintf('Porcentaje de banda beta en post: %.2f \n\n', percent_power_band_post)
+        if visualization
+            figure;
+            plot(freq, psd_pre)
+            hold on
+            plot(freq, psd_base_pre)
+            hold on
+            plot(freq, base_pre)
+            %hold on
+            %plot(freq, psd_on)
+            %hold on
+            %plot(freq, psd_post)
+            ylim([-inf max(psd_pre)*1.1])
+            title(area_actual)
+
+            fprintf('%s\n', area_actual)
+            fprintf('Porcentaje de banda beta en pre: %.2f \n', percent_power_band_pre)
+            fprintf('Porcentaje de banda beta en on: %.2f \n', percent_power_band_on)
+            fprintf('Porcentaje de banda beta en post: %.2f \n\n', percent_power_band_post)
+        end
     end
 
-    disp(' ')
-    fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(percent_power_band(1:5,:)))
-    fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(percent_power_band(6:10,:)))    
-    
-    y_max = max([max(percent_power_band(1:5,:)) max(percent_power_band(6:10,:))]);
-    y_min = min([min(percent_power_band(1:5,:)) min(percent_power_band(6:10,:))]);
-    y_max = y_max + abs(y_max)*0.1;
-    y_min = y_min - abs(y_min)*0.1;
-    figure;
-    subplot(2,1,1)
-    bar(percent_power_band(1:5,:),'grouped');
-    xt = get(gca, 'XTick');
-    set(gca, 'XTick', xt, 'XTickLabel', areas(1:5))
-    legend('Pre', 'Stim', 'Post');
-    grid on
-    ylim([y_min y_max])
-    subplot(2,1,2)
-    bar(percent_power_band(6:10,:),'grouped');
-    xt = get(gca, 'XTick');
-    set(gca, 'XTick', xt, 'XTickLabel', areas(6:10))
-    legend('Pre', 'Stim', 'Post');
-    grid on
-    ylim([y_min y_max])
+    if visualization
+        disp(' ')
+        fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(percent_power_band(1:num_areas_izq,:)))
+        fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(percent_power_band(num_areas_izq+1:num_areas_izq+num_areas_der,:)))    
+
+        y_max = max([max(percent_power_band(1:num_areas_izq,:)) max(percent_power_band(num_areas_izq+1:num_areas_der+num_areas_izq,:))]);
+        y_min = min([min(percent_power_band(1:num_areas_izq,:)) min(percent_power_band(num_areas_izq+1:num_areas_der+num_areas_izq,:))]);
+        y_max = y_max + abs(y_max)*0.1;
+        y_min = y_min - abs(y_min)*0.1;
+        figure;
+        subplot(2,1,1)
+        bar(percent_power_band(1:num_areas_izq,:),'grouped');
+        xt = get(gca, 'XTick');
+        set(gca, 'XTick', xt, 'XTickLabel', areas(1:num_areas_izq))
+        legend('Pre', 'Stim', 'Post');
+        grid on
+        ylim([y_min y_max])
+        subplot(2,1,2)
+        bar(percent_power_band(num_areas_izq+1:num_areas_der+num_areas_izq,:),'grouped');
+        xt = get(gca, 'XTick');
+        set(gca, 'XTick', xt, 'XTickLabel', areas(num_areas_izq+1:num_areas_der+num_areas_izq))
+        legend('Pre', 'Stim', 'Post');
+        grid on
+        ylim([y_min y_max])
+    end
     
 end
 

@@ -47,8 +47,8 @@ for j = 1:largo_canales_eval
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Amplitude [dB]', 'FontSize', 24);
-    title(['PSD multitaper of LFP ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 24)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [dB]', 'FontSize', 24);
+    title(['Power spectral density of LFP ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD del LFP'];
     saveas(fig_1,name_figure_save,'png');
     %waitforbuttonpress;
@@ -79,7 +79,7 @@ for j = 1:largo_canales_eval
     xlim([5 25])
     set(gca,'fontsize',15)
     xlabel('Frequency [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['PSD multitaper in beta ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 12)
+    title(['Power spectral density in beta ',registroLFP.channel(canales_eval(j)).name,' (',registroLFP.channel(canales_eval(j)).area, ')'], 'FontSize', 12)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Area ',registroLFP.channel(canales_eval(j)).area,' de ',registroLFP.channel(canales_eval(j)).name,' PSD en beta del LFP'];
     saveas(fig_3,name_figure_save,'png');
     %waitforbuttonpress;
@@ -155,8 +155,10 @@ for m = 1:length(ia)
     %%[Spectrogram_mean_raw, pow_pinknoise] = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean_raw, idx_spect_artifacts); 
     
     % Nuevo Pink Noise
+    Spectrogram_mean_raw_temp = Spectrogram_mean_raw;
     [pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean_raw', [0 15;30 100]);
-    Spectrogram_mean_raw = pow_dBpink';
+    Spectrogram_mean_raw = real(pow_dBpink)';
+    Spectrogram_mean_raw(idx_spect_artifacts,:) = db(Spectrogram_mean_raw_temp(idx_spect_artifacts,:)','power')';
     
     %pow_pinknoise_pre = pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))';
     %pow_pinknoise_on = pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))';
@@ -190,8 +192,8 @@ for m = 1:length(ia)
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('PSD [u.a.]', 'FontSize', 24)
-    title(['Mean PSD Pink Multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [dBPink]', 'FontSize', 24)
+    title(['Pink power spectral density of LFPs in area ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD Pink de los LFP '];
     saveas(fig_2,name_figure_save,'png');
     %waitforbuttonpress;
@@ -204,7 +206,7 @@ for m = 1:length(ia)
     plot(f_Spectrogram_mean, pink_noise_pre,'--','Color', [0 0.4470 0.7410],'LineWidth',1.5);
     hold on
     ylim([-inf max(PSD_pre_mean_raw)*1.05])
-    ylabel('PSD (Pre) [Power/Hz]', 'FontSize', 24, 'Color','black')
+    ylabel('Power (Pre) [Watt/Hz]', 'FontSize', 24, 'Color','black')
     yyaxis right
     p2 = plot(f_Spectrogram_mean, PSD_on_mean_raw,'-','Color', [0.85, 0.325, 0.098],'LineWidth',3);
     hold on
@@ -218,8 +220,8 @@ for m = 1:length(ia)
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20,'ycolor','black')
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('PSD (On & Post) [Power/Hz]', 'FontSize', 24, 'Color','black')
-    title(['Mean PSD Multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power (On & Post) [Watt/Hz]', 'FontSize', 24, 'Color','black')
+    title(['Power spectral density of LFPs in area ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD de los LFP '];
     saveas(fig_4,name_figure_save,'png');
     %waitforbuttonpress;
@@ -252,7 +254,7 @@ for m = 1:length(ia)
     ylim([-15 15])
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['Mean PSD Pink multitaper in beta of ',C{ic(i)}], 'FontSize', 8)
+    title(['Pink power spectral density in beta of ',C{ic(i)}], 'FontSize', 8)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD Pink en beta de los LFP '];
     saveas(fig_6,name_figure_save,'png');
     %waitforbuttonpress;
@@ -275,8 +277,8 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Mean Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
+    title(['Spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized Power [dBPink]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];
     saveas(fig_8,name_figure_save,'png');
@@ -300,8 +302,8 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Mean raw Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
+    title(['Raw spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Power [dB]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma en bruto Multitaper de los LFP '];
     saveas(fig_10,name_figure_save,'png');
@@ -331,8 +333,8 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Mean raw Spectrogram multitaper of LFPs in ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [u.a.]', 'FontSize', 17)
+    title(['Weighted spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Power [dB]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma destacado Multitaper de los LFP '];
     saveas(fig_15,name_figure_save,'png');

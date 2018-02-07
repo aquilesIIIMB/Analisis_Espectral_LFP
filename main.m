@@ -7,7 +7,8 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear; close all
-
+% Primero izquerdo y despues hemisferio derecho. Analisis de las mismas
+% areas en ambos hemisferios
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
