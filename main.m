@@ -12,7 +12,7 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; 
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
 %path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
@@ -25,9 +25,9 @@ timeRanges = [6, 6, 6]; %Mixtos
 threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
-eval_channels = [2:5,14:21,34:37,46:53];
+%eval_channels = [2:5,14:21,34:37,46:53];
 %eval_channels = [14:21,46:53];
-%eval_channels = 1:64;
+eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv'; % Flo

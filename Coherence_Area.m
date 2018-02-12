@@ -10,8 +10,7 @@ if ~registroLFP.analysis_stages.referencing || ~registroLFP.analysis_stages.dele
     error('Falta el bloque de eliminacion de canales y referenciacion');
     
 end
-% !!!!!!!!!!!! Modificar para que no asuma q los primeros registros son de
-% izquierda
+% !!!! Modificar para que no asuma q los primeros registros son de izquierda
 canales_eval = find(~[registroLFP.channel.removed]);
 
 pre_m = registroLFP.times.pre_m;
@@ -210,6 +209,6 @@ clearvars -except registroLFP path name_registro foldername inicio_foldername
 % Guardar matrices en .mat
 path_name_registro = [inicio_foldername,'Images',foldername,name_registro];
 
-% Descomentar
+% Descomentar para guardar
 save(path_name_registro,'-v7.3')
 

@@ -1,7 +1,22 @@
 %%% Probar que area es la lesionada
-function percent_power_band = power_measurements(registroLFP, banda_eval, visualization)
+function percent_power_band = power_measurements(registroLFP, banda_eval, visualization, path)
     percent_power_band = [];
     areas = {};
+       
+    azul = [0 0.4470 0.7410];
+    rojo = [0.85, 0.325, 0.098];
+    verde = [0.466, 0.674, 0.188];
+    
+    slash_backslash = find(path=='\' | path=='/');
+    inicio_new_dir1 = slash_backslash(length(slash_backslash)-3);
+    inicio_new_dir2 = slash_backslash(length(slash_backslash)-2);
+    foldername = path(inicio_new_dir2:length(path)); % /+375/arturo2_2017-06-02_12-58-57/
+    inicio_foldername = path(1:inicio_new_dir1); % /home/cmanalisis/Aquiles/Registros/
+    if ~exist(foldername, 'dir')
+        mkdir(inicio_foldername,'Images');
+        mkdir([inicio_foldername,'Images'],foldername);
+    end
+    slash_system = foldername(length(foldername));
     
     pre_m = registroLFP.times.pre_m;
     on_inicio_m = registroLFP.times.start_on_m;
@@ -123,7 +138,25 @@ function percent_power_band = power_measurements(registroLFP, banda_eval, visual
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            
+            title(['Change in Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
+          
+            fig_11 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_izqder = bar(percent_power_band,'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', areas)
+            legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
+            grid on
+            ylim([-50 200])
+            ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Signal/Pink noise Power Rate of left and right hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Change in Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of left and right hemisphere'];
+            saveas(fig_11,name_figure_save,'png');
+            saveas(fig_11,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_11)
         else
             y_max = max([max(percent_power_band(idx_areas_izq,:)) max(percent_power_band(idx_areas_der,:))]);
             y_min = min([min(percent_power_band(idx_areas_izq,:)) min(percent_power_band(idx_areas_der,:))]);
@@ -137,6 +170,7 @@ function percent_power_band = power_measurements(registroLFP, banda_eval, visual
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Change in Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar(percent_power_band(idx_areas_der,:),'grouped');
             xt = get(gca, 'XTick');
@@ -144,6 +178,45 @@ function percent_power_band = power_measurements(registroLFP, banda_eval, visual
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            
+            % Graficar cambio en la potencia    
+            fig_11 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_izq = bar(percent_power_band(idx_areas_izq,:),'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_izq))
+            lgd = legend([bar_izq(1) bar_izq(2) bar_izq(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
+            grid on
+            ylim([-50 200])
+            ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Signal/Pink noise Power Rate of left hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Change in Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of left hemisphere'];
+            saveas(fig_11,name_figure_save,'png');
+            saveas(fig_11,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_11)   
+
+            fig_12 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_der = bar(percent_power_band(idx_areas_der,:),'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_der))
+            lgd = legend([bar_der(1) bar_der(2) bar_der(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
+            grid on
+            ylim([-50 200])
+            ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Signal/Pink noise Power Rate of rigth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Change in Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of rigth hemisphere'];
+            saveas(fig_12,name_figure_save,'png');
+            saveas(fig_12,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_12)   
         end
     end
     

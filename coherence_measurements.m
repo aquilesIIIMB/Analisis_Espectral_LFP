@@ -1,5 +1,5 @@
 %%% MSC al cuadrado!!!
-function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurements(registroLFP, banda_eval, visualization)
+function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurements(registroLFP, banda_eval, visualization, path)
     sum_MSC_band = [];
     coupling_strength_band = [];
     delay_band = [];
@@ -7,6 +7,21 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     delta = 1:100:10^6;
     delta = delta(1:round(length(delta)/2));
     delta = delta./10^6;
+       
+    azul = [0 0.4470 0.7410];
+    rojo = [0.85, 0.325, 0.098];
+    verde = [0.466, 0.674, 0.188];
+    
+    slash_backslash = find(path=='\' | path=='/');
+    inicio_new_dir1 = slash_backslash(length(slash_backslash)-3);
+    inicio_new_dir2 = slash_backslash(length(slash_backslash)-2);
+    foldername = path(inicio_new_dir2:length(path)); % /+375/arturo2_2017-06-02_12-58-57/
+    inicio_foldername = path(1:inicio_new_dir1); % /home/cmanalisis/Aquiles/Registros/
+    if ~exist(foldername, 'dir')
+        mkdir(inicio_foldername,'Images');
+        mkdir([inicio_foldername,'Images'],foldername);
+    end
+    slash_system = foldername(length(foldername));
     
     [C,~,~] = unique({registroLFP.area.name},'stable');
     idx_areas_izq = [];
@@ -42,9 +57,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
 
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
         
             sum_MSC_pre = sum(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -83,9 +98,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
 
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
         
             sum_MSC_pre = sum(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -134,6 +149,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
         else
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(sum_MSC_band(1:mitad_largo,:)))
             fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(sum_MSC_band(mitad_largo+1:end,:)))  
@@ -150,6 +166,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar(sum_MSC_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
@@ -168,13 +185,15 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     for i=1:length(idx_inicio)-1
         % Coherencia
         for j = length(idx_inicio):-1:p
+            
+            area_actual = registroLFP.average_sync{i,j}.names;
                         
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
         
             [max_pre_band,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [max_on_band,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -227,12 +246,14 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_final):-1:p
             
+            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.names;
+            
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
         
             [max_pre_band,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [max_on_band,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -299,6 +320,26 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
+            
+            fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_inj = bar(coupling_strength_band,'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', string(areas))
+            lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
+            grid on
+            ylim([0 0.8])
+            ylabel('Coupling Strength', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Coupling Strength of lefth and rigth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of lefth and rigth hemisphere'];
+            saveas(fig_31,name_figure_save,'png');
+            saveas(fig_31,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_31)
             
         else 
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(coupling_strength_band(1:mitad_largo,:)))
@@ -316,6 +357,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar(coupling_strength_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
@@ -323,6 +365,44 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+           
+            fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_inj = bar(coupling_strength_band(1:mitad_largo,:),'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', string(areas(1:mitad_largo)))
+            lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
+            grid on
+            ylim([0 0.8])
+            ylabel('Coupling Strength', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Coupling Strength of lefth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of lefth hemisphere'];
+            saveas(fig_31,name_figure_save,'png');
+            saveas(fig_31,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_31)
+
+            fig_32 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_uninj = bar(coupling_strength_band(mitad_largo+1:end,:),'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', string(areas(mitad_largo+1:end))) 
+            lgd = legend([bar_uninj(1) bar_uninj(2) bar_uninj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
+            grid on
+            ylim([0 0.8])
+            ylabel('Coupling Strength', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Coupling Strength of rigth hemisphere band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of rigth hemisphere'];
+            saveas(fig_32,name_figure_save,'png');
+            saveas(fig_32,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_32)
         end
     end
     
@@ -334,13 +414,15 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     for i=1:length(idx_inicio)-1
         % Coherencia
         for j = length(idx_inicio):-1:p
+            
+            area_actual = registroLFP.average_sync{i,j}.names;
                         
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
             
             phi_pre = registroLFP.average_sync{i,j}.phase.pre.data;
             phi_on = registroLFP.average_sync{i,j}.phase.on.data;
@@ -395,9 +477,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             if visualization(3)
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2f \n', delay_pre)
-                fprintf('Porcentaje de banda beta en on: %.2f \n', delay_on)
-                fprintf('Porcentaje de banda beta en post: %.2f \n\n', delay_post)
+                fprintf('Porcentaje de banda beta en pre: %f \n', delay_pre)
+                fprintf('Porcentaje de banda beta en on: %f \n', delay_on)
+                fprintf('Porcentaje de banda beta en post: %f \n\n', delay_post)
             end
             
         end
@@ -410,12 +492,14 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_final):-1:p
             
+            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.names;
+            
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
         
             [~,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [~,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -466,9 +550,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             if visualization(3)
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2fs \n', delay_pre)
-                fprintf('Porcentaje de banda beta en on: %.2fs \n', delay_on)
-                fprintf('Porcentaje de banda beta en post: %.2fs \n\n', delay_post)
+                fprintf('Porcentaje de banda beta en pre: %fs \n', delay_pre)
+                fprintf('Porcentaje de banda beta en on: %fs \n', delay_on)
+                fprintf('Porcentaje de banda beta en post: %fs \n\n', delay_post)
             end
             
         end
@@ -495,6 +579,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
         else 
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %fs, stim: %fs, post: %fs\n\n', mean(delay_band(1:mitad_largo,:)))
@@ -512,6 +597,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
+            title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar(delay_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
