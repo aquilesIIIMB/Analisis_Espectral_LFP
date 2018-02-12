@@ -10,7 +10,7 @@ clearvars -except registroLFP path name_registro foldername inicio_foldername pr
 
 % Main 
 % Guardar las imgenges del protocolo? 
-save_protocol = 0; % USER
+save_protocol = 1; % USER
 
 % Definir que area es la lesionada segun potencia en beta del PSD
 power_measurements(registroLFP, [8, 30], true, path);
@@ -116,7 +116,7 @@ if save_protocol
         mkdir([inicio_foldername,'Images', foldername],'Protocol');
     end
     slash_system = foldername(length(foldername));
-    path_name_registro = [inicio_foldername,'Images',foldername,'Protocol',slash_system,name_registro];
+    path_name_registro = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'protocol_',foldername(2:end-1)];
 
     % Eliminacion de variables que no se utilizaran
     clearvars -except path name_registro foldername inicio_foldername protocoloLFP path_name_registro

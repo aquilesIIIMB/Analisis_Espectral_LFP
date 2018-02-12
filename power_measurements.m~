@@ -132,8 +132,7 @@ function percent_power_band = power_measurements(registroLFP, banda_eval, visual
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
-            bar_izqder = bar(percent_power_band,'grouped');
-            bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
+            bar(percent_power_band,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas)
             legend('Pre', 'Stim', 'Post');

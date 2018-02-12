@@ -442,7 +442,7 @@ if save_protocol
         [vs{1:length(string(areas1))}] = deal('&');
         areas = join([string(areas1)',vs',string(areas2)'],'');
 
-        y_max = max([max([(inj_sum_MSC_mean+inj_sum_MSC_std);(uninj_sum_MSC_mean+uninj_sum_MSC_std)])]);
+        y_max = max([max([(inj_sum_MSC_mean+inj_sum_MSC_std);(uninj_sum_MSC_mean+inj_sum_MSC_std)])]);
         %y_min = min([min(inj_sum_MSC_mean) min(uninj_sum_MSC_mean)]);
         y_max = y_max + abs(y_max)*0.1;
         %y_min = y_min - abs(y_min)*0.1;
@@ -589,7 +589,6 @@ if save_protocol
         bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
         grid on
         ylim([0 200])
-        xlim([xt(1)-1, xt(end)+1])
         ylabel('Delay [ms]', 'FontSize', 24)
         set(gca,'fontsize',20)
         title(['Delay of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')

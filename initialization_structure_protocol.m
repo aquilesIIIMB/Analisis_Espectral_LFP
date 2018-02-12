@@ -24,6 +24,7 @@ for k = 1:length(C)
     end
 end
 
+idx_sameregister = [];
 
 % Guardar el nombre del regsitro a cargar
 if isempty(idx_update_reg)

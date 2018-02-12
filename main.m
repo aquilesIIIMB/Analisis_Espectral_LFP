@@ -9,17 +9,18 @@
 clear; close all
 % Primero izquerdo y despues hemisferio derecho. Analisis de las mismas
 % areas en ambos hemisferios
+
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
+%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/150Hz/maravilla_2017-07-04_15-19-26/';
 
 %% Intervalos de tiempo del protocolo
-%timeRanges = [5, 5, 5]; %DC or AC
-timeRanges = [6, 6, 6]; %Mixtos
+timeRanges = [5, 5, 5]; %DC or AC
+%timeRanges = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
 threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
@@ -31,11 +32,25 @@ eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel_codes_florencia.csv'; % Flo
-%channel_codes = 'channel_codes_florencia_2.csv'; % Flo Esgrima UCH
+%channel_codes = 'channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
+%  (Se dejaron las mismas areas que en 'channel_codes_florencia_PUC.csv' y se invirtieron los hemisferios originals L->R y R->L)
 channel_codes = 'channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
-%channel_codes = 'channel_codes_Rata_R01.csv'; % Caro
+%channel_codes = 'channel_codes_Rata_R01_modificado.csv'; % Caro 
+%  (Se invirtieron los hemisferios originals L->R y R->L)
 
 %% Fin de los parametros
+
+
+
+
+
+
+
+
+
+
+
+
 
 %% Ejecucion del programa (No cambiar)
 tic;

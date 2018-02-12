@@ -75,7 +75,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f, Coherence_on_mean)
                 hold on
                 plot(f, Coherence_post_mean)
-                ylim([0 0.6])
+                ylim([0.2 0.8])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -116,7 +116,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f, Coherence_on_mean)
                 hold on
                 plot(f, Coherence_post_mean)
-                ylim([0 0.6])
+                ylim([0.2 0.8])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -143,14 +143,12 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
-            bar_inifin = bar(sum_MSC_band,'grouped');
-            bar_inifin(1).FaceColor = azul; bar_inifin(2).FaceColor = rojo; bar_inifin(3).FaceColor = verde;
+            bar(sum_MSC_band,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas))
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
             title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
         else
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(sum_MSC_band(1:mitad_largo,:)))
@@ -162,24 +160,20 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_min = y_min - abs(y_min)*0.1;
             figure;
             subplot(2,1,1)
-            bar_ini = bar(sum_MSC_band(1:mitad_largo,:),'grouped');
-            bar_ini(1).FaceColor = azul; bar_ini(2).FaceColor = rojo; bar_ini(3).FaceColor = verde;
+            bar(sum_MSC_band(1:mitad_largo,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(1:mitad_largo)))
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
             title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
-            bar_fin = bar(sum_MSC_band(mitad_largo+1:end,:),'grouped');
-            bar_fin(1).FaceColor = azul; bar_fin(2).FaceColor = rojo; bar_fin(3).FaceColor = verde;
+            bar(sum_MSC_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(mitad_largo+1:end))) 
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
         end
     end
     
@@ -233,7 +227,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f(f>=f_band(I_post)-delta_f & f<=f_band(I_post)+delta_f), Coherence_post_mean_band,'LineWidth',3.5)
                 hold on
                 plot(f_band(I_post), max_post_band, 'k*')
-                ylim([0 0.6])
+                ylim([0.2 0.8])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -293,7 +287,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f(f>=f_band(I_post)-delta_f & f<=f_band(I_post)+delta_f), Coherence_post_mean_band,'LineWidth',3.5)
                 hold on
                 plot(f_band(I_post), max_post_band, 'k*')
-                ylim([0 0.6])
+                ylim([0.2 0.8])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -320,14 +314,12 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
-            bar_inifin = bar(coupling_strength_band,'grouped');
-            bar_inifin(1).FaceColor = azul; bar_inifin(2).FaceColor = rojo; bar_inifin(3).FaceColor = verde;
+            bar(coupling_strength_band,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas))
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
             title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
             fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -339,7 +331,6 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Coupling Strength of lefth and rigth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -360,24 +351,21 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_min = y_min - abs(y_min)*0.1;
             figure;
             subplot(2,1,1)
-            bar_ini = bar(coupling_strength_band(1:mitad_largo,:),'grouped');
-            bar_ini(1).FaceColor = azul; bar_ini(2).FaceColor = rojo; bar_ini(3).FaceColor = verde;
+            bar_ini = bar(coupling_strength_band(1:mitad_largo,:),'grouped')
+            bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;;
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(1:mitad_largo)))
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
             title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
-            bar_fin = bar(coupling_strength_band(mitad_largo+1:end,:),'grouped');
-            bar_fin(1).FaceColor = azul; bar_fin(2).FaceColor = rojo; bar_fin(3).FaceColor = verde;
+            bar(coupling_strength_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(mitad_largo+1:end))) 
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
            
             fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
             bar_inj = bar(coupling_strength_band(1:mitad_largo,:),'grouped');
@@ -388,7 +376,6 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
             title(['Coupling Strength of lefth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -408,7 +395,6 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
             title(['Coupling Strength of rigth hemisphere band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -588,14 +574,12 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
-            bar_inifin = bar(delay_band.*1000,'grouped');
-            bar_inifin(1).FaceColor = azul; bar_inifin(2).FaceColor = rojo; bar_inifin(3).FaceColor = verde;
+            bar(delay_band,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas))
             legend('Pre', 'Stim', 'Post');
             grid on
-            ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            ylim([y_min y_max])
             title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
         else 
@@ -608,24 +592,20 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             y_min = y_min - abs(y_min)*0.1;
             figure;
             subplot(2,1,1)
-            bar_ini = bar(delay_band(1:mitad_largo,:).*1000,'grouped');
-            bar_ini(1).FaceColor = azul; bar_ini(2).FaceColor = rojo; bar_ini(3).FaceColor = verde;
+            bar(delay_band(1:mitad_largo,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(1:mitad_largo)))
             legend('Pre', 'Stim', 'Post');
             grid on
-            ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            ylim([y_min y_max])
             title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
-            bar_fin = bar(delay_band(mitad_largo+1:end,:).*1000,'grouped');
-            bar_fin(1).FaceColor = azul; bar_fin(2).FaceColor = rojo; bar_fin(3).FaceColor = verde;
+            bar(delay_band(mitad_largo+1:end,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', string(areas(mitad_largo+1:end))) 
             legend('Pre', 'Stim', 'Post');
             grid on
-            ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            ylim([y_min y_max])
         end
     end
     
