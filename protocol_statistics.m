@@ -414,12 +414,12 @@ if save_protocol
         y_etiqueta = 'Signal/Pink noise Power Rate';
         titulo = ['Signal/Pink noise Power Rate of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
         name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Change in Power in (',int2str(band_actual),')',banda_name,' of injured area'];
-        boxplot_custom(inj_change_band_power_total, areas, num_record, [-50 170], y_etiqueta, titulo, name_figure_save); 
+        boxplot_custom(inj_change_band_power_total, areas, num_record, [-50 300], y_etiqueta, titulo, name_figure_save); 
 
         y_etiqueta = 'Signal/Pink noise Power Rate';
         titulo = ['Signal/Pink noise Power Rate of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
         name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Change in Power in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-        boxplot_custom(uninj_change_band_power_total, areas, num_record, [-50 170], y_etiqueta, titulo, name_figure_save); 
+        boxplot_custom(uninj_change_band_power_total, areas, num_record, [-50 300], y_etiqueta, titulo, name_figure_save); 
         
         % Graficar cambio en la potencia   
         fig_13 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -434,7 +434,7 @@ if save_protocol
         lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
         grid on
-        ylim([-50 170])
+        ylim([-50 300])
         xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
         set(gca,'fontsize',20)
@@ -458,7 +458,7 @@ if save_protocol
         lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
         grid on
-        ylim([-50 170])
+        ylim([-50 300])
         xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
         set(gca,'fontsize',20)

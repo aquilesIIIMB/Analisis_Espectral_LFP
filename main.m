@@ -16,7 +16,7 @@ clear; close all
 %path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+5000_300Hz/arturo_2017-06-17_16-05-21/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
