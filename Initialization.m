@@ -106,7 +106,7 @@ registroLFP.times.steps_m = [];
 registroLFP.multitaper.spectrogram.params.tapers = ([4 7]); % [TW K], (K <= to 2TW-1)
 registroLFP.multitaper.spectrogram.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
 registroLFP.multitaper.spectrogram.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
-registroLFP.multitaper.spectrogram.params.fpass = [1 100]; % Rango de frecuencias
+registroLFP.multitaper.spectrogram.params.fpass = [0.1 100]; % Rango de frecuencias
 registroLFP.multitaper.spectrogram.params.err = 0; % Error considerado
 registroLFP.multitaper.spectrogram.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
@@ -118,12 +118,12 @@ registroLFP.multitaper.spectrogram.movingwin.winstep = registroLFP.multitaper.sp
 registroLFP.multitaper.coherenciogram.params.tapers = ([4 7]); % [TW K], (K <= to 2TW-1)
 registroLFP.multitaper.coherenciogram.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
 registroLFP.multitaper.coherenciogram.params.Fs = 1000; % Frecuencia de muestreo
-registroLFP.multitaper.coherenciogram.params.fpass = [1 100]; % Rango de frecuencias
+registroLFP.multitaper.coherenciogram.params.fpass = [0.1 100]; % Rango de frecuencias
 registroLFP.multitaper.coherenciogram.params.err = 0; % Error considerado
 registroLFP.multitaper.coherenciogram.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.coherenciogram.movingwin.window = 4; % Ventanas (En segundos)
+registroLFP.multitaper.coherenciogram.movingwin.window = 8; % Ventanas (En segundos)
 registroLFP.multitaper.coherenciogram.movingwin.winstep = registroLFP.multitaper.coherenciogram.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Identificadores de las etapas que se han hecho y las que quedan

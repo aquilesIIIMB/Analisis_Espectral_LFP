@@ -51,7 +51,7 @@ for m = 1:length(ia)%1:largo_dataAll
     %%Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean, idx_spect_artifacts); 
     
     % Nuevo Pink Noise
-    [pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean', [0 15;30 100]);
+    [pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean', [0.1 15;30 100]);
     Spectrogram_mean = real(pow_dBpink)';
     Spectrogram_mean(idx_spect_artifacts,:) = db(Spectrogram_mean_raw(idx_spect_artifacts,:)','power')';
     

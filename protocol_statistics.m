@@ -1,8 +1,6 @@
-function protocoloLFP = protocol_stadistics(protocoloLFP,path,save_protocol)
+function protocoloLFP = protocol_statistics(protocoloLFP,path,save_protocol)
 
 num_record = length(protocoloLFP.register_checked);
-% Colocar las areas de coherencia, que son mas, ver si se estan
-% guardando!!!
 num_areas_spectral = length(protocoloLFP.injured_global(1).spectral);
 num_areas_coherence = length(protocoloLFP.injured_global(1).coherence);
 num_bands = length(protocoloLFP.injured_global(1).spectral(1).change_band_power);
@@ -80,98 +78,114 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
             % Stadistics for Change power in injured area
             datos_actual_inj_change_power_mean = datos_actual_inj_change_power;
             datos_actual_inj_change_power_std = datos_actual_inj_change_power.*0;
-            datos_actual_inj_change_power_quantil = [datos_actual_inj_change_power; datos_actual_inj_change_power; datos_actual_inj_change_power];
-            datos_actual_inj_change_power_quantil = reshape(datos_actual_inj_change_power_quantil,9,[])';
+            datos_actual_inj_change_power_total = reshape(datos_actual_inj_change_power,[],3,num_bands);
+            %datos_actual_inj_change_power_quantil = [datos_actual_inj_change_power; datos_actual_inj_change_power; datos_actual_inj_change_power];
+            %datos_actual_inj_change_power_quantil = reshape(datos_actual_inj_change_power_quantil,9,[])';
         end
             
         % Coherence
         datos_actual_inj_sum_MSC_mean = datos_actual_inj_sum_MSC;
         datos_actual_inj_sum_MSC_std = datos_actual_inj_sum_MSC.*0;
-        datos_actual_inj_sum_MSC_quantil = [datos_actual_inj_sum_MSC; datos_actual_inj_sum_MSC; datos_actual_inj_sum_MSC];
-        datos_actual_inj_sum_MSC_quantil = reshape(datos_actual_inj_sum_MSC_quantil,9,[])';
+        datos_actual_inj_sum_MSC_total = reshape(datos_actual_inj_sum_MSC,[],3,num_bands);
+        %datos_actual_inj_sum_MSC_quantil = [datos_actual_inj_sum_MSC; datos_actual_inj_sum_MSC; datos_actual_inj_sum_MSC];
+        %datos_actual_inj_sum_MSC_quantil = reshape(datos_actual_inj_sum_MSC_quantil,9,[])';
                
         datos_actual_inj_coupling_strength_mean = datos_actual_inj_coupling_strength;
         datos_actual_inj_coupling_strength_std = datos_actual_inj_coupling_strength.*0;
-        datos_actual_inj_coupling_strength_quantil = [datos_actual_inj_coupling_strength; datos_actual_inj_coupling_strength; datos_actual_inj_coupling_strength];
-        datos_actual_inj_coupling_strength_quantil = reshape(datos_actual_inj_coupling_strength_quantil,9,[])';
+        datos_actual_inj_coupling_strength_total = reshape(datos_actual_inj_coupling_strength,[],3,num_bands);
+        %datos_actual_inj_coupling_strength_quantil = [datos_actual_inj_coupling_strength; datos_actual_inj_coupling_strength; datos_actual_inj_coupling_strength];
+        %datos_actual_inj_coupling_strength_quantil = reshape(datos_actual_inj_coupling_strength_quantil,9,[])';
                
         datos_actual_inj_delay_mean = datos_actual_inj_delay;
         datos_actual_inj_delay_std = datos_actual_inj_delay.*0;
-        datos_actual_inj_delay_quantil = [datos_actual_inj_delay; datos_actual_inj_delay; datos_actual_inj_delay];
-        datos_actual_inj_delay_quantil = reshape(datos_actual_inj_delay_quantil,9,[])';
+        datos_actual_inj_delay_total = reshape(datos_actual_inj_delay,[],3,num_bands);
+        %datos_actual_inj_delay_quantil = [datos_actual_inj_delay; datos_actual_inj_delay; datos_actual_inj_delay];
+        %datos_actual_inj_delay_quantil = reshape(datos_actual_inj_delay_quantil,9,[])';
         
         if area_actual <= num_areas_spectral
             % Stadistics for Change power in uninjured area
             datos_actual_uninj_change_power_mean = datos_actual_uninj_change_power;
             datos_actual_uninj_change_power_std = datos_actual_uninj_change_power.*0;
-            datos_actual_uninj_change_power_quantil = [datos_actual_uninj_change_power; datos_actual_uninj_change_power; datos_actual_uninj_change_power];
-            datos_actual_uninj_change_power_quantil = reshape(datos_actual_uninj_change_power_quantil,9,[])';
+            datos_actual_uninj_change_power_total = reshape(datos_actual_uninj_change_power,[],3,num_bands);
+            %datos_actual_uninj_change_power_quantil = [datos_actual_uninj_change_power; datos_actual_uninj_change_power; datos_actual_uninj_change_power];
+            %datos_actual_uninj_change_power_quantil = reshape(datos_actual_uninj_change_power_quantil,9,[])';
         end
         
         % Coherence
         datos_actual_uninj_sum_MSC_mean = datos_actual_uninj_sum_MSC;
         datos_actual_uninj_sum_MSC_std = datos_actual_uninj_sum_MSC.*0;
-        datos_actual_uninj_sum_MSC_quantil = [datos_actual_uninj_sum_MSC; datos_actual_uninj_sum_MSC; datos_actual_uninj_sum_MSC];
-        datos_actual_uninj_sum_MSC_quantil = reshape(datos_actual_uninj_sum_MSC_quantil,9,[])';
+        datos_actual_uninj_sum_MSC_total = reshape(datos_actual_uninj_sum_MSC,[],3,num_bands);
+        %datos_actual_uninj_sum_MSC_quantil = [datos_actual_uninj_sum_MSC; datos_actual_uninj_sum_MSC; datos_actual_uninj_sum_MSC];
+        %datos_actual_uninj_sum_MSC_quantil = reshape(datos_actual_uninj_sum_MSC_quantil,9,[])';
                
         datos_actual_uninj_coupling_strength_mean = datos_actual_uninj_coupling_strength;
         datos_actual_uninj_coupling_strength_std = datos_actual_uninj_coupling_strength.*0;
-        datos_actual_uninj_coupling_strength_quantil = [datos_actual_uninj_coupling_strength; datos_actual_uninj_coupling_strength; datos_actual_uninj_coupling_strength];
-        datos_actual_uninj_coupling_strength_quantil = reshape(datos_actual_uninj_coupling_strength_quantil,9,[])';
+        datos_actual_uninj_coupling_strength_total = reshape(datos_actual_uninj_coupling_strength,[],3,num_bands);
+        %datos_actual_uninj_coupling_strength_quantil = [datos_actual_uninj_coupling_strength; datos_actual_uninj_coupling_strength; datos_actual_uninj_coupling_strength];
+        %datos_actual_uninj_coupling_strength_quantil = reshape(datos_actual_uninj_coupling_strength_quantil,9,[])';
                
         datos_actual_uninj_delay_mean = datos_actual_uninj_delay;
         datos_actual_uninj_delay_std = datos_actual_uninj_delay.*0;
-        datos_actual_uninj_delay_quantil = [datos_actual_uninj_delay; datos_actual_uninj_delay; datos_actual_uninj_delay];
-        datos_actual_uninj_delay_quantil = reshape(datos_actual_uninj_delay_quantil,9,[])';
+        datos_actual_uninj_delay_total = reshape(datos_actual_uninj_delay,[],3,num_bands);
+        %datos_actual_uninj_delay_quantil = [datos_actual_uninj_delay; datos_actual_uninj_delay; datos_actual_uninj_delay];
+        %datos_actual_uninj_delay_quantil = reshape(datos_actual_uninj_delay_quantil,9,[])';
         
     else     
         if area_actual <= num_areas_spectral
             % Stadistics for Change power in injured area
             datos_actual_inj_change_power_mean = mean(datos_actual_inj_change_power);
             datos_actual_inj_change_power_std = std(datos_actual_inj_change_power);
-            datos_actual_inj_change_power_quantil = quantile(datos_actual_inj_change_power, [.25 .50 .75]);
-            datos_actual_inj_change_power_quantil = reshape(datos_actual_inj_change_power_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+            datos_actual_inj_change_power_total = reshape(datos_actual_inj_change_power,[],3,num_bands);
+            %datos_actual_inj_change_power_quantil = quantile(datos_actual_inj_change_power, [.25 .50 .75]);
+            %datos_actual_inj_change_power_quantil = reshape(datos_actual_inj_change_power_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         end
         
         % Coherence
         datos_actual_inj_sum_MSC_mean = mean(datos_actual_inj_sum_MSC);
         datos_actual_inj_sum_MSC_std = std(datos_actual_inj_sum_MSC);
-        datos_actual_inj_sum_MSC_quantil = quantile(datos_actual_inj_sum_MSC, [.25 .50 .75]);
-        datos_actual_inj_sum_MSC_quantil = reshape(datos_actual_inj_sum_MSC_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_inj_sum_MSC_total = reshape(datos_actual_inj_sum_MSC,[],3,num_bands);
+        %datos_actual_inj_sum_MSC_quantil = quantile(datos_actual_inj_sum_MSC, [.25 .50 .75]);
+        %datos_actual_inj_sum_MSC_quantil = reshape(datos_actual_inj_sum_MSC_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         
         datos_actual_inj_coupling_strength_mean = mean(datos_actual_inj_coupling_strength);
         datos_actual_inj_coupling_strength_std = std(datos_actual_inj_coupling_strength);
-        datos_actual_inj_coupling_strength_quantil = quantile(datos_actual_inj_coupling_strength, [.25 .50 .75]);
-        datos_actual_inj_coupling_strength_quantil = reshape(datos_actual_inj_coupling_strength_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_inj_coupling_strength_total = reshape(datos_actual_inj_coupling_strength,[],3,num_bands);
+        %datos_actual_inj_coupling_strength_quantil = quantile(datos_actual_inj_coupling_strength, [.25 .50 .75]);
+        %datos_actual_inj_coupling_strength_quantil = reshape(datos_actual_inj_coupling_strength_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         
         datos_actual_inj_delay_mean = mean(datos_actual_inj_delay);
         datos_actual_inj_delay_std = std(datos_actual_inj_delay);
-        datos_actual_inj_delay_quantil = quantile(datos_actual_inj_delay, [.25 .50 .75]);
-        datos_actual_inj_delay_quantil = reshape(datos_actual_inj_delay_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_inj_delay_total = reshape(datos_actual_inj_delay,[],3,num_bands);
+        %datos_actual_inj_delay_quantil = quantile(datos_actual_inj_delay, [.25 .50 .75]);
+        %datos_actual_inj_delay_quantil = reshape(datos_actual_inj_delay_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         
         if area_actual <= num_areas_spectral
             % Stadistics for Change power in uninjured area
             datos_actual_uninj_change_power_mean = mean(datos_actual_uninj_change_power);
-            datos_actual_uninj_change_power_std = std(datos_actual_uninj_change_power);   
-            datos_actual_uninj_change_power_quantil = quantile(datos_actual_uninj_change_power, [.25 .50 .75]);
-            datos_actual_uninj_change_power_quantil = reshape(datos_actual_uninj_change_power_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+            datos_actual_uninj_change_power_std = std(datos_actual_uninj_change_power);
+            datos_actual_uninj_change_power_total = reshape(datos_actual_uninj_change_power,[],3,num_bands);
+            %datos_actual_uninj_change_power_quantil = quantile(datos_actual_uninj_change_power, [.25 .50 .75]);
+            %datos_actual_uninj_change_power_quantil = reshape(datos_actual_uninj_change_power_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         end
         
         % Coherence
         datos_actual_uninj_sum_MSC_mean = mean(datos_actual_uninj_sum_MSC);
         datos_actual_uninj_sum_MSC_std = std(datos_actual_uninj_sum_MSC);
-        datos_actual_uninj_sum_MSC_quantil = quantile(datos_actual_uninj_sum_MSC, [.25 .50 .75]);
-        datos_actual_uninj_sum_MSC_quantil = reshape(datos_actual_uninj_sum_MSC_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_uninj_sum_MSC_total = reshape(datos_actual_uninj_sum_MSC,[],3,num_bands);
+        %datos_actual_uninj_sum_MSC_quantil = quantile(datos_actual_uninj_sum_MSC, [.25 .50 .75]);
+        %datos_actual_uninj_sum_MSC_quantil = reshape(datos_actual_uninj_sum_MSC_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         
         datos_actual_uninj_coupling_strength_mean = mean(datos_actual_uninj_coupling_strength);
         datos_actual_uninj_coupling_strength_std = std(datos_actual_uninj_coupling_strength);
-        datos_actual_uninj_coupling_strength_quantil = quantile(datos_actual_uninj_coupling_strength, [.25 .50 .75]);
-        datos_actual_uninj_coupling_strength_quantil = reshape(datos_actual_uninj_coupling_strength_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_uninj_coupling_strength_total = reshape(datos_actual_uninj_coupling_strength,[],3,num_bands);
+        %datos_actual_uninj_coupling_strength_quantil = quantile(datos_actual_uninj_coupling_strength, [.25 .50 .75]);
+        %datos_actual_uninj_coupling_strength_quantil = reshape(datos_actual_uninj_coupling_strength_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
         
         datos_actual_uninj_delay_mean = mean(datos_actual_uninj_delay);
         datos_actual_uninj_delay_std = std(datos_actual_uninj_delay);
-        datos_actual_uninj_delay_quantil = quantile(datos_actual_uninj_delay, [.25 .50 .75]);
-        datos_actual_uninj_delay_quantil = reshape(datos_actual_uninj_delay_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
+        datos_actual_uninj_delay_total = reshape(datos_actual_uninj_delay,[],3,num_bands);
+        %datos_actual_uninj_delay_quantil = quantile(datos_actual_uninj_delay, [.25 .50 .75]);
+        %datos_actual_uninj_delay_quantil = reshape(datos_actual_uninj_delay_quantil,9,[])'; % 9 porque son 3 de los 3 cuantiles
     end
     
     if area_actual <= num_areas_spectral
@@ -209,89 +223,89 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
     for band_actual = 1:num_bands
         if area_actual <= num_areas_spectral
             % Save data in global structure injured change power
-            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre = datos_actual_inj_change_power_quantil(band_actual,1:3); % porque son 3 cuantiles
+            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre = datos_actual_inj_change_power_total(:,1,band_actual); 
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre_mean = datos_actual_inj_change_power_mean(band_actual,1);
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre_std = datos_actual_inj_change_power_std(band_actual,1);
-            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on = datos_actual_inj_change_power_quantil(band_actual,4:6);
+            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on = datos_actual_inj_change_power_total(:,2,band_actual); 
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on_mean = datos_actual_inj_change_power_mean(band_actual,2);
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on_std = datos_actual_inj_change_power_std(band_actual,2);
-            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post = datos_actual_inj_change_power_quantil(band_actual,7:9);
+            protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post = datos_actual_inj_change_power_total(:,3,band_actual); 
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post_mean = datos_actual_inj_change_power_mean(band_actual,3);
             protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post_std = datos_actual_inj_change_power_std(band_actual,3);
         end
         
         % Coherence
-        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre = datos_actual_inj_sum_MSC_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre = datos_actual_inj_sum_MSC_total(:,1,band_actual);
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre_mean = datos_actual_inj_sum_MSC_mean(band_actual,1);
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre_std = datos_actual_inj_sum_MSC_std(band_actual,1);
-        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on = datos_actual_inj_sum_MSC_quantil(band_actual,4:6);
+        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on = datos_actual_inj_sum_MSC_total(:,2,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on_mean = datos_actual_inj_sum_MSC_mean(band_actual,2);
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on_std = datos_actual_inj_sum_MSC_std(band_actual,2);
-        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post = datos_actual_inj_sum_MSC_quantil(band_actual,7:9);
+        protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post = datos_actual_inj_sum_MSC_total(:,3,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post_mean = datos_actual_inj_sum_MSC_mean(band_actual,3);
         protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post_std = datos_actual_inj_sum_MSC_std(band_actual,3);
         
-        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre = datos_actual_inj_coupling_strength_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre = datos_actual_inj_coupling_strength_total(:,1,band_actual);
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre_mean = datos_actual_inj_coupling_strength_mean(band_actual,1);
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre_std = datos_actual_inj_coupling_strength_std(band_actual,1);
-        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on = datos_actual_inj_coupling_strength_quantil(band_actual,4:6);
+        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on = datos_actual_inj_coupling_strength_total(:,2,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on_mean = datos_actual_inj_coupling_strength_mean(band_actual,2);
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on_std = datos_actual_inj_coupling_strength_std(band_actual,2);
-        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post = datos_actual_inj_coupling_strength_quantil(band_actual,7:9);
+        protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post = datos_actual_inj_coupling_strength_total(:,3,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post_mean = datos_actual_inj_coupling_strength_mean(band_actual,3);
         protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post_std = datos_actual_inj_coupling_strength_std(band_actual,3);
         
-        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre = datos_actual_inj_delay_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre = datos_actual_inj_delay_total(:,1,band_actual);
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre_mean = datos_actual_inj_delay_mean(band_actual,1);
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre_std = datos_actual_inj_delay_std(band_actual,1);
-        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on = datos_actual_inj_delay_quantil(band_actual,4:6);
+        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on = datos_actual_inj_delay_total(:,2,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on_mean = datos_actual_inj_delay_mean(band_actual,2);
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on_std = datos_actual_inj_delay_std(band_actual,2);
-        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post = datos_actual_inj_delay_quantil(band_actual,7:9);
+        protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post = datos_actual_inj_delay_total(:,3,band_actual); 
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post_mean = datos_actual_inj_delay_mean(band_actual,3);
         protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post_std = datos_actual_inj_delay_std(band_actual,3);
         
         if area_actual <= num_areas_spectral
             % Save data in global structure uninjured change power
-            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre = datos_actual_uninj_change_power_quantil(band_actual,1:3); % porque son 3 cuantiles
+            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre = datos_actual_uninj_change_power_total(:,1,band_actual);
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre_mean = datos_actual_uninj_change_power_mean(band_actual,1);
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre_std = datos_actual_uninj_change_power_std(band_actual,1);
-            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on = datos_actual_uninj_change_power_quantil(band_actual,4:6);
+            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on = datos_actual_uninj_change_power_total(:,2,band_actual); 
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on_mean = datos_actual_uninj_change_power_mean(band_actual,2);
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on_std = datos_actual_uninj_change_power_std(band_actual,2);
-            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post = datos_actual_uninj_change_power_quantil(band_actual,7:9);
+            protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post = datos_actual_uninj_change_power_total(:,3,band_actual); 
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post_mean = datos_actual_uninj_change_power_mean(band_actual,3);
             protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post_std = datos_actual_uninj_change_power_std(band_actual,3);
         end
         
         % Coherence
-        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre = datos_actual_uninj_sum_MSC_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre = datos_actual_uninj_sum_MSC_total(:,1,band_actual);
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre_mean = datos_actual_uninj_sum_MSC_mean(band_actual,1);
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre_std = datos_actual_uninj_sum_MSC_std(band_actual,1);
-        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on = datos_actual_uninj_sum_MSC_quantil(band_actual,4:6);
+        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on = datos_actual_uninj_sum_MSC_total(:,2,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on_mean = datos_actual_uninj_sum_MSC_mean(band_actual,2);
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on_std = datos_actual_uninj_sum_MSC_std(band_actual,2);
-        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post = datos_actual_uninj_sum_MSC_quantil(band_actual,7:9);
+        protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post = datos_actual_uninj_sum_MSC_total(:,3,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post_mean = datos_actual_uninj_sum_MSC_mean(band_actual,3);
         protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post_std = datos_actual_uninj_sum_MSC_std(band_actual,3);
         
-        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre = datos_actual_uninj_coupling_strength_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre = datos_actual_uninj_coupling_strength_total(:,1,band_actual);
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre_mean = datos_actual_uninj_coupling_strength_mean(band_actual,1);
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre_std = datos_actual_uninj_coupling_strength_std(band_actual,1);
-        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on = datos_actual_uninj_coupling_strength_quantil(band_actual,4:6);
+        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on = datos_actual_uninj_coupling_strength_total(:,2,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on_mean = datos_actual_uninj_coupling_strength_mean(band_actual,2);
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on_std = datos_actual_uninj_coupling_strength_std(band_actual,2);
-        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post = datos_actual_uninj_coupling_strength_quantil(band_actual,7:9);
+        protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post = datos_actual_uninj_coupling_strength_total(:,3,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post_mean = datos_actual_uninj_coupling_strength_mean(band_actual,3);
         protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post_std = datos_actual_uninj_coupling_strength_std(band_actual,3);
         
-        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre = datos_actual_uninj_delay_quantil(band_actual,1:3); % porque son 3 cuantiles
+        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre = datos_actual_uninj_delay_total(:,1,band_actual);
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre_mean = datos_actual_uninj_delay_mean(band_actual,1);
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre_std = datos_actual_uninj_delay_std(band_actual,1);
-        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on = datos_actual_uninj_delay_quantil(band_actual,4:6);
+        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on = datos_actual_uninj_delay_total(:,2,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on_mean = datos_actual_uninj_delay_mean(band_actual,2);
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on_std = datos_actual_uninj_delay_std(band_actual,2);
-        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post = datos_actual_uninj_delay_quantil(band_actual,7:9);
+        protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post = datos_actual_uninj_delay_total(:,3,band_actual); 
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_mean = datos_actual_uninj_delay_mean(band_actual,3);
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_std = datos_actual_uninj_delay_std(band_actual,3);
     end
@@ -322,24 +336,32 @@ if save_protocol
 
         %Cargar datos
         % Spectral
+        inj_change_band_power_total = [];
         inj_change_band_power_mean = [];
         inj_change_band_power_std = [];
+        uninj_change_band_power_total = [];
         uninj_change_band_power_mean = [];
         uninj_change_band_power_std = [];
         
         % Coherence
+        inj_sum_MSC_total = [];
         inj_sum_MSC_mean = [];
         inj_sum_MSC_std = [];
+        uninj_sum_MSC_total = [];
         uninj_sum_MSC_mean = [];
         uninj_sum_MSC_std = [];
 
+        inj_coupling_strength_total = [];
         inj_coupling_strength_mean = [];
         inj_coupling_strength_std = [];
+        uninj_coupling_strength_total = [];
         uninj_coupling_strength_mean = [];
         uninj_coupling_strength_std = [];
 
+        inj_delay_total = [];
         inj_delay_mean = [];
         inj_delay_std = [];
+        uninj_delay_total = [];
         uninj_delay_mean = [];
         uninj_delay_std = [];
 
@@ -347,29 +369,37 @@ if save_protocol
 
             if area_actual <= num_areas_spectral
                 % Spectral
+                inj_change_band_power_total = [inj_change_band_power_total, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post];
                 inj_change_band_power_mean = [inj_change_band_power_mean; protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre_mean, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on_mean, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post_mean];
                 inj_change_band_power_std = [inj_change_band_power_std; protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).pre_std, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).on_std, protocoloLFP.injured_global.spectral(area_actual).change_band_power(band_actual).post_std];
 
+                uninj_change_band_power_total = [uninj_change_band_power_total, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post];
                 uninj_change_band_power_mean = [uninj_change_band_power_mean; protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre_mean, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on_mean, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post_mean];
                 uninj_change_band_power_std = [uninj_change_band_power_std; protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).pre_std, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).on_std, protocoloLFP.uninjured_global.spectral(area_actual).change_band_power(band_actual).post_std];
             end
             
             % Coherence
+            inj_sum_MSC_total = [inj_sum_MSC_total, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post];
             inj_sum_MSC_mean = [inj_sum_MSC_mean; protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre_mean, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on_mean, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post_mean];
             inj_sum_MSC_std = [inj_sum_MSC_std; protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).pre_std, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).on_std, protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).post_std];
 
+            uninj_sum_MSC_total = [uninj_sum_MSC_total, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post];
             uninj_sum_MSC_mean = [uninj_sum_MSC_mean; protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre_mean, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on_mean, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post_mean];
             uninj_sum_MSC_std = [uninj_sum_MSC_std; protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).pre_std, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).on_std, protocoloLFP.uninjured_global.coherence(area_actual).sum_MSC(band_actual).post_std];
 
+            inj_coupling_strength_total = [inj_coupling_strength_total, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post];
             inj_coupling_strength_mean = [inj_coupling_strength_mean; protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre_mean, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on_mean, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post_mean];
             inj_coupling_strength_std = [inj_coupling_strength_std; protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).pre_std, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).on_std, protocoloLFP.injured_global.coherence(area_actual).coupling_strength(band_actual).post_std];
 
+            uninj_coupling_strength_total = [uninj_coupling_strength_total, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post];
             uninj_coupling_strength_mean = [uninj_coupling_strength_mean; protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre_mean, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on_mean, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post_mean];
             uninj_coupling_strength_std = [uninj_coupling_strength_std; protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).pre_std, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).on_std, protocoloLFP.uninjured_global.coherence(area_actual).coupling_strength(band_actual).post_std];
 
+            inj_delay_total = [inj_delay_total, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post];
             inj_delay_mean = [inj_delay_mean; protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre_mean, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on_mean, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post_mean];
             inj_delay_std = [inj_delay_std; protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).pre_std, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).on_std, protocoloLFP.injured_global.coherence(area_actual).delay(band_actual).post_std];
 
+            uninj_delay_total = [uninj_delay_total, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post];
             uninj_delay_mean = [uninj_delay_mean; protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre_mean, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on_mean, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_mean];
             uninj_delay_std = [uninj_delay_std; protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).pre_std, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).on_std, protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_std];
 
@@ -380,60 +410,66 @@ if save_protocol
         banda_name = protocoloLFP.injured_global.spectral(1).change_band_power(band_actual).band;
         areas = {protocoloLFP.injured_global.spectral.area};
 
-        % Graficar cambio en la potencia    
-        y_max = max([max([(inj_change_band_power_mean+inj_change_band_power_std);(uninj_change_band_power_mean+uninj_change_band_power_std)])]);
-        y_min = min([min([(inj_change_band_power_mean-inj_change_band_power_std);(uninj_change_band_power_mean-uninj_change_band_power_std)])]);
-        y_max = y_max + abs(y_max)*0.1;
-        y_min = y_min - abs(y_min)*0.1;
-        fig_11 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,1)
+        % Graficar cambio en la potencia  % Graficar cambio en la potencia   
+        y_etiqueta = 'Signal/Pink noise Power Rate';
+        titulo = ['Signal/Pink noise Power Rate of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Change in Power in (',int2str(band_actual),')',banda_name,' of injured area'];
+        boxplot_custom(inj_change_band_power_total, areas, num_record, [-50 170], y_etiqueta, titulo, name_figure_save); 
+
+        y_etiqueta = 'Signal/Pink noise Power Rate';
+        titulo = ['Signal/Pink noise Power Rate of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Change in Power in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        boxplot_custom(uninj_change_band_power_total, areas, num_record, [-50 170], y_etiqueta, titulo, name_figure_save); 
+        
+        % Graficar cambio en la potencia   
+        fig_13 = figure('units','normalized','outerposition',[0 0 1 1]);
         xt = 1:length(areas);
         x = [xt-0.225;xt;xt+0.225]';
-        bar_inj = bar(inj_change_band_power_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        pre = plot(x(:,1),inj_change_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
         hold on
-        errorbar(x,inj_change_band_power_mean,inj_change_band_power_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+        on = plot(x(:,2),inj_change_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+        hold on
+        post = plot(x(:,3),inj_change_band_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
-        bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
         grid on
-        ylim([-50 200])
-        xlim([xt(1)-1, xt(end)+1])
+        ylim([-50 170])
+        xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
         set(gca,'fontsize',20)
         title(['Signal/Pink noise Power Rate of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
         % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1)Change in Power in ',banda_name,' of injured area'];
-        saveas(fig_11,name_figure_save,'png');
-        saveas(fig_11,name_figure_save,'fig');
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-2)Change in Power in (',int2str(band_actual),')',banda_name,' of injured area'];
+        saveas(fig_13,name_figure_save,'png');
+        saveas(fig_13,name_figure_save,'fig');
         %waitforbuttonpress;
-        close(fig_11)   
+        close(fig_13)   
 
-        fig_12 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,2)
+        fig_14 = figure('units','normalized','outerposition',[0 0 1 1]);
         xt = 1:length(areas);
         x = [xt-0.225;xt;xt+0.225]';
-        bar_uninj = bar(uninj_change_band_power_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        pre = plot(x(:,1),uninj_change_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
         hold on
-        errorbar(x,uninj_change_band_power_mean,uninj_change_band_power_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_uninj(1) bar_uninj(2) bar_uninj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+        on = plot(x(:,2),uninj_change_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+        hold on
+        post = plot(x(:,3),uninj_change_band_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
-        bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
         grid on
-        ylim([-50 200])
-        xlim([xt(1)-1, xt(end)+1])
+        ylim([-50 170])
+        xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Signal/Pink noise Power Rate', 'FontSize', 24)
         set(gca,'fontsize',20)
         title(['Signal/Pink noise Power Rate of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
         % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1)Change in Power in ',banda_name,' of uninjured area'];
-        saveas(fig_12,name_figure_save,'png');
-        saveas(fig_12,name_figure_save,'fig');
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-2)Change in Power in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        saveas(fig_14,name_figure_save,'png');
+        saveas(fig_14,name_figure_save,'fig');
         %waitforbuttonpress;
-        close(fig_12)   
+        close(fig_14)   
+        
         
         banda_eval = protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).range;
         banda_name = protocoloLFP.injured_global.coherence(area_actual).sum_MSC(band_actual).band;
@@ -446,160 +482,90 @@ if save_protocol
         %y_min = min([min(inj_sum_MSC_mean) min(uninj_sum_MSC_mean)]);
         y_max = y_max + abs(y_max)*0.1;
         %y_min = y_min - abs(y_min)*0.1;
-        fig_21 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,1)
-        xt = 1:length(areas);
-        x = [xt-0.225;xt;xt+0.225]';
-        bar_inj = bar(inj_sum_MSC_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
-        hold on
-        errorbar(x,inj_sum_MSC_mean,inj_sum_MSC_std.*0,inj_sum_MSC_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-        lgd.FontSize = 20;
-        bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
-        grid on
-        ylim([0 y_max])
-        xlim([xt(1)-1, xt(end)+1])
-        ylabel('Sum MSC', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        title(['Sum Magnitude-Squared Coherence (MSC) of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
-        % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2)Sum MSC in ',banda_name,' of injured area'];
-        saveas(fig_21,name_figure_save,'png');
-        saveas(fig_21,name_figure_save,'fig');
-        %waitforbuttonpress;
-        close(fig_21)  
-
-        fig_22 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,2)
-        xt = 1:length(areas);
-        x = [xt-0.225;xt;xt+0.225]';
-        bar_uninj = bar(uninj_sum_MSC_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
-        hold on
-        errorbar(x,uninj_sum_MSC_mean,uninj_sum_MSC_std.*0,uninj_sum_MSC_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_uninj(1) bar_uninj(2) bar_uninj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-        lgd.FontSize = 20;
-        bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
-        grid on
-        ylim([0 y_max])
-        xlim([xt(1)-1, xt(end)+1])
-        ylabel('Sum MSC', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        title(['Sum Magnitude-Squared Coherence (MSC) of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
-        % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2)Sum MSC in ',banda_name,' of uninjured area'];
-        saveas(fig_22,name_figure_save,'png');
-        saveas(fig_22,name_figure_save,'fig');
-        %waitforbuttonpress;
-        close(fig_22)
-
+        y_etiqueta = 'Sum MSC';
+        titulo = ['Sum Magnitude-Squared Coherence (MSC) of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2)Sum MSC in (',int2str(band_actual),')',banda_name,' of injured area'];
+        boxplot_custom(inj_sum_MSC_total, areas', num_record, [0 y_max], y_etiqueta, titulo, name_figure_save); 
+        
+        y_etiqueta = 'Sum MSC';
+        titulo = ['Sum Magnitude-Squared Coherence (MSC) of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2)Sum MSC in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        boxplot_custom(uninj_sum_MSC_total, areas', num_record, [0 y_max], y_etiqueta, titulo, name_figure_save); 
+        
+        
         %y_max = max([max(inj_coupling_strength_mean) max(uninj_coupling_strength_mean)]);
         %y_min = min([min(inj_coupling_strength_mean) min(uninj_coupling_strength_mean)]);
         %y_max = y_max + abs(y_max)*0.1;
-        %y_min = y_min - abs(y_min)*0.1;
-        fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,1)
+        %y_min = y_min - abs(y_min)*0.1;        
+        y_etiqueta = 'Coupling Strength';
+        titulo = ['Coupling Strength of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of injured area'];
+        boxplot_custom(inj_coupling_strength_total, areas', num_record, [0 0.6], y_etiqueta, titulo, name_figure_save); 
+        
+        y_etiqueta = 'Coupling Strength';
+        titulo = ['Coupling Strength of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        boxplot_custom(uninj_coupling_strength_total, areas', num_record, [0 0.6], y_etiqueta, titulo, name_figure_save); 
+        
+        fig_33 = figure('units','normalized','outerposition',[0 0 1 1]);
         xt = 1:length(areas);
-        x = [xt-0.225;xt;xt+0.225]';
-        bar_inj = bar(inj_coupling_strength_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        x = [xt-0.225;xt;xt+0.225]'; 
+        pre = plot(x(:,1),inj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
         hold on
-        errorbar(x,inj_coupling_strength_mean,inj_coupling_strength_std.*0,inj_coupling_strength_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+        on = plot(x(:,2),inj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+        hold on
+        post = plot(x(:,3),inj_coupling_strength_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
-        bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
         grid on
         ylim([0 0.6])
-        xlim([xt(1)-1, xt(end)+1])
+        xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Coupling Strength', 'FontSize', 24)
         set(gca,'fontsize',20)
         title(['Coupling Strength of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
         % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3)Coupling Strength in ',banda_name,' of injured area'];
-        saveas(fig_31,name_figure_save,'png');
-        saveas(fig_31,name_figure_save,'fig');
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-2)Coupling Strength in (',int2str(band_actual),')',banda_name,' of injured area'];
+        saveas(fig_33,name_figure_save,'png');
+        saveas(fig_33,name_figure_save,'fig');
         %waitforbuttonpress;
-        close(fig_31)
+        close(fig_33)
 
-        fig_32 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,2)
+        fig_34 = figure('units','normalized','outerposition',[0 0 1 1]);
         xt = 1:length(areas);
         x = [xt-0.225;xt;xt+0.225]';
-        bar_uninj = bar(uninj_coupling_strength_mean,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
+        pre = plot(x(:,1),uninj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
         hold on
-        errorbar(x,uninj_coupling_strength_mean,uninj_coupling_strength_std.*0,uninj_coupling_strength_std,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_uninj(1) bar_uninj(2) bar_uninj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+        on = plot(x(:,2),uninj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+        hold on
+        post = plot(x(:,3),uninj_coupling_strength_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+        set(gca, 'XTick', xt, 'XTickLabel', areas)        
+        lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
         lgd.FontSize = 20;
-        bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
         grid on
         ylim([0 0.6])
-        xlim([xt(1)-1, xt(end)+1])
+        xlim([xt(1)-0.5, xt(end)+0.5])
         ylabel('Coupling Strength', 'FontSize', 24)
         set(gca,'fontsize',20)
         title(['Coupling Strength of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
         % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3)Coupling Strength in ',banda_name,' of uninjured area'];
-        saveas(fig_32,name_figure_save,'png');
-        saveas(fig_32,name_figure_save,'fig');
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-2)Coupling Strength in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        saveas(fig_34,name_figure_save,'png');
+        saveas(fig_34,name_figure_save,'fig');
         %waitforbuttonpress;
-        close(fig_32)
+        close(fig_34)
+        
 
-        fig_41 = figure('units','normalized','outerposition',[0 0 1 1]);
-        %subplot(2,1,1)
-        xt = 1:length(areas);
-        x = [xt-0.225;xt;xt+0.225]';
-        bar_inj = bar(inj_delay_mean.*1000,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
-        hold on
-        errorbar(x,inj_delay_mean.*1000,inj_delay_std.*0,inj_delay_std.*1000,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-        lgd.FontSize = 20;
-        bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
-        grid on
-        ylim([0 200])
-        xlim([xt(1)-1, xt(end)+1])
-        ylabel('Delay [ms]', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        title(['Delay of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
-        %subplot(2,1,2)
-        % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4)Delay in ',banda_name,' of injured area'];
-        saveas(fig_41,name_figure_save,'png');
-        saveas(fig_41,name_figure_save,'fig');
-        %waitforbuttonpress;
-        close(fig_41)
+        y_etiqueta = 'Delay [ms]';
+        titulo = ['Delay of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4)Delay in (',int2str(band_actual),')',banda_name,' of injured area'];
+        boxplot_custom(inj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
 
-        fig_42 = figure('units','normalized','outerposition',[0 0 1 1]);
-        xt = 1:length(areas);
-        x = [xt-0.225;xt;xt+0.225]';
-        bar_uninj = bar(uninj_delay_mean.*1000,'grouped');
-        %xt = get(gca, 'XTick');
-        set(gca, 'XTick', xt, 'XTickLabel', areas)
-        hold on
-        errorbar(x,uninj_delay_mean.*1000,uninj_delay_std.*0,uninj_delay_std.*1000,'k*','LineWidth',1.0,'MarkerSize',2,'CapSize',20)
-        lgd = legend([bar_uninj(1) bar_uninj(2) bar_uninj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-        lgd.FontSize = 20;
-        bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
-        grid on
-        ylim([0 200])
-        xlim([xt(1)-1, xt(end)+1])
-        ylabel('Delay [ms]', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        title(['Delay of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
-        % Guardar imagen de la figura
-        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4)Delay in ',banda_name,' of uninjured area'];
-        saveas(fig_42,name_figure_save,'png');
-        saveas(fig_42,name_figure_save,'fig');
-        %waitforbuttonpress;
-        close(fig_42)
-
+        y_etiqueta = 'Delay [ms]';
+        titulo = ['Delay of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+        name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4)Delay in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+        boxplot_custom(uninj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
+        
     end
     
 end

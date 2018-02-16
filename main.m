@@ -16,14 +16,14 @@ clear; close all
 %path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/150Hz/maravilla_2017-07-04_15-19-26/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-26_11-03-26/';
 
 %% Intervalos de tiempo del protocolo
-timeRanges = [5, 5, 5]; %DC or AC
-%timeRanges = [6, 6, 6]; %Mixtos
+%timeRanges = [5, 5, 5]; %DC or AC
+timeRanges = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
+threshold_amplitudes = [15, 8, 10]; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %eval_channels = [2:5,14:21,34:37,46:53];
@@ -79,6 +79,8 @@ View_Spectrum_Channel_Area;
 Coherence_Area;
 
 View_Coherence_Area;
+
+Record_Masurements;
 toc;
 
 sonido_alarma;

@@ -31,29 +31,38 @@ sampleRate = registroLFP.open_ephys.info.header.sampleRate;
 % Disenno del filtro pasa banda
 %d = fdesign.bandpass('N,F3dB1,F3dB2',registroLFP.filter_param.n,registroLFP.filter_param.fc1,registroLFP.filter_param.fc2,sampleRate);
 %Hd = design(d,'butter'); 
-Hd = designfilt(registroLFP.filter_param.type,'FilterOrder',registroLFP.filter_param.n, ...
+Hd_low = designfilt(registroLFP.filter_param.type,'FilterOrder',registroLFP.filter_param.n, ...
 'HalfPowerFrequency',registroLFP.filter_param.fc,'DesignMethod',registroLFP.filter_param.design_method,'SampleRate',sampleRate);
+%Hd = designfilt('bandpassiir','FilterOrder',20, ...
+%         'HalfPowerFrequency1',0.1,'HalfPowerFrequency2',150, ...
+%         'SampleRate',sampleRate);
 
 % Filtrado del primer LFP
 %data_filt = filter(Hd,data);
-data_filt = filtfilt(Hd,data);
+data_filt = filtfilt(Hd_low,data);
 
 % Downsamplear el primer LFP para llevar los registros a la tasa de muestro requerida
 data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
+
+% Filtro pasa alto despues de downsamplin debido a la baja Fc
+Hd_high = designfilt('highpassiir','FilterOrder',15, ...
+'HalfPowerFrequency',0.1,'DesignMethod','butter','SampleRate',1000);
+
+data_downS_filtHigh = filtfilt(Hd_high,data_downS);
 
 % Tiempo maximo de registro
 time_max_reg_seg = length(data)/sampleRate;
 registroLFP.times.total_recorded_m = time_max_reg_seg/60.0;
 
 % Tiempo total en minutos de lo registrado
-time_step_m = linspace(0,time_max_reg_seg/60,length(data_downS)); % minutos
+time_step_m = linspace(0,time_max_reg_seg/60,length(data_downS_filtHigh)); % minutos
 
 % Intervalo de tiempo total del protocolo
 time_step_m_tiempoTotal = time_step_m(time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60) - registroLFP.times.extra_time_s/60;
 registroLFP.times.steps_m = time_step_m_tiempoTotal;
 
 % Eliminar los datos del primer LFP sobre los 960 segundos
-data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
+data_elim_maxTime = data_downS_filtHigh((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Si se eliminan los primeros segundos, es como si inicial fuese cero, por lo que cambian los limites de las barras de las fases
 
 % Calcular el umbral
 umbral = registroLFP.amp_threshold * median(sort(abs(data_elim_maxTime)))/0.675;
@@ -78,13 +87,16 @@ for i = 2:length(eval_channels)
     
     % Filtrado del LFP "i"
     %data_filt = filter(Hd,data);
-    data_filt = filtfilt(Hd,data);
+    data_filt = filtfilt(Hd_low,data);
     
     % Downsamplear el LFP "i" para llevar los registros a la tasa de muestro requerida
     data_downS = downsample(data_filt,sampleRate/registroLFP.desired_fs);
     
+    % Filtro pasa alto despues de downsamplin debido a la baja Fc
+    data_downS_filtHigh = filtfilt(Hd_high,data_downS);
+
     % Eliminar los datos del LFP "i" sobre los 960 segundos
-    data_elim_maxTime = data_downS((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Tal vez eliminar los primeros segundos
+    data_elim_maxTime = data_downS_filtHigh((time_step_m >= registroLFP.times.extra_time_s/60 & time_step_m <= registroLFP.times.end_m+registroLFP.times.extra_time_s/60)); % Tal vez eliminar los primeros segundos
     
     % Calcular el umbral
     umbral = registroLFP.amp_threshold * median(sort(abs(data_elim_maxTime)))/0.675;

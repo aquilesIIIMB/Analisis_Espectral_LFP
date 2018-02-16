@@ -5,24 +5,29 @@ clearvars -except registroLFP path name_registro foldername inicio_foldername pr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Main 
 % Guardar las imgenges del protocolo? 
-disp(' ')
+save_protocol = 1; % USER
 while 1
     try
-        save_protocol = input('Deseas guardar las imagenes del protocolo?[Type si or no]:  ','s');
+        save_protocol = input('Ya seleccionaste los canales a eliminar?[Type si]:  ','s');
     catch
-        save_protocol = 'no';
+        save_protocol = 0;
     end
 
-    if strcmp(save_protocol, 'si') 
-        fprintf('\nSe almacenaran las imagenes del protocolo\n\n');
-        save_protocol = 1;
-        break
-    elseif strcmp(save_protocol, 'no') 
-        fprintf('\nNO se almacenaran las imagenes del protocolo\n\n');
-        save_protocol = 0;
+    if save_protocol == 1 
+        fprintf('\nGuardaremos las imagenes  \n\n');
         break
     end
 end
+
+
+
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Definir que area es la lesionada segun potencia en beta del PSD

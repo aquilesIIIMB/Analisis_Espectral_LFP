@@ -1,5 +1,27 @@
-%%% MSC al cuadrado!!!
-function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurements(registroLFP, banda_eval, visualization, path)
+function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurements(registroLFP, banda_eval, visualization, save_image, path)
+    
+    banda_actual = 'None';
+    
+    if banda_eval == [4, 8]
+        banda_actual = 'theta';
+    elseif banda_eval == [8, 12]
+        banda_actual = 'alpha';
+    elseif banda_eval == [12, 20]
+        banda_actual = 'beta_low';
+    elseif banda_eval == [20, 30]
+        banda_actual = 'beta_high';
+    elseif banda_eval == [12, 30]
+        banda_actual = 'beta';
+    elseif banda_eval == [8, 30]
+        banda_actual = 'beta_parkinson';
+    elseif banda_eval == [30, 60]
+        banda_actual = 'gamma_low';
+    elseif banda_eval == [60, 90]
+        banda_actual = 'gamma_high';
+    elseif banda_eval == [30, 90]
+        banda_actual = 'gamma';
+    end
+
     sum_MSC_band = [];
     coupling_strength_band = [];
     delay_band = [];
@@ -329,27 +351,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             ylim([y_min y_max])
             xlim([xt(1)-1, xt(end)+1])
             title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
-            
-            fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_inj = bar(coupling_strength_band,'grouped');
-            xt = get(gca, 'XTick');
-            set(gca, 'XTick', xt, 'XTickLabel', string(areas))
-            lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-            lgd.FontSize = 20;
-            bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
-            grid on
-            ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
-            ylabel('Coupling Strength', 'FontSize', 24)
-            set(gca,'fontsize',20)
-            title(['Coupling Strength of lefth and rigth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
-            % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of lefth and rigth hemisphere'];
-            saveas(fig_31,name_figure_save,'png');
-            saveas(fig_31,name_figure_save,'fig');
-            %waitforbuttonpress;
-            close(fig_31)
-            
+
         else 
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(coupling_strength_band(1:mitad_largo,:)))
             fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(coupling_strength_band(mitad_largo+1:end,:)))  
@@ -378,7 +380,35 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             grid on
             ylim([y_min y_max])
             xlim([xt(1)-1, xt(end)+1])
-           
+        end
+    end
+            
+    if save_image
+        disp(' ')
+        mitad_largo = round(size(coupling_strength_band,1)/2);  
+
+        if mitad_largo == 1                    
+            fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_inj = bar(coupling_strength_band,'grouped');
+            xt = get(gca, 'XTick');
+            set(gca, 'XTick', xt, 'XTickLabel', string(areas))
+            lgd = legend([bar_inj(1) bar_inj(2) bar_inj(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+            lgd.FontSize = 20;
+            bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
+            grid on
+            ylim([0 0.6])
+            xlim([xt(1)-1, xt(end)+1])
+            ylabel('Coupling Strength', 'FontSize', 24)
+            set(gca,'fontsize',20)
+            title(['Coupling Strength of lefth and rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            % Guardar imagen de la figura
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of lefth and rigth hemisphere'];
+            saveas(fig_31,name_figure_save,'png');
+            saveas(fig_31,name_figure_save,'fig');
+            %waitforbuttonpress;
+            close(fig_31)
+            
+        else
             fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
             bar_inj = bar(coupling_strength_band(1:mitad_largo,:),'grouped');
             xt = get(gca, 'XTick');
@@ -391,9 +421,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
-            title(['Coupling Strength of lefth hemisphere in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Coupling Strength of lefth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of lefth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of lefth hemisphere'];
             saveas(fig_31,name_figure_save,'png');
             saveas(fig_31,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -411,9 +441,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
-            title(['Coupling Strength of rigth hemisphere band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Coupling Strength of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of rigth hemisphere'];
             saveas(fig_32,name_figure_save,'png');
             saveas(fig_32,name_figure_save,'fig');
             %waitforbuttonpress;
