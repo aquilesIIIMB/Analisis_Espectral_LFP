@@ -146,38 +146,55 @@ for m = 1:length(ia)
     idx_on = find(t_Spectrogram_mean>(on_inicio_m*60.0+5) & t_Spectrogram_mean<(on_final_m*60.0-5));
     idx_post = find(t_Spectrogram_mean>(post_m*60.0+5) & t_Spectrogram_mean<(tiempo_total*60));
     
-    % PSD sin Pink Noise
-    PSD_pre_mean_raw = mean(Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:),1);    
-    PSD_on_mean_raw = mean(Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:),1);    
-    PSD_post_mean_raw = mean(Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:),1);
-    
-    % Se le quita el ruido rosa, dejando mas plano el espectro
-    %%[Spectrogram_mean_raw, pow_pinknoise] = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean_raw, idx_spect_artifacts); 
-    
-    % Nuevo Pink Noise
-    %%Spectrogram_mean_raw_temp = Spectrogram_mean_raw;
-    %%[pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean_raw', [0 15;30 100]);
-    %%Spectrogram_mean_raw = real(pow_dBpink)';
-    %%Spectrogram_mean_raw(idx_spect_artifacts,:) = db(Spectrogram_mean_raw_temp(idx_spect_artifacts,:)','power')';
-    
-    %pow_pinknoise_pre = pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))';
-    %pow_pinknoise_on = pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))';
-    %pow_pinknoise_post = pow_pinknoise(:,idx_post(~ismember(idx_post, idx_spect_artifacts)))';
-    
-    %Spectrogram_mean_raw_temp = Spectrogram_mean_raw - ones(size(Spectrogram_mean_raw))*diag(median(real(pow_pinknoise_pre)));
-    %Spectrogram_mean_raw_temp(idx_spect_artifacts,:) = Spectrogram_mean_raw(idx_spect_artifacts,:);
-    %Spectrogram_mean_raw = Spectrogram_mean_raw_temp;
-    
-    % dB Spect
-    %%Spectrogram_mean_raw = db(Spectrogram_mean_raw','power')';
-    
     % Separacion por etapas el espectrograma  
     Spectrogram_pre_mean = Spectrogram_mean_raw(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:); 
-    %%pink_noise_pre = mean(pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))');
     Spectrogram_on_mean = Spectrogram_mean_raw(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
-    %%pink_noise_on = mean(pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))');
     Spectrogram_post_mean = Spectrogram_mean_raw(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
-    %%pink_noise_post = mean(pow_pinknoise(:,idx_post(~ismember(idx_post, idx_spect_artifacts)))');
+    
+    % PSD
+    %PSD_pre_mean_raw = mean(Spectrogram_pre_mean,1);    
+    %PSD_on_mean_raw = mean(Spectrogram_on_mean,1);    
+    %PSD_post_mean_raw = mean(Spectrogram_post_mean,1);
+
+    % Espectrograma de fractales
+    FracSpectrogram = registroLFP.average_spectrum(m).spectrogram.irasa.frac';
+    FracSpectrogram = imresize(FracSpectrogram, [length(t_Spectrogram_mean), 200]);
+    
+    [~,ind_max] = max(FracSpectrogram,[],2); % Indice de los maximos en cada bin de tiempo
+    frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+    idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+    idx_spect_artifacts = find(~idx_spect_artifacts)';
+    
+    FracSpectrogram_pre = FracSpectrogram(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
+    FracSpectrogram_on = FracSpectrogram(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
+    FracSpectrogram_post = FracSpectrogram(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
+    
+    % PSD
+    PSD_pre_mean_frac = mean(FracSpectrogram_pre,1);    
+    PSD_on_mean_frac = mean(FracSpectrogram_on,1);    
+    PSD_post_mean_frac = mean(FracSpectrogram_post,1);
+    
+    % Espectrograma de fractales norm
+    Mean_FracSpectrogram_pre_mean = median(FracSpectrogram_pre,1);
+    Desv_FracSpectrogram_pre_mean = std(FracSpectrogram_pre,1);
+    %quantil_pre = quantile(FracSpectrogram_pre,[.025 .25 .50 .75 .975]);
+    %Desv_FracSpectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
+    
+    FracSpectrogram_norm = (FracSpectrogram-ones(size(FracSpectrogram))*diag(Mean_FracSpectrogram_pre_mean))./(ones(size(FracSpectrogram))*diag(Desv_FracSpectrogram_pre_mean));
+    
+    % Efecto del fractal
+    MixdSpectrogram = registroLFP.average_spectrum(m).spectrogram.irasa.mixd';
+    MixdSpectrogram = imresize(MixdSpectrogram, [length(t_Spectrogram_mean), 200]);
+    
+    [~,ind_max] = max(MixdSpectrogram,[],2); % Indice de los maximos en cada bin de tiempo
+    frec_ind_max = f_Spectrogram_mean(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+    idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+    idx_spect_artifacts = find(~idx_spect_artifacts)';
+    
+    % PSD
+    PSD_pre_mean_mixd = mean(MixdSpectrogram(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:),1);    
+    PSD_on_mean_mixd = mean(MixdSpectrogram(idx_on(~ismember(idx_on, idx_spect_artifacts)),:),1);    
+    PSD_post_mean_mixd = mean(MixdSpectrogram(idx_post(~ismember(idx_post, idx_spect_artifacts)),:),1);
     
     %% Grafico del promedio de todos los canales    
     %-------------------Plot---Mean Sectral Frequency---------------------------
@@ -192,40 +209,12 @@ for m = 1:length(ia)
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [dBPink]', 'FontSize', 24)
-    title(['Pink power spectral density of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD Pink de los LFP '];
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
+    title(['Oscillation PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Oscilacion PSD de los LFP '];
     saveas(fig_2,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_2)
-    
-    
-    %fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
-    %p1 = plot(f_Spectrogram_mean, PSD_pre_mean_raw,'-','Color', [0 0.4470 0.7410],'LineWidth',3);
-    %hold on
-    %plot(f_Spectrogram_mean, pink_noise_pre,'--','Color', [0 0.4470 0.7410],'LineWidth',1.5);
-    %hold on
-    %ylim([-inf max(PSD_pre_mean_raw)*1.05])
-    %ylabel('Power (Pre) [Watt/Hz]', 'FontSize', 24, 'Color','black')
-    %yyaxis right
-    %p2 = plot(f_Spectrogram_mean, PSD_on_mean_raw,'-','Color', [0.85, 0.325, 0.098],'LineWidth',3);
-    %hold on
-    %plot(f_Spectrogram_mean, pink_noise_on,'--','Color', [0.85, 0.325, 0.098],'LineWidth',1.5);
-    %hold on
-    %p3 = plot(f_Spectrogram_mean, PSD_post_mean_raw,'-','Color', [0.466, 0.674, 0.188],'LineWidth',3);
-    %hold on
-    %plot(f_Spectrogram_mean, pink_noise_post,'--','Color', [0.466, 0.674, 0.188],'LineWidth',1.5);
-    %xlim([1 100])
-    %ylim([-inf max([max(PSD_on_mean_raw), max(PSD_post_mean_raw)])*1.3])
-    %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
-    %lgd.FontSize = 20;
-    %set(gca,'fontsize',20,'ycolor','black')
-    %xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power (On & Post) [Watt/Hz]', 'FontSize', 24, 'Color','black')
-    %title(['Power spectral density of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD de los LFP '];
-    %saveas(fig_4,name_figure_save,'png');
-    %waitforbuttonpress;
-    %close(fig_4)
     
     %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
     fig_6 = figure('units','points','position',[0,0,250,600]);
@@ -254,8 +243,8 @@ for m = 1:length(ia)
     ylim([-0.06 0.1])
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
-    title(['Pink power spectral density in beta of ',C{ic(i)}], 'FontSize', 8)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' PSD Pink en beta de los LFP '];
+    title(['Oscillation PSD in beta of ',C{ic(i)}], 'FontSize', 12)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Oscilacion PSD en betaP de los LFP '];
     saveas(fig_6,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_6)
@@ -277,10 +266,10 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [dBPink]', 'FontSize', 17)
+    title(['Normalized oscillation spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
     set(c,'fontsize',17)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Multitaper de los LFP '];
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Oscilaciones de los LFP '];
     saveas(fig_8,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_8)
@@ -296,50 +285,171 @@ for m = 1:length(ia)
     set(gca,'fontsize',20)
     ylim([0 60])
     c=colorbar('southoutside');
-    caxis([-0.01 0.02])
+    caxis([0 0.05])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Raw spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Power [dB]', 'FontSize', 17)
+    title(['Oscillation spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Power [W/Hz]', 'FontSize', 17)
     set(c,'fontsize',17)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma en bruto Multitaper de los LFP '];
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma de Oscilaciones de los LFP '];
     saveas(fig_10,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_10)
     
-    %-------------------Plot---Highlighted Mean Spectrogram------------------------------------
-    %Spectrogram_mean_raw(Spectrogram_mean_raw>3) = 3;
-    %Spectrogram_mean_raw(Spectrogram_mean_raw<-3) = -3;
-    %Spectrogram_mean(Spectrogram_mean>1) = 1;
-    %Spectrogram_mean(Spectrogram_mean<-1) = -1;
-    %Spectrogram_destacado = (Spectrogram_mean.*3+Spectrogram_mean_raw);
+    % Fractales
+    %-------------------Plot---Mean Sectral Frequency---------------------------
+    fig_12 = figure('units','normalized','outerposition',[0 0 1 1]);
+    p1 = plot(f_Spectrogram_mean, PSD_pre_mean_frac, 'Color', [0 0.4470 0.7410],'LineWidth',3);
+    hold on
+    p2 = plot(f_Spectrogram_mean, PSD_on_mean_frac,'Color', [0.85, 0.325, 0.098],'LineWidth',3);
+    hold on
+    p3 = plot(f_Spectrogram_mean, PSD_post_mean_frac,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
+    xlim([0 60])
+    ylim([0 0.12])
+    lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
+    lgd.FontSize = 20;
+    set(gca,'fontsize',20)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
+    title(['Fractal PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Fractal PSD de los LFP '];
+    saveas(fig_12,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_12)
     
-    %fig_15 = figure('units','normalized','outerposition',[0 0 1 1]);
-    %clim=prctile(reshape(Spectrogram_destacado',1,numel(Spectrogram_destacado)),[5 99]);
-    %imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_destacado',clim); 
-    %cmap = colormap(parula(40));
-    %axis xy
-    %ylabel('Frequency [Hz]', 'FontSize', 24)
-    %xlabel('Time [s]', 'FontSize', 24)
-    %set(gca,'fontsize',20)
-    %ylim([1 100])
-    %c=colorbar('southoutside');
-    %caxis([-6 6])
-    %hold on
-    %line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    %line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    %line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    %line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    %title(['Weighted spectrogram multitaper of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    %ylabel(c,'Power [dB]', 'FontSize', 17)
-    %set(c,'fontsize',17)
-    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma destacado Multitaper de los LFP '];
-    %saveas(fig_15,name_figure_save,'png');
-    %%waitforbuttonpress;
-    %close(fig_15)
+    %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
+    fig_14 = figure('units','points','position',[0,0,250,600]);
+    quantil_pre = quantile(FracSpectrogram_pre,[.025 .25 .50 .75 .975]);
+    quantil_on = quantile(FracSpectrogram_on,[.025 .25 .50 .75 .975]);
+    quantil_post = quantile(FracSpectrogram_post,[.025 .25 .50 .75 .975]);
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, PSD_pre_mean_frac,0.021, 'loess'), 'Color', [0 0.4470 0.7410],'LineWidth',3)
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_pre(1,:),0.02, 'loess'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_pre(5,:),0.02, 'loess'), ':', 'Color', [0 0.4470 0.7410],'LineWidth',1.7);
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, PSD_on_mean_frac,0.02, 'loess'), 'Color', [0.85, 0.325, 0.098],'LineWidth',3)
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_on(1,:),0.02, 'loess'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_on(5,:),0.02, 'loess'), ':', 'Color', [0.85, 0.325, 0.098],'LineWidth',1.7);
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, PSD_post_mean_frac,0.02, 'loess'), 'Color', [0.466, 0.674, 0.188],'LineWidth',3)
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(1,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
+    hold on
+    plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(5,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
+    hold on
+    xlim([5 35])
+    ylim([0 0.14])
+    set(gca,'fontsize',15)
+    xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
+    title(['Fractal PSD in beta of ',C{ic(i)}], 'FontSize', 12)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Fractal PSD en betaP de los LFP '];
+    saveas(fig_14,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_14)
+
+    %-------------------Plot---Mean Spectrogram------------------------------------
+    fig_16 = figure('units','normalized','outerposition',[0 0 1 1]);
+    clim=prctile(reshape(FracSpectrogram_norm',1,numel(FracSpectrogram_norm)),[5 99]);
+    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,FracSpectrogram_norm',clim);
+    cmap = colormap(parula(40));
+    axis xy
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
+    set(gca,'fontsize',20)
+    ylim([0 60])
+    c=colorbar('southoutside');
+    caxis([-5 5])
+    hold on
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Normalized Fractal spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
+    set(c,'fontsize',17)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Fractal de los LFP '];
+    saveas(fig_16,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_16)
+    
+    %-------------------Plot---Mean Spectrogram------------------------------------
+    fig_18 = figure('units','normalized','outerposition',[0 0 1 1]);
+    clim=prctile(reshape(FracSpectrogram',1,numel(FracSpectrogram)),[5 99]);
+    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,FracSpectrogram',clim); 
+    cmap = colormap(parula(40));
+    axis xy
+    ylabel('Frequency [Hz]', 'FontSize', 24)
+    xlabel('Time [s]', 'FontSize', 24)
+    set(gca,'fontsize',20)
+    ylim([0 60])
+    c=colorbar('southoutside');
+    caxis([0 0.05])
+    hold on
+    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
+    title(['Fractal spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    ylabel(c,'Power [W/Hz]', 'FontSize', 17)
+    set(c,'fontsize',17)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Fractal de los LFP '];
+    saveas(fig_18,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_18)
+    
+    % Contraste entre señal mixta y señal fractal
+    fig_20 = figure('units','normalized','outerposition',[0 0 1 1]);
+    semilogy(f_Spectrogram_mean, PSD_pre_mean_mixd,'Color', [0 0.4470 0.7410],'LineWidth',3);  
+    hold on
+    semilogy(f_Spectrogram_mean, PSD_pre_mean_frac,'k','LineWidth',3); 
+    xlim([0 100])
+    ylim([10^-5.5 10^-0.5])
+    lgd = legend('mixto', 'fractal');
+    lgd.FontSize = 20;
+    set(gca,'fontsize',20)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
+    title(['Mixed and fractal PSD of Pre-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Fractal (1)pre-stim de los LFP '];
+    saveas(fig_20,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_20)
+    
+    fig_22 = figure('units','normalized','outerposition',[0 0 1 1]);
+    semilogy(f_Spectrogram_mean, PSD_on_mean_mixd,'Color', [0.85, 0.325, 0.098],'LineWidth',3); 
+    hold on
+    semilogy(f_Spectrogram_mean, PSD_on_mean_frac,'k','LineWidth',3);    
+    xlim([0 100])
+    ylim([10^-5.5 10^-0.5])
+    lgd = legend('mixto', 'fractal');
+    lgd.FontSize = 20;
+    set(gca,'fontsize',20)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
+    title(['Mixed and fractal PSD of On-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Fractal (2)on-stim de los LFP '];
+    saveas(fig_22,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_22)
+    
+    fig_24 = figure('units','normalized','outerposition',[0 0 1 1]);
+    semilogy(f_Spectrogram_mean, PSD_post_mean_mixd,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
+    hold on
+    semilogy(f_Spectrogram_mean, PSD_post_mean_frac,'k','LineWidth',3);   
+    xlim([0 100])
+    ylim([10^-5.5 10^-0.5])
+    lgd = legend('mixto', 'fractal');
+    lgd.FontSize = 20;
+    set(gca,'fontsize',20)
+    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
+    title(['Mixed and fractal PSD of Post-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Fractal (3)post-stim de los LFP '];
+    saveas(fig_24,name_figure_save,'png');
+    %waitforbuttonpress;
+    close(fig_24)
 end
     
 end

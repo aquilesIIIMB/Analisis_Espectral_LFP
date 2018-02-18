@@ -2,7 +2,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     
     banda_actual = 'None';
     
-    if banda_eval == [4, 8]
+    if banda_eval == [1, 4]
+        banda_actual = 'delta';
+    elseif banda_eval == [4, 8]
         banda_actual = 'theta';
     elseif banda_eval == [8, 12]
         banda_actual = 'alpha';
@@ -399,7 +401,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             ylim([0 0.6])
             xlim([xt(1)-1, xt(end)+1])
             ylabel('Coupling Strength', 'FontSize', 24)
-            set(gca,'fontsize',20)
+            set(gca,'fontsize',15)
             title(['Coupling Strength of lefth and rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of lefth and rigth hemisphere'];

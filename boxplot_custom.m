@@ -55,7 +55,7 @@ ylim(ylimite)
 xlim([xt(1)-0.5, xt(end)+0.5])
 
 ylabel(y_etiqueta, 'FontSize', 24)
-set(gca,'fontsize',20)
+set(gca,'fontsize',17)
 title(titulo, 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
 saveas(fig,name_figure_save,'png');

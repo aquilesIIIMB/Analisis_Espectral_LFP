@@ -18,7 +18,8 @@ irasa.time = (0:step/srate:step*(nwin-1)/srate)';
 toc
 
 % fitting power-law function to the fractal power spectra
-Frange = [1, 100]; % define frequency range for power-law fitting
+%Frange = [1, 100]; % define frequency range for power-law fitting
+Frange = frange;
 irasa = amri_sig_plawfit(irasa,Frange);
 
 % show averaged fractal and oscillatory power spectrum

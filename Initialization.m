@@ -111,7 +111,7 @@ registroLFP.multitaper.spectrogram.params.err = 0; % Error considerado
 registroLFP.multitaper.spectrogram.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.spectrogram.movingwin.window = 4; % Ventanas (En segundos)
+registroLFP.multitaper.spectrogram.movingwin.window = 2; % Ventanas (En segundos)
 registroLFP.multitaper.spectrogram.movingwin.winstep = registroLFP.multitaper.spectrogram.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)

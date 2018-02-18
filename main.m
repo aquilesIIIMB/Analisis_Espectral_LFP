@@ -13,10 +13,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+5000_300Hz/arturo_2017-06-17_16-05-21/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+5000_300Hz/arturo_2017-06-17_16-05-21/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
@@ -63,7 +63,7 @@ View_LFP_Raw_Ref;
 
 Spectral_Channel;
 
-View_Spectrum_Channel_Area;
+View_Spectrum_Channel_Area_IRASA;
 
 % Etapa de eliminacion de ch y lfp promedios
 Delete_CH;
@@ -72,15 +72,15 @@ Referencing;
 
 View_LFP_Raw_Ref;
 
-Spectral_Area_MT;
+Spectral_Area_IRASA;
 
-View_Spectrum_Channel_Area;
+View_Spectrum_Channel_Area_IRASA;
 
 Coherence_Area;
 
 View_Coherence_Area;
 
-Record_Masurements;
+Record_Masurements_IRASA;
 toc;
 
 sonido_alarma;

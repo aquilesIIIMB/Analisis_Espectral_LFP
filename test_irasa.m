@@ -114,4 +114,6 @@ plot(Frac.freq, mean(Frac.osci(:,(Frac.time < 13*60)), 2));
 legend('Pre-stim', 'On-stim', 'Post-stim')
 xlim([0, 40])
 
+% Para calcular la energia de la banda
+min_psd = min([min(psd_pre),min(psd_on),min(psd_post)]);
 

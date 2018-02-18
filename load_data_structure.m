@@ -22,19 +22,7 @@ else
     end   
 
 end
-
-% Actualizacion si el registro tiene el mismo nombre
-%%%% Ver que si el nombre es vacio, rellenar esos datos y buscar si esta en
-%%%% en el protocolo para actualzarlo
-%if ~isempty(protocoloLFP.register_checked)
-%    idx_sameregister = find(strcmp(string({protocoloLFP.register_checked.name}), registroLFP.name));
-
-%    if ~isempty(idx_sameregister)    
-%        idx_registerName = idx_sameregister(end) - 1;
-%    end
-    
-%end
-    
+  
 protocoloLFP.register_checked(idx_registerName+1).name = registroLFP.name;            
 
 idx_injured = 0;

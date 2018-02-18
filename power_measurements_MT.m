@@ -1,4 +1,4 @@
-function percent_power_band = power_measurements(registroLFP, banda_eval, visualization, save_image, path)
+function percent_power_band = power_measurements_MT(registroLFP, banda_eval, visualization, save_image, path)
 
     banda_actual = 'None';
     
