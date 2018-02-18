@@ -31,11 +31,11 @@ threshold_amplitudes = [15, 8, 10]; % 8,9,10 desde el mas sucio al mas limpio
 eval_channels = 1:64;
 
 %% Codificacion de canales
-%channel_codes = 'channel_codes_florencia.csv'; % Flo
-%channel_codes = 'channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
+%channel_codes = 'channel-codes/channel_codes_florencia.csv'; % Flo
+%channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
 %  (Se dejaron las mismas areas que en 'channel_codes_florencia_PUC.csv' y se invirtieron los hemisferios originals L->R y R->L)
-channel_codes = 'channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
-%channel_codes = 'channel_codes_Rata_R01_modificado.csv'; % Caro 
+channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
+%channel_codes = 'channel-codes/channel_codes_Rata_R01_modificado.csv'; % Caro 
 %  (Se invirtieron los hemisferios originals L->R y R->L)
 
 %% Fin de los parametros
@@ -72,7 +72,7 @@ Referencing;
 
 View_LFP_Raw_Ref;
 
-Spectral_Area;
+Spectral_Area_MT;
 
 View_Spectrum_Channel_Area;
 

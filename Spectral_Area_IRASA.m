@@ -29,11 +29,15 @@ for m = 1:length(ia)%1:largo_dataAll
     Data_ref = registroLFP.area(m).data;
     
     % Multitaper estimation para el spectrograma
-    [Spectrogram_mean,t_Spectrogram_mean,f_Spectrogram_mean] = mtspecgramc(Data_ref,[registroLFP.multitaper.spectrogram.movingwin.window registroLFP.multitaper.spectrogram.movingwin.winstep],registroLFP.multitaper.spectrogram.params);
+    irasa = irasaspecgram(Data_ref,[registroLFP.multitaper.spectrogram.movingwin.window registroLFP.multitaper.spectrogram.movingwin.winstep],registroLFP.multitaper.spectrogram.params);
+    Spectrogram_mean = irasa.osci';
+    t_Spectrogram_mean = irasa.time;
+    f_Spectrogram_mean = irasa.freq;
+    
     Spectrogram_mean_raw = Spectrogram_mean; 
     
     % Resize frecuencia para obtener bines de 0.5 Hz
-    f_Spectrogram_mean = imresize(f_Spectrogram_mean,[1,200]);
+    f_Spectrogram_mean = imresize(f_Spectrogram_mean,[200, 1]);
     Spectrogram_mean = imresize(Spectrogram_mean, [length(t_Spectrogram_mean), 200]);
     Spectrogram_mean_raw = imresize(Spectrogram_mean_raw, [length(t_Spectrogram_mean), 200]);
     
@@ -51,9 +55,9 @@ for m = 1:length(ia)%1:largo_dataAll
     %%Spectrogram_mean = pink_noise_del(f_Spectrogram_mean, Spectrogram_mean, idx_spect_artifacts); 
     
     % Nuevo Pink Noise
-    [pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean', [0.1 15;30 100]);
-    Spectrogram_mean = real(pow_dBpink)';
-    Spectrogram_mean(idx_spect_artifacts,:) = db(Spectrogram_mean_raw(idx_spect_artifacts,:)','power')';
+    %%[pow_dBpink, fitStats, pow_pinknoise] = convert_to_dBpink(f_Spectrogram_mean, Spectrogram_mean', [0 15;30 100]);
+    %%Spectrogram_mean = real(pow_dBpink)';
+    %%Spectrogram_mean(idx_spect_artifacts,:) = db(Spectrogram_mean_raw(idx_spect_artifacts,:)','power')';
     
     %pow_pinknoise_pre = pow_pinknoise(:,idx_pre(~ismember(idx_pre, idx_spect_artifacts)))';
     %pow_pinknoise_on = pow_pinknoise(:,idx_on(~ismember(idx_on, idx_spect_artifacts)))';
@@ -77,7 +81,7 @@ for m = 1:length(ia)%1:largo_dataAll
     
     % Spectrograma final 
     Mean_Spectrogram_pre_mean = median(Spectrogram_pre_mean,1);
-    %%Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
+    %Desv_Spectrogram_pre_mean = std(Spectrogram_pre_mean,1);
     quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
     Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
     
@@ -88,6 +92,7 @@ for m = 1:length(ia)%1:largo_dataAll
     registroLFP.average_spectrum(m).area = C{m};
     registroLFP.average_spectrum(m).spectrogram.data_raw = Spectrogram_mean_raw;
     registroLFP.average_spectrum(m).spectrogram.data = Spectrogram_mean;    
+    registroLFP.average_spectrum(m).spectrogram.irasa = irasa;
     registroLFP.average_spectrum(m).spectrogram.time = t_Spectrogram_mean;
     registroLFP.average_spectrum(m).spectrogram.frequency = f_Spectrogram_mean; 
     registroLFP.average_spectrum(m).spectrogram.ind_artifacts = idx_spect_artifacts; 
