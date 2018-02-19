@@ -174,7 +174,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
         else
             fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(sum_MSC_band(1:mitad_largo,:)))
@@ -193,7 +193,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Sum MSC in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar_fin = bar(sum_MSC_band(mitad_largo+1:end,:),'grouped');
@@ -203,7 +203,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
         end
     end
     
@@ -351,7 +351,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
 
         else 
@@ -371,7 +371,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Coupling Strength in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar_fin = bar(coupling_strength_band(mitad_largo+1:end,:),'grouped');
@@ -381,7 +381,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
         end
     end
             
@@ -399,7 +399,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
             title(['Coupling Strength of lefth and rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -420,7 +420,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
             title(['Coupling Strength of lefth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -440,7 +440,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
             grid on
             ylim([0 0.6])
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
             title(['Coupling Strength of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
@@ -627,7 +627,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
         else 
@@ -647,7 +647,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
             title(['Delay in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar_fin = bar(delay_band(mitad_largo+1:end,:).*1000,'grouped');
@@ -657,7 +657,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max].*1000)
-            xlim([xt(1)-1, xt(end)+1])
+            xlim([xt(1)-0.5, xt(end)+0.5])
         end
     end
     
