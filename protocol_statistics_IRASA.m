@@ -46,14 +46,16 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
             
             
             % Fractal power in injured area
-            fractal_power_actual_inj = struct2cell(protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power);
-            fractal_power_reg_inj = [fractal_power_actual_inj{3:end,:,:}]; % Todos los valores de pre, on ,post, en cada banda evaluada
-            datos_actual_inj_fractal_power = [datos_actual_inj_fractal_power; fractal_power_reg_inj];
+            fractal_power_actual_inj_pre = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.pre;
+            fractal_power_actual_inj_on = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.on;
+            fractal_power_actual_inj_post = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.post;
+            datos_actual_inj_fractal_power = [datos_actual_inj_fractal_power; [fractal_power_actual_inj_pre, fractal_power_actual_inj_on, fractal_power_actual_inj_post]];
         
-            % Fractal power in uninjured area
-            fractal_power_actual_uninj = struct2cell(protocoloLFP.uninjured(reg_actual).spectral_record(area_actual).fractal_power);
-            fractal_power_reg_uninj = [fractal_power_actual_uninj{3:end,:,:}]; % Todos los valores de pre, on ,post, en cada banda evaluada
-            datos_actual_uninj_fractal_power = [datos_actual_uninj_fractal_power; fractal_power_reg_uninj];
+            % Fractal power in uninjured area            
+            fractal_power_actual_uninj_pre = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.pre;
+            fractal_power_actual_uninj_on = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.on;
+            fractal_power_actual_uninj_post = protocoloLFP.injured(reg_actual).spectral_record(area_actual).fractal_power.post;
+            datos_actual_uninj_fractal_power = [datos_actual_uninj_fractal_power; [fractal_power_actual_uninj_pre, fractal_power_actual_uninj_on, fractal_power_actual_uninj_post]];
         end
         
         % Sum MSC in injured area
@@ -98,7 +100,7 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
                         
             datos_actual_inj_fractal_power_mean = datos_actual_inj_fractal_power;
             datos_actual_inj_fractal_power_std = datos_actual_inj_fractal_power.*0;
-            datos_actual_inj_fractal_power_total = reshape(datos_actual_inj_fractal_power,[],3,num_bands);
+            datos_actual_inj_fractal_power_total = reshape(datos_actual_inj_fractal_power,[],3);
         end
             
         % Coherence
@@ -130,7 +132,7 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
                         
             datos_actual_uninj_fractal_power_mean = datos_actual_uninj_fractal_power;
             datos_actual_uninj_fractal_power_std = datos_actual_uninj_fractal_power.*0;
-            datos_actual_uninj_fractal_power_total = reshape(datos_actual_uninj_fractal_power,[],3,num_bands);
+            datos_actual_uninj_fractal_power_total = reshape(datos_actual_uninj_fractal_power,[],3);
         end
         
         % Coherence
@@ -163,7 +165,7 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
             
             datos_actual_inj_fractal_power_mean = mean(datos_actual_inj_fractal_power);
             datos_actual_inj_fractal_power_std = std(datos_actual_inj_fractal_power);
-            datos_actual_inj_fractal_power_total = reshape(datos_actual_inj_fractal_power,[],3,num_bands);
+            datos_actual_inj_fractal_power_total = reshape(datos_actual_inj_fractal_power,[],3);
         end
         
         % Coherence
@@ -195,7 +197,7 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
             
             datos_actual_uninj_fractal_power_mean = mean(datos_actual_uninj_fractal_power);
             datos_actual_uninj_fractal_power_std = std(datos_actual_uninj_fractal_power);
-            datos_actual_uninj_fractal_power_total = reshape(datos_actual_uninj_fractal_power,[],3,num_bands);
+            datos_actual_uninj_fractal_power_total = reshape(datos_actual_uninj_fractal_power,[],3);
         end
         
         % Coherence
@@ -346,26 +348,28 @@ for area_actual = 1:max([num_areas_spectral, num_areas_coherence])
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_mean = datos_actual_uninj_delay_mean(band_actual,3);
         protocoloLFP.uninjured_global.coherence(area_actual).delay(band_actual).post_std = datos_actual_uninj_delay_std(band_actual,3);
     end
-        
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.pre = datos_actual_inj_fractal_power_total(:,1,band_actual); 
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.pre_mean = datos_actual_inj_fractal_power_mean(band_actual,1);
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.pre_std = datos_actual_inj_fractal_power_std(band_actual,1);
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.on = datos_actual_inj_fractal_power_total(:,2,band_actual); 
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.on_mean = datos_actual_inj_fractal_power_mean(band_actual,2);
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.on_std = datos_actual_inj_fractal_power_std(band_actual,2);
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.post = datos_actual_inj_fractal_power_total(:,3,band_actual); 
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.post_mean = datos_actual_inj_fractal_power_mean(band_actual,3);
-    protocoloLFP.injured_global.spectral(area_actual).fractal_band_power.post_std = datos_actual_inj_fractal_power_std(band_actual,3);
-       
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.pre = datos_actual_uninj_fractal_power_total(:,1,band_actual);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.pre_mean = datos_actual_uninj_fractal_power_mean(band_actual,1);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.pre_std = datos_actual_uninj_fractal_power_std(band_actual,1);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.on = datos_actual_uninj_fractal_power_total(:,2,band_actual); 
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.on_mean = datos_actual_uninj_fractal_power_mean(band_actual,2);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.on_std = datos_actual_uninj_fractal_power_std(band_actual,2);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.post = datos_actual_uninj_fractal_power_total(:,3,band_actual); 
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.post_mean = datos_actual_uninj_fractal_power_mean(band_actual,3);
-    protocoloLFP.uninjured_global.spectral(area_actual).fractal_band_power.post_std = datos_actual_uninj_fractal_power_std(band_actual,3); 
+     
+    if area_actual <= num_areas_spectral
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.pre = datos_actual_inj_fractal_power_total(:,1); 
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.pre_mean = datos_actual_inj_fractal_power_mean(1);
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.pre_std = datos_actual_inj_fractal_power_std(1);
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.on = datos_actual_inj_fractal_power_total(:,2); 
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.on_mean = datos_actual_inj_fractal_power_mean(2);
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.on_std = datos_actual_inj_fractal_power_std(2);
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.post = datos_actual_inj_fractal_power_total(:,3); 
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.post_mean = datos_actual_inj_fractal_power_mean(3);
+        protocoloLFP.injured_global.spectral(area_actual).fractal_power.post_std = datos_actual_inj_fractal_power_std(3);
+
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.pre = datos_actual_uninj_fractal_power_total(:,1);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.pre_mean = datos_actual_uninj_fractal_power_mean(1);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.pre_std = datos_actual_uninj_fractal_power_std(1);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.on = datos_actual_uninj_fractal_power_total(:,2); 
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.on_mean = datos_actual_uninj_fractal_power_mean(2);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.on_std = datos_actual_uninj_fractal_power_std(2);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.post = datos_actual_uninj_fractal_power_total(:,3); 
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.post_mean = datos_actual_uninj_fractal_power_mean(3);
+        protocoloLFP.uninjured_global.spectral(area_actual).fractal_power.post_std = datos_actual_uninj_fractal_power_std(3); 
+    end
     
 end
 

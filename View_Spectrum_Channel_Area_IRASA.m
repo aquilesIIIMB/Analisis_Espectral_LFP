@@ -88,7 +88,7 @@ for j = 1:largo_canales_eval
     %-------------------Plot---Spectrogram------------------------------------
     fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(db(Spectrogram'+1,'power'),1,numel(Spectrogram)),[5 99]);
-    imagesc(t_Spectrogram,f_Spectrogram,db(Spectrogram'+1,'power'),clim); colormap(parula(40));
+    imagesc(t_Spectrogram,f_Spectrogram,db(Spectrogram'+1,'power'),clim); colormap(parula(80));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -205,7 +205,7 @@ for m = 1:length(ia)
     hold on
     p3 = plot(f_Spectrogram_mean, Spectral_post_mean,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
     xlim([0 60])
-    ylim([-0.005 0.08])
+    ylim([-0.007 0.15])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -240,7 +240,7 @@ for m = 1:length(ia)
     plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(5,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
     xlim([5 35])
-    ylim([-0.06 0.1])
+    ylim([-0.09 0.18])
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
     title(['Oscillation PSD in beta of ',C{ic(i)}], 'FontSize', 12)
@@ -253,7 +253,7 @@ for m = 1:length(ia)
     fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(Spectrogram_mean',1,numel(Spectrogram_mean)),[5 99]);
     imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_mean',clim);
-    cmap = colormap(parula(40));
+    cmap = colormap(parula(80));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -278,7 +278,7 @@ for m = 1:length(ia)
     fig_10 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(Spectrogram_mean_raw',1,numel(Spectrogram_mean_raw)),[5 99]);
     imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_mean_raw',clim); 
-    cmap = colormap(parula(40));
+    cmap = colormap(parula(80));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -308,7 +308,7 @@ for m = 1:length(ia)
     hold on
     p3 = plot(f_Spectrogram_mean, PSD_post_mean_frac,'Color', [0.466, 0.674, 0.188],'LineWidth',3);
     xlim([0 60])
-    ylim([0 0.12])
+    ylim([0 0.20])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -343,7 +343,7 @@ for m = 1:length(ia)
     plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(5,:),0.02, 'loess'), ':', 'Color', [0.466, 0.674, 0.188],'LineWidth',1.7);
     hold on
     xlim([5 35])
-    ylim([0 0.14])
+    ylim([0 0.22])
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
     title(['Fractal PSD in beta of ',C{ic(i)}], 'FontSize', 12)
@@ -356,7 +356,7 @@ for m = 1:length(ia)
     fig_16 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(FracSpectrogram_norm',1,numel(FracSpectrogram_norm)),[5 99]);
     imagesc(t_Spectrogram_mean,f_Spectrogram_mean,FracSpectrogram_norm',clim);
-    cmap = colormap(parula(40));
+    cmap = colormap(parula(80));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -381,7 +381,7 @@ for m = 1:length(ia)
     fig_18 = figure('units','normalized','outerposition',[0 0 1 1]);
     clim=prctile(reshape(FracSpectrogram',1,numel(FracSpectrogram)),[5 99]);
     imagesc(t_Spectrogram_mean,f_Spectrogram_mean,FracSpectrogram',clim); 
-    cmap = colormap(parula(40));
+    cmap = colormap(parula(80));
     axis xy
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
@@ -402,7 +402,7 @@ for m = 1:length(ia)
     %waitforbuttonpress;
     close(fig_18)
     
-    % Contraste entre señal mixta y señal fractal
+    % Contraste entre seï¿½al mixta y seï¿½al fractal
     fig_20 = figure('units','normalized','outerposition',[0 0 1 1]);
     semilogy(f_Spectrogram_mean, PSD_pre_mean_mixd,'Color', [0 0.4470 0.7410],'LineWidth',3);  
     hold on

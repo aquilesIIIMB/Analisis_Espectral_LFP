@@ -73,14 +73,25 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
         psd_post = registroLFP.average_spectrum(i).psd.post.data;
         
         min_psd = min([min(psd_pre),min(psd_on),min(psd_post)]);
+        
+        min_f = min(freq);
+        max_f = max(freq);
+        
+        if banda_eval(1) < min_f
+            banda_eval(1) = min_f;
+        end
+        
+        if banda_eval(2) > max_f
+            banda_eval(2) = max_f;
+        end
 
         power_band_pre = bandpower(psd_pre-min_psd, freq, banda_eval,'psd');
         power_band_on = bandpower(psd_on-min_psd, freq, banda_eval,'psd');
         power_band_post = bandpower(psd_post-min_psd, freq, banda_eval,'psd');
         
-        power_band_pre_total = bandpower(psd_pre-min_psd, freq, [1, 90],'psd');
-        power_band_on_total = bandpower(psd_on-min_psd, freq, [1, 90],'psd');
-        power_band_post_total = bandpower(psd_post-min_psd, freq, [1, 90],'psd');       
+        power_band_pre_total = bandpower(psd_pre-min_psd, freq, [min_f, max_f],'psd');
+        power_band_on_total = bandpower(psd_on-min_psd, freq, [min_f, max_f],'psd');
+        power_band_post_total = bandpower(psd_post-min_psd, freq, [min_f, max_f],'psd');       
 
         areas = {areas{:},area_actual};
         power_band = [power_band; [power_band_pre/power_band_pre_total, power_band_on/power_band_on_total, power_band_post/power_band_post_total]];
@@ -100,9 +111,9 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             title(area_actual)
 
             fprintf('%s\n', area_actual)
-            fprintf('Porcentaje de banda beta en pre: %.2f \n', power_band_pre)
-            fprintf('Porcentaje de banda beta en on: %.2f \n', power_band_on)
-            fprintf('Porcentaje de banda beta en post: %.2f \n\n', power_band_post)
+            fprintf('Porcentaje de banda en pre: %.2f \n', power_band_pre)
+            fprintf('Porcentaje de banda en on: %.2f \n', power_band_on)
+            fprintf('Porcentaje de banda en post: %.2f \n\n', power_band_post)
         end
     end
 
@@ -124,7 +135,7 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Oscillatory Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
+            title(['Normalized Oscillatory Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
         else
             y_max = max([max(power_band(idx_areas_izq,:)) max(power_band(idx_areas_der,:))]);
@@ -140,7 +151,7 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Oscillatory Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
+            title(['Normalized Oscillatory Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
             bar_der = bar(power_band(idx_areas_der,:),'grouped');
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
@@ -164,11 +175,11 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
             ylim([0 1])
-            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Oscillatory Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power in band ',banda_actual,' of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized in band ',banda_actual,' of left and right hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -185,11 +196,11 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
             ylim([0 1])
-            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Oscillatory Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power in band ',banda_actual,' of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized in band ',banda_actual,' of left hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -204,11 +215,11 @@ function power_band = power_measurements_IRASA(registroLFP, banda_eval, visualiz
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
             ylim([0 1])
-            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Oscillatory Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power in band ',banda_actual,' of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized in band ',banda_actual,' of rigth hemisphere'];
             saveas(fig_12,name_figure_save,'png');
             saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;

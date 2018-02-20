@@ -103,9 +103,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2f \n', sum_MSC_pre)
-                fprintf('Porcentaje de banda beta en on: %.2f \n', sum_MSC_on)
-                fprintf('Porcentaje de banda beta en post: %.2f \n\n', sum_MSC_post)
+                fprintf('Porcentaje de banda en pre: %.2f \n', sum_MSC_pre)
+                fprintf('Porcentaje de banda en on: %.2f \n', sum_MSC_on)
+                fprintf('Porcentaje de banda en post: %.2f \n\n', sum_MSC_post)
             end
             
         end
@@ -144,9 +144,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2f \n', sum_MSC_pre)
-                fprintf('Porcentaje de banda beta en on: %.2f \n', sum_MSC_on)
-                fprintf('Porcentaje de banda beta en post: %.2f \n\n', sum_MSC_post)
+                fprintf('Porcentaje de banda en pre: %.2f \n', sum_MSC_pre)
+                fprintf('Porcentaje de banda en on: %.2f \n', sum_MSC_on)
+                fprintf('Porcentaje de banda en post: %.2f \n\n', sum_MSC_post)
             end
             
         end
@@ -261,9 +261,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2f \n', coupling_strength_pre)
-                fprintf('Porcentaje de banda beta en on: %.2f \n', coupling_strength_on)
-                fprintf('Porcentaje de banda beta en post: %.2f \n\n', coupling_strength_post)
+                fprintf('Porcentaje de banda en pre: %.2f \n', coupling_strength_pre)
+                fprintf('Porcentaje de banda en on: %.2f \n', coupling_strength_on)
+                fprintf('Porcentaje de banda en post: %.2f \n\n', coupling_strength_post)
             end
             
         end
@@ -321,9 +321,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %.2f \n', coupling_strength_pre)
-                fprintf('Porcentaje de banda beta en on: %.2f \n', coupling_strength_on)
-                fprintf('Porcentaje de banda beta en post: %.2f \n\n', coupling_strength_post)
+                fprintf('Porcentaje de banda en pre: %.2f \n', coupling_strength_pre)
+                fprintf('Porcentaje de banda en on: %.2f \n', coupling_strength_on)
+                fprintf('Porcentaje de banda en post: %.2f \n\n', coupling_strength_post)
             end
             
         end
@@ -423,7 +423,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
-            title(['Coupling Strength of lefth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Coupling Strength of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of lefth hemisphere'];
             saveas(fig_31,name_figure_save,'png');
@@ -443,9 +443,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
-            title(['Coupling Strength of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Coupling Strength of right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coupling Strength in band ',banda_actual,' of right hemisphere'];
             saveas(fig_32,name_figure_save,'png');
             saveas(fig_32,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -524,9 +524,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             if visualization(3)
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %f \n', delay_pre)
-                fprintf('Porcentaje de banda beta en on: %f \n', delay_on)
-                fprintf('Porcentaje de banda beta en post: %f \n\n', delay_post)
+                fprintf('Porcentaje de banda en pre: %f \n', delay_pre)
+                fprintf('Porcentaje de banda en on: %f \n', delay_on)
+                fprintf('Porcentaje de banda en post: %f \n\n', delay_post)
             end
             
         end
@@ -597,9 +597,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             if visualization(3)
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
-                fprintf('Porcentaje de banda beta en pre: %fs \n', delay_pre)
-                fprintf('Porcentaje de banda beta en on: %fs \n', delay_on)
-                fprintf('Porcentaje de banda beta en post: %fs \n\n', delay_post)
+                fprintf('Porcentaje de banda en pre: %fs \n', delay_pre)
+                fprintf('Porcentaje de banda en on: %fs \n', delay_on)
+                fprintf('Porcentaje de banda en post: %fs \n\n', delay_post)
             end
             
         end

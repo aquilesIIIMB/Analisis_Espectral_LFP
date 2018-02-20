@@ -140,6 +140,10 @@ if ini_registro
             protocoloLFP.injured(idx_registerName+1).spectral_record(idx_injured+1).change_band_power(10).on = [];
             protocoloLFP.injured(idx_registerName+1).spectral_record(idx_injured+1).change_band_power(10).post = [];
             
+            protocoloLFP.injured(idx_registerName+1).spectral_record(idx_injured+1).fractal_power.pre = [];
+            protocoloLFP.injured(idx_registerName+1).spectral_record(idx_injured+1).fractal_power.on = [];
+            protocoloLFP.injured(idx_registerName+1).spectral_record(idx_injured+1).fractal_power.post = [];
+            
             idx_injured = idx_injured + 1;
             
 
@@ -211,6 +215,10 @@ if ini_registro
             protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).change_band_power(10).pre = [];
             protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).change_band_power(10).on = [];
             protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).change_band_power(10).post = [];
+            
+            protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).fractal_power.pre = [];
+            protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).fractal_power.on = [];
+            protocoloLFP.uninjured(idx_registerName+1).spectral_record(idx_uninjured+1).fractal_power.post = [];
             
             idx_uninjured = idx_uninjured + 1;
 
@@ -764,6 +772,16 @@ if ini_global
             protocoloLFP.injured_global.spectral(idx_injured_global+1).change_band_power(10).post = [];
             protocoloLFP.injured_global.spectral(idx_injured_global+1).change_band_power(10).post_mean = [];
             protocoloLFP.injured_global.spectral(idx_injured_global+1).change_band_power(10).post_std = [];
+                        
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.pre = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.pre_mean = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.pre_std = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.on = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.on_mean = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.on_std = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.post = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.post_mean = [];
+            protocoloLFP.injured_global.spectral(idx_injured_global+1).fractal_power.post_std = [];
             
 
         elseif strcmp(area(end),area_nolesionada)
@@ -894,6 +912,16 @@ if ini_global
             protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).change_band_power(10).post = [];
             protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).change_band_power(10).post_mean = [];
             protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).change_band_power(10).post_std = [];
+                        
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.pre = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.pre_mean = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.pre_std = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.on = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.on_mean = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.on_std = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.post = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.post_mean = [];
+            protocoloLFP.uninjured_global.spectral(idx_uninjured_global+1).fractal_power.post_std = [];
 
         else
             disp('Esta area no es lesionada ni no lesionada')

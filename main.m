@@ -13,17 +13,17 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
+%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-%path = '/home/cmanalisis/Aquiles/Registros/Database/+5000_300Hz/arturo_2017-06-17_16-05-21/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/arturo_2017-06-09_15-24-39/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
 timeRanges = [6, 6, 6]; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-threshold_amplitudes = [15, 8, 10]; % 8,9,10 desde el mas sucio al mas limpio
+threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %eval_channels = [2:5,14:21,34:37,46:53];
