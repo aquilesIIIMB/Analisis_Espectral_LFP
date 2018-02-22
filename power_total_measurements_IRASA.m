@@ -152,7 +152,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free activity Power'])
             
         else
             y_max = max([max(power_fractal_band(idx_areas_izq,:)) max(power_fractal_band(idx_areas_der,:))]);
@@ -168,7 +168,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free activity Power'])
             subplot(2,1,2)
             bar_der = bar(power_fractal_band(idx_areas_der,:),'grouped');
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
@@ -198,7 +198,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free activity Power'])
             
         else
             y_max = max([max(power_band_total(idx_areas_izq,:)) max(power_band_total(idx_areas_der,:))]);
@@ -214,7 +214,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free activity Power'])
             subplot(2,1,2)
             bar_der = bar(power_band_total(idx_areas_der,:),'grouped');
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
@@ -237,11 +237,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
             ylim([0 4])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free activity Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power of left and right hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -255,11 +255,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
             ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power by Pre-Stim of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of left and right hemisphere'];
             saveas(fig_13,name_figure_save,'png');
             saveas(fig_13,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -276,11 +276,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
             ylim([0 4])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free activity Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power of left hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -295,11 +295,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
             ylim([0 4])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free activity Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power of rigth hemisphere'];
             saveas(fig_12,name_figure_save,'png');
             saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -315,11 +315,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
             ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power by Pre-Stim of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of left hemisphere'];
             saveas(fig_14,name_figure_save,'png');
             saveas(fig_14,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -334,11 +334,11 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
             ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power by Pre-Stim of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of rigth hemisphere'];
             saveas(fig_15,name_figure_save,'png');
             saveas(fig_15,name_figure_save,'fig');
             %waitforbuttonpress;

@@ -394,7 +394,7 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Scale-free activity spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    title(['Fractal spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
     ylabel(c,'Power [W/Hz]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Arrhythmic activity de los LFP '];
@@ -409,11 +409,11 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, PSD_pre_mean_frac,'k','LineWidth',3); 
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixto', 'fractal');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
-    title(['Mixed and Scale-free activity PSD of Pre-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    title(['Mixed and fractal PSD of Pre-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Arrhythmic activity (1)pre-stim de los LFP '];
     saveas(fig_20,name_figure_save,'png');
     %waitforbuttonpress;
@@ -425,11 +425,11 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, PSD_on_mean_frac,'k','LineWidth',3);    
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixto', 'fractal');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
-    title(['Mixed and Scale-free activity PSD of On-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    title(['Mixed and fractal PSD of On-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Arrhythmic activity (2)on-stim de los LFP '];
     saveas(fig_22,name_figure_save,'png');
     %waitforbuttonpress;
@@ -441,11 +441,11 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, PSD_post_mean_frac,'k','LineWidth',3);   
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixto', 'fractal');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
-    title(['Mixed and Scale-free activity PSD of Post-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    title(['Mixed and fractal PSD of Post-stim LFPs in area ',C{ic(i)}], 'FontSize', 24)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Mixto y Arrhythmic activity (3)post-stim de los LFP '];
     saveas(fig_24,name_figure_save,'png');
     %waitforbuttonpress;

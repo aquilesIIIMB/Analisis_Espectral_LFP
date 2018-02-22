@@ -1,5 +1,6 @@
 function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurements(registroLFP, banda_eval, visualization, save_image, path)
     
+
     banda_actual = 'None';
     
     if banda_eval == [1, 4]

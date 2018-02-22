@@ -19,6 +19,10 @@ on_inicio_m = registroLFP.times.start_on_m;
 on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
 tiempo_total = registroLFP.times.end_m;
+       
+azul = [0 0.4470 0.7410];
+rojo = [0.85, 0.325, 0.098];
+verde = [0.466, 0.674, 0.188];
 
 % Tomar las areas que hay, si hay una sola, no ejecutar
 %% Calculos para el analisis del promedio de las Areas
@@ -100,17 +104,17 @@ for i=1:num_areas_izq-1
         close(fig_3)
         
         fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
-        plot(f,Coherence_pre_mean,'LineWidth',2.0)
+        plot(f,Coherence_pre_mean,'Color',azul,'LineWidth',2.0)
         hold on
-        plot(f,Coherence_on_mean,'LineWidth',2.0)
-        plot(f,Coherence_post_mean,'LineWidth',2.0)
+        plot(f,Coherence_on_mean,'Color',rojo,'LineWidth',2.0)
+        plot(f,Coherence_post_mean,'Color',verde,'LineWidth',2.0)
         grid on
         xlim([0 100])
         ylim([0.2 0.8])
         set(gca,'fontsize',20)
         ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)
-        lgd = legend('pre','on','post');
+        lgd = legend('pre-stim','on-stim','post-stim');
         lgd.FontSize = 20;
         title(['Coherence between ','areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2}], 'FontSize', 24)         
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.names{1},' & ',registroLFP.average_sync{i,j}.names{2},' promedio coherence'];
@@ -187,17 +191,17 @@ for i=1:num_areas_der-1
         close(fig_4)
         
         fig_6 = figure('units','normalized','outerposition',[0 0 1 1]);
-        plot(f,Coherence_pre_mean,'LineWidth',2.0)
+        plot(f,Coherence_pre_mean,'Color',azul,'LineWidth',2.0)
         hold on
-        plot(f,Coherence_on_mean,'LineWidth',2.0)
-        plot(f,Coherence_post_mean,'LineWidth',2.0)
+        plot(f,Coherence_on_mean,'Color',rojo,'LineWidth',2.0)
+        plot(f,Coherence_post_mean,'Color',verde,'LineWidth',2.0)
         grid on
         xlim([0 100])
         ylim([0.2 0.8])
         set(gca,'fontsize',20)
         ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)
-        lgd = legend('pre','on','post');
+        lgd = legend('pre-stim','on-stim','post-stim');
         lgd.FontSize = 20;
         title(['Coherence between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2}], 'FontSize', 24)
         name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names{2},' promedio coherence'];

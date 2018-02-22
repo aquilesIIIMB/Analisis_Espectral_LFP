@@ -115,7 +115,7 @@ change_band_power_gamma = power_measurements_IRASA(registroLFP, [30, 90], false,
 protocoloLFP = load_data_structure(registroLFP, protocoloLFP, change_band_power_gamma, sum_MSC_gamma, coupling_strength_gamma, delay_gamma, [30, 90], idx_areas_injured, idx_areas_uninjured, area_lesionada, area_nolesionada);
 
 % Cargar analisis de fractales
-fractal_power = power_fractal_measurements_IRASA(registroLFP, false, false, path);
+[power_band_total, power_band_total_norm, fractal_power,power_fractal_norm] = power_total_measurements_IRASA(registroLFP, false, false, path);
 protocoloLFP = load_fractal_data_structure(registroLFP, protocoloLFP, fractal_power, idx_areas_injured, idx_areas_uninjured, area_lesionada, area_nolesionada);
 
 % Analisis global
