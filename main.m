@@ -13,10 +13,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; 
+%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; 
 
 %%% Ubuntu
-%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/orlando_2017-01-25_15-53-09/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
