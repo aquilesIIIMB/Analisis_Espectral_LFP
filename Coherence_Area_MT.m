@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Coherence_Area.m
+% Coherence_Area_MT.m
 fprintf('\nAnalisis de Coherencia por Area\n')
 %
 %
@@ -10,8 +10,8 @@ if ~registroLFP.analysis_stages.referencing || ~registroLFP.analysis_stages.dele
     error('Falta el bloque de eliminacion de canales y referenciacion');
     
 end
-% !!!! Modificar para que no asuma q los primeros registros son de izquierda
-canales_eval = find(~[registroLFP.channel.removed]);
+
+canales_eval = find(~[registroLFP.channels.removed]);
 
 pre_m = registroLFP.times.pre_m;
 on_inicio_m = registroLFP.times.start_on_m;
@@ -19,9 +19,8 @@ on_final_m = registroLFP.times.end_on_m;
 post_m = registroLFP.times.post_m;
 tiempo_total = registroLFP.times.end_m;
 
-% Tomar las areas que hay, si hay una sola, no ejecutar
 %% Calculos para el analisis del promedio de las Areas
-[C,ia,ic] = unique({registroLFP.area.name},'stable');
+[C,ia,ic] = unique({registroLFP.areas.name},'stable');
 num_areas_izq = 0;
 num_areas_der = 0;
 
@@ -41,17 +40,26 @@ for i=1:num_areas_izq-1
     % Coherencia
     for j = num_areas_izq:-1:p
     
-        signal1 = registroLFP.area(i).data; %
-        signal2 = registroLFP.area(j).data;
+        signal1 = registroLFP.areas(i).data; %
+        signal2 = registroLFP.areas(j).data;
         [C,phi,S12,S1,S2,t,f]=cohgramc(signal1,signal2,[registroLFP.multitaper.coherenciogram.movingwin.window registroLFP.multitaper.coherenciogram.movingwin.winstep],registroLFP.multitaper.coherenciogram.params);
         C = imresize(C, [length(t), 200]);
         phi = imresize(phi, [length(t), 200]);
+        S1 = imresize(S1, [length(t), 200]);
+        S2 = imresize(S2, [length(t), 200]);
         f = imresize(f,[1,200]);
 
-        [~,ind_max] = max(C,[],2); % Indice de los maximos en cada bin de tiempo
+        [~,ind_max] = max(S1,[],2); % Indice de los maximos en cada bin de tiempo
         frec_ind_max = f(ind_max); % Frecuencia de los maximos en cada bin de tiempo
-        idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
-        idx_spect_artifacts = find(~idx_spect_artifacts)';
+        idx_spect_artifacts_s1 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+        idx_spect_artifacts_s1 = find(~idx_spect_artifacts_s1)';
+        
+        [~,ind_max] = max(S2,[],2); % Indice de los maximos en cada bin de tiempo
+        frec_ind_max = f(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+        idx_spect_artifacts_s2 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+        idx_spect_artifacts_s2 = find(~idx_spect_artifacts_s2)';
+        
+        idx_spect_artifacts = unique([idx_spect_artifacts_s1, idx_spect_artifacts_s2]);
 
         % Indices de cada etapa
         idx_pre = find(t<(pre_m*60.0-5));
@@ -92,26 +100,27 @@ for i=1:num_areas_izq-1
         %%quantil_pre = quantile(Spectrogram_pre_mean,[.025 .25 .50 .75 .975]);
         %%Desv_Spectrogram_pre_mean = quantil_pre(3,:) - quantil_pre(2,:);
 
-        C_norm = (C-ones(size(C))*diag(Mean_C_pre))./(ones(size(C))*diag(Desv_C_pre));    
+        %C_norm = (C-ones(size(C))*diag(Mean_C_pre))./(ones(size(C))*diag(Desv_C_pre));    
                    
         % Almacenamiento de los analisis
         % Datos del coherenciograma promedio
-        registroLFP.average_sync{i,j}.names = string([{registroLFP.area(i).name},{registroLFP.area(j).name}]);
-        registroLFP.average_sync{i,j}.coherenciogram.mag.data_raw = C;
-        registroLFP.average_sync{i,j}.coherenciogram.phase.data_raw = phi;
-        registroLFP.average_sync{i,j}.coherenciogram.mag.data = C_norm;    
+        registroLFP.average_sync{i,j}.areas = string([{registroLFP.areas(i).name},{registroLFP.areas(j).name}]);
+        registroLFP.average_sync{i,j}.coherenciogram.mag = C;  
+        registroLFP.average_sync{i,j}.coherenciogram.phase = phi;
+        registroLFP.average_sync{i,j}.coherenciogram.mean_mag_pre = Mean_C_pre;
+        registroLFP.average_sync{i,j}.coherenciogram.std_mag_pre = Desv_C_pre;
         registroLFP.average_sync{i,j}.coherenciogram.time = t;
         registroLFP.average_sync{i,j}.coherenciogram.frequency = f; 
         registroLFP.average_sync{i,j}.coherenciogram.ind_artifacts = idx_spect_artifacts; 
 
         % Datos de la coherencia promedio
-        registroLFP.average_sync{i,j}.coherence.pre.data = Coherence_pre_mean;
-        registroLFP.average_sync{i,j}.coherence.on.data = Coherence_on_mean;
-        registroLFP.average_sync{i,j}.coherence.post.data = Coherence_post_mean;
+        registroLFP.average_sync{i,j}.coherence.pre = Coherence_pre_mean;
+        registroLFP.average_sync{i,j}.coherence.on = Coherence_on_mean;
+        registroLFP.average_sync{i,j}.coherence.post = Coherence_post_mean;
         
-        registroLFP.average_sync{i,j}.phase.pre.data = Phase_pre_mean;
-        registroLFP.average_sync{i,j}.phase.on.data = Phase_on_mean;
-        registroLFP.average_sync{i,j}.phase.post.data = Phase_post_mean;
+        registroLFP.average_sync{i,j}.phase.pre = Phase_pre_mean;
+        registroLFP.average_sync{i,j}.phase.on = Phase_on_mean;
+        registroLFP.average_sync{i,j}.phase.post = Phase_post_mean;
         
 
     end
@@ -125,17 +134,26 @@ for i=1:num_areas_der-1
     % Coherencia
     for j = num_areas_der:-1:p
     
-        signal1 = registroLFP.area(i+num_areas_izq).data; %
-        signal2 = registroLFP.area(j+num_areas_izq).data;
+        signal1 = registroLFP.areas(i+num_areas_izq).data; %
+        signal2 = registroLFP.areas(j+num_areas_izq).data;
         [C,phi,S12,S1,S2,t,f]=cohgramc(signal1,signal2,[registroLFP.multitaper.coherenciogram.movingwin.window registroLFP.multitaper.coherenciogram.movingwin.winstep],registroLFP.multitaper.coherenciogram.params);
         C = imresize(C, [length(t), 200]);
         phi = imresize(phi, [length(t), 200]);
+        S1 = imresize(S1, [length(t), 200]);
+        S2 = imresize(S2, [length(t), 200]);
         f = imresize(f,[1,200]);
 
-        [~,ind_max] = max(C,[],2); % Indice de los maximos en cada bin de tiempo
+        [~,ind_max] = max(S1,[],2); % Indice de los maximos en cada bin de tiempo
         frec_ind_max = f(ind_max); % Frecuencia de los maximos en cada bin de tiempo
-        idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
-        idx_spect_artifacts = find(~idx_spect_artifacts)';
+        idx_spect_artifacts_s1 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+        idx_spect_artifacts_s1 = find(~idx_spect_artifacts_s1)';
+        
+        [~,ind_max] = max(S2,[],2); % Indice de los maximos en cada bin de tiempo
+        frec_ind_max = f(ind_max); % Frecuencia de los maximos en cada bin de tiempo
+        idx_spect_artifacts_s2 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
+        idx_spect_artifacts_s2 = find(~idx_spect_artifacts_s2)';
+        
+        idx_spect_artifacts = unique([idx_spect_artifacts_s1, idx_spect_artifacts_s2]);
 
         % Indices de cada etapa
         idx_pre = find(t<(pre_m*60.0-5));
@@ -180,22 +198,23 @@ for i=1:num_areas_der-1
         
         % Almacenamiento de los analisis
         % Datos del coherenciograma promedio
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.names = string([{registroLFP.area(i+num_areas_izq).name},{registroLFP.area(j+num_areas_izq).name}]);
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.mag.data_raw = C;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.phase.data_raw = phi;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.mag.data = C_norm;    
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas = string([{registroLFP.areas(i+num_areas_izq).name},{registroLFP.areas(j+num_areas_izq).name}]);
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.mag = C;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.phase = phi;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.mean_mag_pre = Mean_C_pre;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.std_mag_pre = Desv_C_pre;
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.time = t;
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.frequency = f; 
         registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherenciogram.ind_artifacts = idx_spect_artifacts; 
 
         % Datos de la coherencia promedio
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.pre.data = Coherence_pre_mean;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.on.data = Coherence_on_mean;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.post.data = Coherence_post_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.pre = Coherence_pre_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.on = Coherence_on_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.coherence.post = Coherence_post_mean;
         
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.pre.data = Phase_pre_mean;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.on.data = Phase_on_mean;
-        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.post.data = Phase_post_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.pre = Phase_pre_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.on = Phase_on_mean;
+        registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.phase.post = Phase_post_mean;
            
     end
     p=p+1;

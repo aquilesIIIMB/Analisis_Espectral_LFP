@@ -11,7 +11,7 @@ if ~registroLFP.analysis_stages.view_lfp
     
 end
 
-canales_eval = find(~[registroLFP.channel.removed]);
+canales_eval = find(~[registroLFP.channels.removed]);
 largo_canales_eval = size(canales_eval,2);
 
 pre_m = registroLFP.times.pre_m;
@@ -24,7 +24,7 @@ tiempo_total = registroLFP.times.end_m;
 for i = 1:largo_canales_eval
     
     % Tomar el LFP del canal que se analizara. Formato samplesxCh\trials
-    Data = registroLFP.channel(canales_eval(i)).data_raw;
+    Data = registroLFP.channels(canales_eval(i)).data_raw;
     
     % Multitaper estimation para el spectrograma
     [Spectrogram,t_Spectrogram,f_Spectrogram]= mtspecgramc(Data,[registroLFP.multitaper.spectrogram.movingwin.window registroLFP.multitaper.spectrogram.movingwin.winstep],registroLFP.multitaper.spectrogram.params); 
@@ -35,13 +35,13 @@ for i = 1:largo_canales_eval
     Spectral_post = median(Spectrogram(t_Spectrogram>(post_m*60.0+5) & t_Spectrogram<(tiempo_total*60),:),1);
     
     % Almacenar datos
-    registroLFP.channel(canales_eval(i)).spectrogram.data = Spectrogram;
-    registroLFP.channel(canales_eval(i)).spectrogram.time = t_Spectrogram;
-    registroLFP.channel(canales_eval(i)).spectrogram.frequency = f_Spectrogram;
+    registroLFP.channels(canales_eval(i)).spectrogram.mag = Spectrogram;
+    registroLFP.channels(canales_eval(i)).spectrogram.time = t_Spectrogram;
+    registroLFP.channels(canales_eval(i)).spectrogram.frequency = f_Spectrogram;
     
-    registroLFP.channel(canales_eval(i)).psd.pre.data = Spectral_pre;
-    registroLFP.channel(canales_eval(i)).psd.on.data = Spectral_on;
-    registroLFP.channel(canales_eval(i)).psd.post.data = Spectral_post;
+    registroLFP.channels(canales_eval(i)).psd.pre = Spectral_pre;
+    registroLFP.channels(canales_eval(i)).psd.on = Spectral_on;
+    registroLFP.channels(canales_eval(i)).psd.post = Spectral_post;
     
 end
 

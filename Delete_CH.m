@@ -47,17 +47,17 @@ end
 
 if ~isempty(Ch_del)
     % Se notifica como removido
-    [registroLFP.channel(Ch_del).removed] = deal(1);
+    [registroLFP.channels(Ch_del).removed] = deal(1);
     
 end
 
 % Canales que seran evaluados despues de eliminar los que no son adecuados
-canales_eval_selected = find(~[registroLFP.channel.removed]);
+canales_eval_selected = find(~[registroLFP.channels.removed]);
 
 fprintf('\nTodos los canales seleccionados que se usaran:\n\n');
 fprintf('\tCanal\t\tArea\n');
 for k = 1:length(canales_eval_selected)
-    fprintf('\t %s\t\t %s\n',registroLFP.channel(canales_eval_selected(k)).name , registroLFP.channel(canales_eval_selected(k)).area);
+    fprintf('\t %s\t\t %s\n',registroLFP.channels(canales_eval_selected(k)).name , registroLFP.channels(canales_eval_selected(k)).area);
 end
 fprintf('\n');
 

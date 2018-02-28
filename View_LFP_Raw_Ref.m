@@ -16,11 +16,11 @@ end
 if ~registroLFP.analysis_stages.referencing
     fprintf('Visualizacion SIN referenciacion\n');
 
-canales_eval = find(~[registroLFP.channel.removed]);
+canales_eval = find(~[registroLFP.channels.removed]);
 slash_system = foldername(length(foldername));
 
 % indices de las mismas areas
-[C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
+[C,ia,ic] = unique({registroLFP.channels(canales_eval).area},'stable');
 
 for m = 1:length(ia)  
     i = ia(m);
@@ -36,7 +36,7 @@ for m = 1:length(ia)
     fig_1 = figure('units','normalized','outerposition',[0 0 1 1]);
     for q = 1:largo_areasActuales        
         % Se grafica cada LFP de un area en un mismo grafico
-        plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channel(canales_eval(areas_actuales(q))).data_raw);
+        plot(registroLFP.times.steps_m, -(10*q)+registroLFP.channels(canales_eval(areas_actuales(q))).data_raw);
         hold on;       
                 
     end
@@ -48,7 +48,7 @@ for m = 1:length(ia)
     line([registroLFP.times.post_m registroLFP.times.post_m], get(gca, 'ylim'),'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-(10*largo_areasActuales)+min(registroLFP.channel(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -10+max(registroLFP.channel(canales_eval(areas_actuales(1))).data_raw)])
+    xlim([0 registroLFP.times.end_m]);ylim([-(10*largo_areasActuales)+min(registroLFP.channels(canales_eval(areas_actuales(largo_areasActuales))).data_raw)  -10+max(registroLFP.channels(canales_eval(areas_actuales(1))).data_raw)])
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') Raw LFP'], 'FontSize', 24)
     yticks(flip(1:size(str_numCH,1))*-10)
@@ -66,7 +66,7 @@ for m = 1:length(ia)
     for q = 1:length(areas_actuales)
         
         subplot(2,4,q);
-        histo_diff = histogram(diff(registroLFP.channel(canales_eval(areas_actuales(q))).data_raw),1000); 
+        histo_diff = histogram(diff(registroLFP.channels(canales_eval(areas_actuales(q))).data_raw),1000); 
         grid on
         xlim([histo_diff.BinLimits]); ylim([0 3*10^4]);
         xlabel('Derivative Amplitude [u.a.]'); ylabel('Number of elements');
@@ -82,11 +82,11 @@ end
 else
     fprintf('Visualizacion CON referenciacion\n');
    
-canales_eval = find(~[registroLFP.channel.removed]);
+canales_eval = find(~[registroLFP.channels.removed]);
 slash_system = foldername(length(foldername));
 
 % indices de las mismas areas
-[C,ia,ic] = unique({registroLFP.channel(canales_eval).area},'stable');
+[C,ia,ic] = unique({registroLFP.channels(canales_eval).area},'stable');
 
 for m = 1:length(ia)  
     i = ia(m);
@@ -103,30 +103,30 @@ for m = 1:length(ia)
     fig_2 = figure('units','normalized','outerposition',[0 0 1 1]);
 
     % Se grafica el LFP de un area
-    plot(registroLFP.times.steps_m, registroLFP.area(m).data_raw);
+    plot(registroLFP.times.steps_m, registroLFP.areas(m).data_raw);
     hold on;    
     
-    plot([0 registroLFP.times.stages_timeRanges_m(1)], [registroLFP.area(m).threshold(1) registroLFP.area(m).threshold(1)],'r--','LineWidth',2.0);
+    plot([0 registroLFP.times.stages_timeRanges_m(1)], [registroLFP.areas(m).threshold(1) registroLFP.areas(m).threshold(1)],'r--','LineWidth',2.0);
     hold on;
-    plot([registroLFP.times.stages_timeRanges_m(1) registroLFP.times.stages_timeRanges_m(1)*2+1], [registroLFP.area(m).threshold(2) registroLFP.area(m).threshold(2)],'r--','LineWidth',2.0); 
+    plot([registroLFP.times.stages_timeRanges_m(1) registroLFP.times.stages_timeRanges_m(1)*2+1], [registroLFP.areas(m).threshold(2) registroLFP.areas(m).threshold(2)],'r--','LineWidth',2.0); 
     hold on;
-    plot([registroLFP.times.stages_timeRanges_m(1)*2+1 registroLFP.times.stages_timeRanges_m(1)*3+1], [registroLFP.area(m).threshold(3) registroLFP.area(m).threshold(3)],'r--','LineWidth',2.0); 
+    plot([registroLFP.times.stages_timeRanges_m(1)*2+1 registroLFP.times.stages_timeRanges_m(1)*3+1], [registroLFP.areas(m).threshold(3) registroLFP.areas(m).threshold(3)],'r--','LineWidth',2.0); 
     hold on;
-    plot([0 registroLFP.times.stages_timeRanges_m(1)], [-registroLFP.area(m).threshold(1) -registroLFP.area(m).threshold(1)],'r--','LineWidth',2.0); 
+    plot([0 registroLFP.times.stages_timeRanges_m(1)], [-registroLFP.areas(m).threshold(1) -registroLFP.areas(m).threshold(1)],'r--','LineWidth',2.0); 
     hold on;
-    plot([registroLFP.times.stages_timeRanges_m(1) registroLFP.times.stages_timeRanges_m(1)*2+1], [-registroLFP.area(m).threshold(2) -registroLFP.area(m).threshold(2)],'r--','LineWidth',2.0); 
+    plot([registroLFP.times.stages_timeRanges_m(1) registroLFP.times.stages_timeRanges_m(1)*2+1], [-registroLFP.areas(m).threshold(2) -registroLFP.areas(m).threshold(2)],'r--','LineWidth',2.0); 
     hold on;
-    plot([registroLFP.times.stages_timeRanges_m(1)*2+1 registroLFP.times.stages_timeRanges_m(1)*3+1], [-registroLFP.area(m).threshold(3) -registroLFP.area(m).threshold(3)],'r--','LineWidth',2.0); 
+    plot([registroLFP.times.stages_timeRanges_m(1)*2+1 registroLFP.times.stages_timeRanges_m(1)*3+1], [-registroLFP.areas(m).threshold(3) -registroLFP.areas(m).threshold(3)],'r--','LineWidth',2.0); 
     hold on;
     
     % Lineas divisorias de cada fase
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2]);
+    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2]);
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') LFP referenced with artifacts '], 'FontSize', 24)
         
@@ -140,18 +140,18 @@ for m = 1:length(ia)
 
     fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
     
-    % Se grafica el LFP de un area
-    plot(registroLFP.times.steps_m, registroLFP.area(m).data);
+    % Se grafica el LFP de un areas
+    plot(registroLFP.times.steps_m, registroLFP.areas(m).data);
     hold on;
     
     % Lineas divisorias de cada fase
-    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
-    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.pre_m registroLFP.times.pre_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.start_on_m registroLFP.times.start_on_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.end_on_m registroLFP.times.end_on_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2], 'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
+    line([registroLFP.times.post_m registroLFP.times.post_m], [-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2],'Color','black','LineWidth',2.0,'Marker','.','LineStyle',':');
 
     set(gca,'fontsize',20)
-    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.area(m).threshold(1)*2 registroLFP.area(m).threshold(1)*2]);
+    xlim([0 registroLFP.times.end_m]);ylim([-registroLFP.areas(m).threshold(1)*2 registroLFP.areas(m).threshold(1)*2]);
     xlabel('Time [min]', 'FontSize', 24); ylabel('Amplitude [u.a.]', 'FontSize', 24)
     title(['(', C{ic(i)},') LFP referenced, norm & without artifacts '], 'FontSize', 24)
         

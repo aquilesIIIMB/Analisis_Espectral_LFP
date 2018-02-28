@@ -48,7 +48,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     end
     slash_system = foldername(length(foldername));
     
-    [C,~,~] = unique({registroLFP.area.name},'stable');
+    [C,~,~] = unique({registroLFP.areas.name},'stable');
     idx_areas_izq = [];
     idx_areas_der = [];
     
@@ -78,13 +78,13 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_inicio):-1:p
             
-            area_actual = registroLFP.average_sync{i,j}.names;
+            area_actual = registroLFP.average_sync{i,j}.areas;
             
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
 
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.^2;
         
             sum_MSC_pre = sum(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -119,13 +119,13 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_final):-1:p
             
-            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.names;
+            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.areas;
             
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
 
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.^2;
         
             sum_MSC_pre = sum(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -217,14 +217,14 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_inicio):-1:p
             
-            area_actual = registroLFP.average_sync{i,j}.names;
+            area_actual = registroLFP.average_sync{i,j}.areas;
                         
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.^2;
         
             [max_pre_band,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [max_on_band,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -277,14 +277,14 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_final):-1:p
             
-            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.names;
+            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.areas;
             
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.^2;
         
             [max_pre_band,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [max_on_band,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -463,18 +463,18 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_inicio):-1:p
             
-            area_actual = registroLFP.average_sync{i,j}.names;
+            area_actual = registroLFP.average_sync{i,j}.areas;
                         
             f = registroLFP.average_sync{i,j}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i,j}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i,j}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i,j}.coherence.post.^2;
             
-            phi_pre = registroLFP.average_sync{i,j}.phase.pre.data;
-            phi_on = registroLFP.average_sync{i,j}.phase.on.data;
-            phi_post = registroLFP.average_sync{i,j}.phase.post.data;
+            phi_pre = registroLFP.average_sync{i,j}.phase.pre;
+            phi_on = registroLFP.average_sync{i,j}.phase.on;
+            phi_post = registroLFP.average_sync{i,j}.phase.post;
             
             [~,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [~,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
@@ -540,14 +540,18 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         % Coherencia
         for j = length(idx_final):-1:p
             
-            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.names;
+            area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.areas;
             
             f = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherenciogram.frequency;
             f_band = f(f>=banda_eval(1) & f<=banda_eval(2));
             
-            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.data.^2;
-            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.data.^2;
-            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.data.^2;
+            Coherence_pre_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.pre.^2;
+            Coherence_on_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.on.^2;
+            Coherence_post_mean = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.coherence.post.^2;
+            
+            phi_pre = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.phase.pre;
+            phi_on = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.phase.on;
+            phi_post = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.phase.post;
         
             [~,I_pre] = max(Coherence_pre_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             [~,I_on] = max(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));

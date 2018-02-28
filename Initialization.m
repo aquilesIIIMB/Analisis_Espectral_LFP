@@ -52,15 +52,22 @@ registroLFP.name = [];
 registroLFP.open_ephys = [];
 registroLFP.channel_codes = channel_codes;
 registroLFP.reference_type = reference_type;
+registroLFP.sampleRate = []; % Tasa de muestreo de los registros
 registroLFP.desired_fs = 1000;
-registroLFP.frec_sin_artifacts = 110; % Frecuencia de la sinusoide que reemplaza a los artefactos
+registroLFP.freq_sin_artifacts = 110; % Frecuencia de la sinusoide que reemplaza a los artefactos
 registroLFP.amp_threshold = threshold_amplitudes;
 
 % Datos del filtro
-registroLFP.filter_param.type = 'lowpassiir';
-registroLFP.filter_param.n = 15; % grado del filtro
-registroLFP.filter_param.fc = 150; % 300Hz
-registroLFP.filter_param.design_method = 'butter'; % 300Hz
+registroLFP.filter_param(1).type = 'lowpassiir';
+registroLFP.filter_param(1).design_method = 'butter'; 
+registroLFP.filter_param(1).n = 15; % grado del filtro
+registroLFP.filter_param(1).fc = 150; 
+registroLFP.filter_param(1).fs = registroLFP.sampleRate;  
+registroLFP.filter_param(2).type = 'highpassiir';
+registroLFP.filter_param(2).design_method = 'butter';
+registroLFP.filter_param(2).n = 15; % grado del filtro
+registroLFP.filter_param(2).fc = 0.1; 
+registroLFP.filter_param(2).fs = registroLFP.desired_fs; 
 
 % Datos para el tiempo 
 dir_pulse = dir([path,'10*_ADC8.continuous']);
@@ -111,13 +118,13 @@ registroLFP.multitaper.spectrogram.params.err = 0; % Error considerado
 registroLFP.multitaper.spectrogram.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
 
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
-registroLFP.multitaper.spectrogram.movingwin.window = 1; % Ventanas (En segundos)
+registroLFP.multitaper.spectrogram.movingwin.window = 4; % Ventanas (En segundos)
 registroLFP.multitaper.spectrogram.movingwin.winstep = registroLFP.multitaper.spectrogram.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Datos de los parametros usados para calcular los multitapers (Chronux)
 registroLFP.multitaper.coherenciogram.params.tapers = ([4 7]); % [TW K], (K <= to 2TW-1)
 registroLFP.multitaper.coherenciogram.params.pad = 2; % Cantidad de puntos multiplos de dos sobre el largo de la sennal
-registroLFP.multitaper.coherenciogram.params.Fs = 1000; % Frecuencia de muestreo
+registroLFP.multitaper.coherenciogram.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
 registroLFP.multitaper.coherenciogram.params.fpass = [0.1 100]; % Rango de frecuencias
 registroLFP.multitaper.coherenciogram.params.err = 0; % Error considerado
 registroLFP.multitaper.coherenciogram.params.trialave = 0; % Se calcula el promedio de todos los canales o intentos dentro del archivo de entrada
@@ -125,6 +132,14 @@ registroLFP.multitaper.coherenciogram.params.trialave = 0; % Se calcula el prome
 % Datos para definir el ventaneo y avance de las ventanas en multitaper
 registroLFP.multitaper.coherenciogram.movingwin.window = 8; % Ventanas (En segundos)
 registroLFP.multitaper.coherenciogram.movingwin.winstep = registroLFP.multitaper.coherenciogram.movingwin.window/2; % Pasos de ventanas (segundos)
+
+% Datos de los parametros usados para calcular los multitapers (Chronux)
+registroLFP.irasa.spectrogram.params.Fs = registroLFP.desired_fs; % Frecuencia de muestreo
+registroLFP.irasa.spectrogram.params.fpass = [0.1 100]; % Rango de frecuencias
+
+% Datos para definir el ventaneo y avance de las ventanas en multitaper
+registroLFP.irasa.spectrogram.movingwin.window = 1; % Ventanas (En segundos)
+registroLFP.irasa.spectrogram.movingwin.winstep = registroLFP.irasa.spectrogram.movingwin.window/2; % Pasos de ventanas (segundos)
 
 % Identificadores de las etapas que se han hecho y las que quedan
 registroLFP.analysis_stages.initialization = 1;
@@ -138,55 +153,65 @@ registroLFP.analysis_stages.spectral_area = 0;
 registroLFP.analysis_stages.coherence_area = 0;
  
 % Datos de los canales
-registroLFP.channel.name = [];
-registroLFP.channel.area = [];
-%registroLFP.channel.data = [];
-registroLFP.channel.data_ref = [];
-registroLFP.channel.data_raw = [];
-%registroLFP.channel.data_noartifacted = [];
-registroLFP.channel.spectrogram = [];
-registroLFP.channel.psd = [];
-%registroLFP.channel.threshold = [];
-%registroLFP.channel.ind_over_threshold = [];
-%registroLFP.channel.threshold_ref = [];
-registroLFP.channel.removed = [];
+registroLFP.channels.name = [];
+registroLFP.channels.area = [];
+registroLFP.channels.data_ref = [];
+registroLFP.channels.data_raw = [];
+registroLFP.channels.spectrogram = [];
+registroLFP.channels.psd = [];
+registroLFP.channels.removed = [];
 
 % Datos de cada espectrograma
-registroLFP.channel.spectrogram.data = [];
-registroLFP.channel.spectrogram.time = [];
-registroLFP.channel.spectrogram.frequency = [];    
+registroLFP.channels.spectrogram.mag = [];
+registroLFP.channels.spectrogram.time = [];
+registroLFP.channels.spectrogram.frequency = [];    
 
 % Datos de cada densidad de potencial espectral
-registroLFP.channel.psd.pre.data = [];
-registroLFP.channel.psd.on.data = [];
-registroLFP.channel.psd.post.data = [];
+registroLFP.channels.psd.pre = [];
+registroLFP.channels.psd.on = [];
+registroLFP.channels.psd.post = [];
 
 % Datos de las areas en el tiempo
-registroLFP.area.name = [];
-registroLFP.area.data = [];
-registroLFP.area.data_raw = [];
-registroLFP.area.threshold = [];
-registroLFP.area.ind_over_threshold = [];
+registroLFP.areas.name = [];
+registroLFP.areas.data = [];
+registroLFP.areas.data_raw = [];
+registroLFP.areas.threshold = [];
+registroLFP.areas.ind_over_threshold = [];
 
 % Datos de los espectrogramas promedio por area
 registroLFP.average_spectrum.area = [];
-registroLFP.average_spectrum.spectrogram.data = [];
-registroLFP.average_spectrum.spectrogram.data_raw = [];
-%registroLFP.average_spectrum.spectrogram.mean_spect_pre = []; %%%cambiar mean por median
-%registroLFP.average_spectrum.spectrogram.std_spect_pre = [];  %%% Cambiar std por medida de distancia
+registroLFP.average_spectrum.spectrogram.mixed.mag = [];
+registroLFP.average_spectrum.spectrogram.mixed.phase = [];
+registroLFP.average_spectrum.spectrogram.mixed.mean_mag_pre = []; 
+registroLFP.average_spectrum.spectrogram.mixed.std_mag_pre = [];  
+registroLFP.average_spectrum.spectrogram.oscillations.mag = [];
+registroLFP.average_spectrum.spectrogram.oscillations.mean_mag_pre = []; 
+registroLFP.average_spectrum.spectrogram.oscillations.std_mag_pre = [];  
+registroLFP.average_spectrum.spectrogram.fractals.mag = [];
+registroLFP.average_spectrum.spectrogram.fractals.mean_mag_pre = []; 
+registroLFP.average_spectrum.spectrogram.fractals.std_mag_pre = []; 
+registroLFP.average_spectrum.spectrogram.beta = []; 
 registroLFP.average_spectrum.spectrogram.time = [];
 registroLFP.average_spectrum.spectrogram.frequency = [];  
+registroLFP.average_spectrum.spectrogram.ind_artifacts = [];  
+registroLFP.average_spectrum.spectrogram.irasa = [];
 
 % Datos de los PSD promedio por area
-registroLFP.average_spectrum.psd.pre.data = [];
-registroLFP.average_spectrum.psd.on.data = [];
-registroLFP.average_spectrum.psd.post.data = [];
+registroLFP.average_spectrum.psd.mixed.pre = [];
+registroLFP.average_spectrum.psd.mixed.on = [];
+registroLFP.average_spectrum.psd.mixed.post = [];
+registroLFP.average_spectrum.psd.oscillations.pre = [];
+registroLFP.average_spectrum.psd.oscillations.on = [];
+registroLFP.average_spectrum.psd.oscillations.post = [];
+registroLFP.average_spectrum.psd.fractals.pre = [];
+registroLFP.average_spectrum.psd.fractals.on = [];
+registroLFP.average_spectrum.psd.fractals.post = [];
 
 % Asignacion de los canales y areas que se usaran
-[registroLFP.channel(1:64).name] = T.Channel{:}; % Cargar los numeros de los canales
-[registroLFP.channel(1:64).area] = T.Area{:}; % Carga los nombres de las areas
-[registroLFP.channel(1:64).removed] = deal(1);
-[registroLFP.channel(eval_channels).removed] = deal(0);
+[registroLFP.channels(1:64).name] = T.Channel{:}; % Cargar los numeros de los canales
+[registroLFP.channels(1:64).area] = T.Area{:}; % Carga los nombres de las areas
+[registroLFP.channels(1:64).removed] = deal(1);
+[registroLFP.channels(eval_channels).removed] = deal(0);
 
 % Crear carpeta para guardar las imagnes 35:end
 slash_backslash = find(path=='\' | path=='/');

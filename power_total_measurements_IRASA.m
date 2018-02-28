@@ -27,7 +27,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
     post_m = registroLFP.times.post_m;
     tiempo_total = registroLFP.times.end_m;
     
-    [C,~,~] = unique({registroLFP.area.name},'stable');
+    [C,~,~] = unique({registroLFP.areas.name},'stable');
     idx_areas_izq = [];
     idx_areas_der = [];
     
@@ -43,57 +43,54 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
 
     for i = 1:length(registroLFP.average_spectrum)
         
-        freq = registroLFP.average_spectrum(i).spectrogram.irasa.freq;
-        time = registroLFP.average_spectrum(i).spectrogram.irasa.time;
+        freq = registroLFP.average_spectrum(i).spectrogram.frequency; 
+        time = registroLFP.average_spectrum(i).spectrogram.time; 
         area_actual = registroLFP.average_spectrum(i).area; 
     
-        % Espectrograma de fractales
-        FracSpectrogram = registroLFP.average_spectrum(i).spectrogram.irasa.frac';
-        FracSpectrogram = imresize(FracSpectrogram, [length(time), 200]);
-        freq = imresize(freq,[200, 1]);
-
-        [~,ind_max] = max(FracSpectrogram,[],2); % Indice de los maximos en cada bin de tiempo
-        frec_ind_max = freq(ind_max); % Frecuencia de los maximos en cada bin de tiempo
-        idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
-        idx_spect_artifacts = find(~idx_spect_artifacts)';
-        
-        % Indices de cada etapa
-        idx_pre = find(time<(pre_m*60.0-5));
-        idx_on = find(time>(on_inicio_m*60.0+5) & time<(on_final_m*60.0-5));
-        idx_post = find(time>(post_m*60.0+5) & time<(tiempo_total*60));
-
-        FracSpectrogram_pre = FracSpectrogram(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
-        FracSpectrogram_on = FracSpectrogram(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
-        FracSpectrogram_post = FracSpectrogram(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
-
-        % PSD
-        psd_pre_frac = mean(FracSpectrogram_pre,1);    
-        psd_on_frac = mean(FracSpectrogram_on,1);    
-        psd_post_frac = mean(FracSpectrogram_post,1);
+        psd_pre_frac = registroLFP.average_spectrum(i).psd.fractals.pre;        
+        psd_on_frac = registroLFP.average_spectrum(i).psd.fractals.on;
+        psd_post_frac = registroLFP.average_spectrum(i).psd.fractals.post;
         
         power_band_pre = bandpower(psd_pre_frac, freq, [min(freq), max(freq)],'psd');
         power_band_on = bandpower(psd_on_frac, freq, [min(freq), max(freq)],'psd');
         power_band_post = bandpower(psd_post_frac, freq, [min(freq), max(freq)],'psd');
         
+        max_pre_frac = max(psd_pre_frac);
+        
+        power_band_pre_norm = bandpower(psd_pre_frac/max_pre_frac, freq, [min(freq), max(freq)],'psd');
+        power_band_on_norm = bandpower(psd_on_frac/max_pre_frac, freq, [min(freq), max(freq)],'psd');
+        power_band_post_norm = bandpower(psd_post_frac/max_pre_frac, freq, [min(freq), max(freq)],'psd');
+        
         areas = {areas{:},area_actual};
         power_fractal_band = [power_fractal_band; [power_band_pre, power_band_on, power_band_post]];        
-        power_fractal_band_norm = [power_fractal_band_norm; [power_band_pre/power_band_pre, power_band_on/power_band_pre, power_band_post/power_band_pre]];
+        power_fractal_band_norm = [power_fractal_band_norm; [power_band_pre_norm, power_band_on_norm, power_band_post_norm]];
         
         % Oscillatory
         freq = registroLFP.average_spectrum(i).spectrogram.frequency; 
         area_actual = registroLFP.average_spectrum(i).area;       
         
-        psd_pre = registroLFP.average_spectrum(i).psd.pre.data;        
-        psd_on = registroLFP.average_spectrum(i).psd.on.data;
-        psd_post = registroLFP.average_spectrum(i).psd.post.data;
+        psd_pre = registroLFP.average_spectrum(i).psd.oscillations.pre;        
+        psd_on = registroLFP.average_spectrum(i).psd.oscillations.on;
+        psd_post = registroLFP.average_spectrum(i).psd.oscillations.post;
         
-        min_psd = min([min(psd_pre),min(psd_on),min(psd_post)]);        
+        min_psd = min([min(psd_pre),min(psd_on),min(psd_post)]);  
         
-        power_band_pre_total = bandpower(psd_pre-min_psd, freq, [min(freq), max(freq)],'psd');
-        power_band_on_total = bandpower(psd_on-min_psd, freq, [min(freq), max(freq)],'psd');
-        power_band_post_total = bandpower(psd_post-min_psd, freq, [min(freq), max(freq)],'psd');
+        psd_pre = psd_pre-min_psd;        
+        psd_on = psd_on-min_psd;
+        psd_post = psd_post-min_psd;
+        
+        power_band_pre_total = bandpower(psd_pre, freq, [min(freq), max(freq)],'psd');
+        power_band_on_total = bandpower(psd_on, freq, [min(freq), max(freq)],'psd');
+        power_band_post_total = bandpower(psd_post, freq, [min(freq), max(freq)],'psd');
+        
+        max_pre = max(psd_pre);
+        
+        power_band_pre_total_norm = bandpower(psd_pre/max_pre, freq, [min(freq), max(freq)],'psd');
+        power_band_on_total_norm = bandpower(psd_on/max_pre, freq, [min(freq), max(freq)],'psd');
+        power_band_post_total_norm = bandpower(psd_post/max_pre, freq, [min(freq), max(freq)],'psd');
+        
         power_band_total = [power_band_total; [power_band_pre_total, power_band_on_total, power_band_post_total]];
-        power_band_total_norm = [power_band_total_norm; [power_band_pre_total/power_band_pre_total, power_band_on_total/power_band_pre_total, power_band_post_total/power_band_pre_total]];
+        power_band_total_norm = [power_band_total_norm; [power_band_pre_total_norm, power_band_on_total_norm, power_band_post_total_norm]];
 
         if visualization
             figure;
@@ -254,10 +251,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free activity Signal Power by Pre-Stim of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of left and right hemisphere'];
             saveas(fig_13,name_figure_save,'png');
@@ -314,10 +311,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free activity Signal Power by Pre-Stim of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of left hemisphere'];
             saveas(fig_14,name_figure_save,'png');
@@ -333,10 +330,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free activity Signal Power by Pre-Stim of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free activity Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized of rigth hemisphere'];
             saveas(fig_15,name_figure_save,'png');
@@ -371,10 +368,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Oscillatory Signal Power by Pre-Stim of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized of left and right hemisphere'];
             saveas(fig_13,name_figure_save,'png');
@@ -431,10 +428,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Oscillatory Signal Power by Pre-Stim of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized of left hemisphere'];
             saveas(fig_14,name_figure_save,'png');
@@ -450,10 +447,10 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 2])
+            ylim([0 45])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Oscillatory Signal Power by Pre-Stim of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Oscillatory Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
             name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Oscillatory Signal Power Normalized of rigth hemisphere'];
             saveas(fig_15,name_figure_save,'png');

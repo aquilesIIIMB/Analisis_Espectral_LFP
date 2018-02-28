@@ -96,13 +96,14 @@ if flag_detrend >= 1
 end
 
 %% apply IRASA method to separate fractal and oscillatory components
-[Smixd, Sfrac, freq] = irasa(sig,srate,hset,flag_filter);  
+[Smixd, Sfrac, freq, Pmixd] = irasa(sig,srate,hset,flag_filter);  
 
 %% only keep the given frequency range
 ff = (freq>=fmin & freq<=fmax & freq>0);
 freq = freq(ff); 
 Smixd = Smixd(ff,:); 
 Sfrac = Sfrac(ff,:); 
+Pmixd = Pmixd(ff,:);
 
 %% outputs
 spec.freq  = freq;
@@ -110,12 +111,13 @@ spec.srate = srate;
 spec.mixd  = Smixd;
 spec.frac  = Sfrac;
 spec.osci  = Smixd - Sfrac;
+spec.phase = Pmixd;
 
 end
 
 %% IRASA Irregular-Resampling Auto-Spectral Analysis
 
-function [Smixd, Sfrac, freq] = irasa(sig,srate,hset,flag_filter)
+function [Smixd, Sfrac, freq, Pmixd] = irasa(sig,srate,hset,flag_filter)
 % Given a discrete time series (sig) of length (Ntotal)
 Ntotal = size(sig,1);
 dim = size(sig,2);
@@ -138,13 +140,30 @@ freq = srate/2*linspace(0,1,Nfrac); freq = freq(:);
 
 % compute the spectrum of mixed data
 Smixd = zeros(Nfrac,dim);
+%Pmixd = zeros(Nfrac,dim);
+Pmixd = [];
 taper = gettaper([Ndata dim]);
+
+% Config Multitaper IRASA
+%seq_length = Ndata; 
+%time_halfbandwidth = 4;
+%num_tapers = 3;
+%[dps_seq,~] = dpss(seq_length,time_halfbandwidth,num_tapers);
+%dps_seq = repmat(dps_seq',1,1,dim);
+
 for k = 0:Nsubset-1
     i0 = L*k+1;
     x1 = sig(i0:1:i0+Ndata-1,:);
+    % Config Multitaper IRASA
+    %for num_taper = 1:size(dps_seq,1)
+    %    p(:,:,num_taper) = fft(x1.*squeeze(dps_seq(num_taper,:,:)),nfft)/min(nfft,size(x1,1));
+    %end
+    %p1 = mean(p,3);
+    % pure IRASA
     p1 = fft(x1.*taper,nfft)/min(nfft,size(x1,1));
+    Pmixd = [Pmixd; angle(p1(1:Nfrac,:))];
     p1(2:end,:) = p1(2:end,:)*2;
-    Smixd = Smixd+abs(p1(1:Nfrac,:)).^2;
+    Smixd = Smixd+abs(p1(1:Nfrac,:)).^2;    
 end
 Smixd = Smixd/Nsubset;
 
@@ -168,6 +187,14 @@ for ih = 1:length(hset)
         x1 = sig(i0:i0+Ndata-1,:);
         xh = myresample(x1, n, d); 
         taperh = gettaper(size(xh));
+        % Config Multitaper IRASA
+        %[dps_seq,~] = dpss(size(xh,1),time_halfbandwidth,num_tapers);
+        %dps_seq = repmat(dps_seq',1,1,size(xh,2));
+        %for num_taper = 1:size(dps_seq,1)
+        %    p(:,:,num_taper) = fft(xh.*squeeze(dps_seq(num_taper,:,:)),nfft)/min(nfft,size(xh,1));
+        %end
+        %ph = mean(p,3);
+        % pure IRASA
         ph = fft(xh.*taperh,nfft)/min(nfft,size(xh,1));
         ph(2:end,:) = ph(2:end,:)*2;
         tmp = (abs(ph)).^2;
@@ -186,6 +213,14 @@ for ih = 1:length(hset)
         end
         x1h = myresample(x1,d,n);
         taper1h = gettaper(size(x1h));
+        % Config Multitaper IRASA
+        %[dps_seq,~] = dpss(size(x1h,1),time_halfbandwidth,num_tapers);
+        %dps_seq = repmat(dps_seq',1,1,size(x1h,2));
+        %for num_taper = 1:size(dps_seq,1)
+        %    p(:,:,num_taper) = fft(x1h.*squeeze(dps_seq(num_taper,:,:)),nfft)/min(nfft,size(x1h,1));
+        %end
+        %p1h = mean(p,3);
+        % pure IRASA
         p1h = fft(x1h.*taper1h,nfft)/min(nfft,size(x1h,1));
         p1h(2:end,:) = p1h(2:end,:)*2;
         tmp = (abs(p1h)).^2;

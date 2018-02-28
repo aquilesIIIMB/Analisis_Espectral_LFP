@@ -1,7 +1,32 @@
-function power_fractal_band = power_total_measurements_IRASA(registroLFP, visualization, save_image, path)
+function [power_band, power_band_norm] = power_fractal_measurements_IRASA(registroLFP, banda_eval, visualization, save_image, path)
+
+    banda_actual = 'None';
+    
+    if banda_eval == [1, 4]
+        banda_actual = 'delta';
+    elseif banda_eval == [4, 8]
+        banda_actual = 'theta';
+    elseif banda_eval == [8, 12]
+        banda_actual = 'alpha';
+    elseif banda_eval == [12, 20]
+        banda_actual = 'beta_low';
+    elseif banda_eval == [20, 30]
+        banda_actual = 'beta_high';
+    elseif banda_eval == [12, 30]
+        banda_actual = 'beta';
+    elseif banda_eval == [8, 30]
+        banda_actual = 'beta_parkinson';
+    elseif banda_eval == [30, 60]
+        banda_actual = 'gamma_low';
+    elseif banda_eval == [60, 90]
+        banda_actual = 'gamma_high';
+    elseif banda_eval == [30, 90]
+        banda_actual = 'gamma';
+    end
         
-    power_fractal_band = [];
-    power_fractal_band_norm = [];
+        
+    power_band = [];
+    power_band_norm = [];
     areas = {};
        
     azul = [0 0.4470 0.7410];
@@ -25,7 +50,7 @@ function power_fractal_band = power_total_measurements_IRASA(registroLFP, visual
     post_m = registroLFP.times.post_m;
     tiempo_total = registroLFP.times.end_m;
     
-    [C,~,~] = unique({registroLFP.area.name},'stable');
+    [C,~,~] = unique({registroLFP.areas.name},'stable');
     idx_areas_izq = [];
     idx_areas_der = [];
     
@@ -40,42 +65,38 @@ function power_fractal_band = power_total_measurements_IRASA(registroLFP, visual
     end
 
     for i = 1:length(registroLFP.average_spectrum)
-        
-        freq = registroLFP.average_spectrum(i).spectrogram.irasa.freq;
-        time = registroLFP.average_spectrum(i).spectrogram.irasa.time;
-        area_actual = registroLFP.average_spectrum(i).area; 
     
-        % Espectrograma de fractales
-        FracSpectrogram = registroLFP.average_spectrum(i).spectrogram.irasa.frac';
-        FracSpectrogram = imresize(FracSpectrogram, [length(time), 200]);
-        freq = imresize(freq,[200, 1]);
-
-        [~,ind_max] = max(FracSpectrogram,[],2); % Indice de los maximos en cada bin de tiempo
-        frec_ind_max = freq(ind_max); % Frecuencia de los maximos en cada bin de tiempo
-        idx_spect_artifacts = ~((frec_ind_max > 100-5) & (frec_ind_max < 100+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
-        idx_spect_artifacts = find(~idx_spect_artifacts)';
+        freq = registroLFP.average_spectrum(i).spectrogram.frequency; 
+        area_actual = registroLFP.average_spectrum(i).area;       
         
-        % Indices de cada etapa
-        idx_pre = find(time<(pre_m*60.0-5));
-        idx_on = find(time>(on_inicio_m*60.0+5) & time<(on_final_m*60.0-5));
-        idx_post = find(time>(post_m*60.0+5) & time<(tiempo_total*60));
-
-        FracSpectrogram_pre = FracSpectrogram(idx_pre(~ismember(idx_pre, idx_spect_artifacts)),:);
-        FracSpectrogram_on = FracSpectrogram(idx_on(~ismember(idx_on, idx_spect_artifacts)),:);
-        FracSpectrogram_post = FracSpectrogram(idx_post(~ismember(idx_post, idx_spect_artifacts)),:);
-
-        % PSD
-        psd_pre = mean(FracSpectrogram_pre,1);    
-        psd_on = mean(FracSpectrogram_on,1);    
-        psd_post = mean(FracSpectrogram_post,1);
+        psd_pre = registroLFP.average_spectrum(i).psd.fractals.pre;        
+        psd_on = registroLFP.average_spectrum(i).psd.fractals.on;
+        psd_post = registroLFP.average_spectrum(i).psd.fractals.post;
         
-        power_band_pre = bandpower(psd_pre, freq, [min(freq), max(freq)],'psd');
-        power_band_on = bandpower(psd_on, freq, [min(freq), max(freq)],'psd');
-        power_band_post = bandpower(psd_post, freq, [min(freq), max(freq)],'psd');
+        min_f = min(freq);
+        max_f = max(freq);
         
+        if banda_eval(1) < min_f
+            banda_eval(1) = min_f;
+        end
+        
+        if banda_eval(2) > max_f
+            banda_eval(2) = max_f;
+        end
+
+        max_pre = max(psd_pre);
+        
+        power_band_pre = bandpower(psd_pre, freq, banda_eval,'psd');
+        power_band_on = bandpower(psd_on, freq, banda_eval,'psd');
+        power_band_post = bandpower(psd_post, freq, banda_eval,'psd');
+        
+        power_band_pre_norm = bandpower(psd_pre/max_pre, freq, banda_eval,'psd');
+        power_band_on_norm = bandpower(psd_on/max_pre, freq, banda_eval,'psd');
+        power_band_post_norm = bandpower(psd_post/max_pre, freq, banda_eval,'psd');       
+
         areas = {areas{:},area_actual};
-        power_fractal_band_norm = [power_fractal_band_norm; [power_band_pre/power_band_pre, power_band_on/power_band_pre, power_band_post/power_band_pre]];
-        power_fractal_band = [power_fractal_band; [power_band_pre, power_band_on, power_band_post]];
+        power_band = [power_band; [power_band_pre, power_band_on, power_band_post]];
+        power_band_norm = [power_band_norm; [power_band_pre_norm, power_band_on_norm, power_band_post_norm]];
 
         if visualization
             figure;
@@ -92,49 +113,49 @@ function power_fractal_band = power_total_measurements_IRASA(registroLFP, visual
             title(area_actual)
 
             fprintf('%s\n', area_actual)
-            fprintf('Porcentaje de banda beta en pre: %.2f \n', power_band_pre)
-            fprintf('Porcentaje de banda beta en on: %.2f \n', power_band_on)
-            fprintf('Porcentaje de banda beta en post: %.2f \n\n', power_band_post)
+            fprintf('Porcentaje de banda en pre: %.2f \n', power_band_pre)
+            fprintf('Porcentaje de banda en on: %.2f \n', power_band_on)
+            fprintf('Porcentaje de banda en post: %.2f \n\n', power_band_post)
         end
     end
 
     if visualization
         disp(' ')
-        fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(power_fractal_band(idx_areas_izq,:)))
-        fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(power_fractal_band(idx_areas_der,:)))    
+        fprintf('Promedio de porcentaje de potencia en primer grafico\npre: %f, stim: %f, post: %f\n\n', mean(power_band(idx_areas_izq,:)))
+        fprintf('Promedio de porcentaje de potencia en segundo grafico\npre: %f, stim: %f, post: %f\n\n',mean(power_band(idx_areas_der,:)))    
 
         if length(idx_areas_izq) == 1
-            y_max = max([max(power_fractal_band(idx_areas_izq,:)) max(power_fractal_band(idx_areas_der,:))]);
-            y_min = min([min(power_fractal_band(idx_areas_izq,:)) min(power_fractal_band(idx_areas_der,:))]);
+            y_max = max([max(power_band(idx_areas_izq,:)) max(power_band(idx_areas_der,:))]);
+            y_min = min([min(power_band(idx_areas_izq,:)) min(power_band(idx_areas_der,:))]);
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
-            bar_izqder = bar(power_fractal_band,'grouped');
+            bar_izqder = bar(power_band,'grouped');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas)
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free Activity Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             
         else
-            y_max = max([max(power_fractal_band(idx_areas_izq,:)) max(power_fractal_band(idx_areas_der,:))]);
-            y_min = min([min(power_fractal_band(idx_areas_izq,:)) min(power_fractal_band(idx_areas_der,:))]);
+            y_max = max([max(power_band(idx_areas_izq,:)) max(power_band(idx_areas_der,:))]);
+            y_min = min([min(power_band(idx_areas_izq,:)) min(power_band(idx_areas_der,:))]);
             y_max = y_max + abs(y_max)*0.1;
             y_min = y_min - abs(y_min)*0.1;
             figure;
             subplot(2,1,1)
-            bar_izq = bar(power_fractal_band(idx_areas_izq,:),'grouped');
+            bar_izq = bar(power_band(idx_areas_izq,:),'grouped');
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_izq))
             legend('Pre', 'Stim', 'Post');
             grid on
             ylim([y_min y_max])
-            title(['Fractal Power'])
+            title(['Scale-free Activity Power in band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),']'])
             subplot(2,1,2)
-            bar_der = bar(power_fractal_band(idx_areas_der,:),'grouped');
+            bar_der = bar(power_band(idx_areas_der,:),'grouped');
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_der))
@@ -149,119 +170,125 @@ function power_fractal_band = power_total_measurements_IRASA(registroLFP, visual
         
         if length(idx_areas_izq) == 1
             fig_11 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_izqder = bar(power_fractal_band,'grouped');
+            bar_izqder = bar(power_band,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas)
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 5])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 1.5])
+            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Activity Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of left and right hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
             close(fig_11)
             
-            fig_13 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_izqder = bar(power_fractal_band_norm,'grouped');
+            fig_12 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_izqder = bar(power_band_norm,'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas)
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 12])
+            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Activity Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of left and right hemisphere'];
-            saveas(fig_13,name_figure_save,'png');
-            saveas(fig_13,name_figure_save,'fig');
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized in band ',banda_actual,' of left and right hemisphere'];
+            saveas(fig_12,name_figure_save,'png');
+            saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;
-            close(fig_13)
+            close(fig_12)
         
         else
             % Graficar cambio en la potencia    
             fig_11 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_izq = bar(power_fractal_band(idx_areas_izq,:),'grouped');
+            bar_izq = bar(power_band(idx_areas_izq,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_izq))
             lgd = legend([bar_izq(1) bar_izq(2) bar_izq(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 5])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 1.5])
+            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Activity Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of left hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
             close(fig_11)   
 
             fig_12 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_der = bar(power_fractal_band(idx_areas_der,:),'grouped');
+            bar_der = bar(power_band(idx_areas_der,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_der))
             lgd = legend([bar_der(1) bar_der(2) bar_der(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 5])
-            ylabel('Fractal Power [W/Hz]', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 1.5])
+            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Fractal Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Activity Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of rigth hemisphere'];
             saveas(fig_12,name_figure_save,'png');
             saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;
             close(fig_12)   
             
             % Graficar cambio en la potencia    
-            fig_14 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_izq = bar(power_fractal_band_norm(idx_areas_izq,:),'grouped');
+            fig_13 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_izq = bar(power_band_norm(idx_areas_izq,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_izq))
             lgd = legend([bar_izq(1) bar_izq(2) bar_izq(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 12])
+            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Activity Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of left hemisphere'];
-            saveas(fig_14,name_figure_save,'png');
-            saveas(fig_14,name_figure_save,'fig');
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized in band ',banda_actual,' of left hemisphere'];
+            saveas(fig_13,name_figure_save,'png');
+            saveas(fig_13,name_figure_save,'fig');
             %waitforbuttonpress;
-            close(fig_14)   
+            close(fig_13)   
 
-            fig_15 = figure('units','normalized','outerposition',[0 0 1 1]);
-            bar_der = bar(power_fractal_band_norm(idx_areas_der,:),'grouped');
+            fig_14 = figure('units','normalized','outerposition',[0 0 1 1]);
+            bar_der = bar(power_band_norm(idx_areas_der,:),'grouped');
             xt = get(gca, 'XTick');
             set(gca, 'XTick', xt, 'XTickLabel', areas(idx_areas_der))
             lgd = legend([bar_der(1) bar_der(2) bar_der(3)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 2])
-            ylabel('Normalized Fractal Power', 'FontSize', 24)
+            %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
+            ylim([0 12])
+            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Fractal Signal Power by Pre-Stim of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Activity Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Fractal Signal Power Normalized of rigth hemisphere'];
-            saveas(fig_15,name_figure_save,'png');
-            saveas(fig_15,name_figure_save,'fig');
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalizedin band ',banda_actual,' of rigth hemisphere'];
+            saveas(fig_14,name_figure_save,'png');
+            saveas(fig_14,name_figure_save,'fig');
             %waitforbuttonpress;
-            close(fig_15)   
+            close(fig_14)  
         end
     end
     

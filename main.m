@@ -13,10 +13,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
+path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\maravilla_2017-06-17_16-39-32\'; 
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/orlando_2017-01-25_15-53-09/';
+%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/orlando_2017-01-25_15-53-09/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
@@ -32,9 +32,9 @@ eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel-codes/channel_codes_florencia.csv'; % Flo
-channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
+%channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
 %  (Se dejaron las mismas areas que en 'channel_codes_florencia_PUC.csv' y se invirtieron los hemisferios originals L->R y R->L)
-%channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
+channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
 %channel_codes = 'channel-codes/channel_codes_Rata_R01_modificado.csv'; % Caro 
 %  (Se invirtieron los hemisferios originals L->R y R->L)
 
@@ -61,9 +61,9 @@ Extract_LFP;
 
 View_LFP_Raw_Ref;
 
-Spectral_Channel;
+Spectral_Channel_MT;
 
-View_Spectrum_Channel_Area_IRASA;
+View_Spectrum_Channel_Area_IRASA; % MT para channels e IRASA para areas
 
 % Etapa de eliminacion de ch y lfp promedios
 Delete_CH;
@@ -74,11 +74,11 @@ View_LFP_Raw_Ref;
 
 Spectral_Area_IRASA;
 
-View_Spectrum_Channel_Area_IRASA;
+View_Spectrum_Channel_Area_IRASA; % MT para channels e IRASA para areas
 
-Coherence_Area;
+Coherence_Area_MT;
 
-View_Coherence_Area;
+View_Coherence_Area_MT;
 
 Record_Masurements_IRASA;
 toc;

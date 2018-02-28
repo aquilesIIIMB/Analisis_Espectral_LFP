@@ -1,4 +1,4 @@
-function irasa = irasaspecgram(data, movingwin, params)
+function [irasa, phase] = irasaspecgram(data, movingwin, params)
 
 % set parameter
 srate = params.Fs; % sampling frequency
