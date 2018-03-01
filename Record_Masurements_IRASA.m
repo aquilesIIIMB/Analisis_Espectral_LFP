@@ -88,6 +88,77 @@ titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in gamma b
 graph_motorcircuit(coupling_strength_gamma, names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
 
 [power_band_total, power_band_total_norm, power_fractal_band,power_fractal_band_norm] = power_total_measurements_IRASA(registroLFP, false, true, path);
+beta_exponent = exponent_fractal_measurements_IRASA(registroLFP, false, true, path);
 
 % Eliminacion de variables que no se van a guardar
-clearvars -except registroLFP path name_registro foldername inicio_foldername
+%clearvars -except registroLFP path name_registro foldername inicio_foldername
+clearvars registroLFP
+
+measurements_LFP.power_band.oscillations.delta = [band_power_delta, band_power_delta_norm];
+measurements_LFP.power_band.oscillations.theta = [band_power_theta, band_power_theta_norm];
+measurements_LFP.power_band.oscillations.alpha = [band_power_alpha, band_power_alpha_norm];
+measurements_LFP.power_band.oscillations.beta_low = [band_power_beta_low, band_power_beta_low_norm];
+measurements_LFP.power_band.oscillations.beta_high = [band_power_beta_high, band_power_beta_high_norm];
+measurements_LFP.power_band.oscillations.beta = [band_power_beta, band_power_beta_norm];
+measurements_LFP.power_band.oscillations.beta_parkinson = [band_power_beta_parkinson, band_power_beta_parkinson_norm];
+measurements_LFP.power_band.oscillations.gamma_low = [band_power_gamma_low, band_power_gamma_low_norm];
+measurements_LFP.power_band.oscillations.gamma_high = [band_power_gamma_high, band_power_gamma_high_norm];
+measurements_LFP.power_band.oscillations.gamma = [band_power_gamma, band_power_gamma_norm];
+
+measurements_LFP.power_band.fractals.delta = [band_power_fractal_delta, band_power_fractal_delta_norm];
+measurements_LFP.power_band.fractals.theta = [band_power_fractal_theta, band_power_fractal_theta_norm];
+measurements_LFP.power_band.fractals.alpha = [band_power_fractal_alpha, band_power_fractal_alpha_norm];
+measurements_LFP.power_band.fractals.beta_low = [band_power_fractal_beta_low, band_power_fractal_beta_low_norm];
+measurements_LFP.power_band.fractals.beta_high = [band_power_fractal_beta_high, band_power_fractal_beta_high_norm];
+measurements_LFP.power_band.fractals.beta = [band_power_fractal_beta, band_power_fractal_beta_norm];
+measurements_LFP.power_band.fractals.beta_parkinson = [band_power_fractal_beta_parkinson, band_power_fractal_beta_parkinson_norm];
+measurements_LFP.power_band.fractals.gamma_low = [band_power_fractal_gamma_low, band_power_fractal_gamma_low_norm];
+measurements_LFP.power_band.fractals.gamma_high = [band_power_fractal_gamma_high, band_power_fractal_gamma_high_norm];
+measurements_LFP.power_band.fractals.gamma = [band_power_fractal_gamma, band_power_fractal_gamma_norm];
+                                    
+measurements_LFP.power_total.oscillations = [power_band_total, power_band_total_norm];
+measurements_LFP.power_total.fractals = [power_fractal_band,power_fractal_band_norm];
+measurements_LFP.beta_exponent = beta_exponent;
+
+measurements_LFP.coherence.sum_MSC.delta = [sum_MSC_delta];
+measurements_LFP.coherence.sum_MSC.theta = [sum_MSC_theta];
+measurements_LFP.coherence.sum_MSC.alpha = [sum_MSC_alpha];
+measurements_LFP.coherence.sum_MSC.beta_low = [sum_MSC_beta_low];
+measurements_LFP.coherence.sum_MSC.beta_high = [sum_MSC_beta_high];
+measurements_LFP.coherence.sum_MSC.beta = [sum_MSC_beta];
+measurements_LFP.coherence.sum_MSC.beta_parkinson = [sum_MSC_beta_parkinson];
+measurements_LFP.coherence.sum_MSC.gamma_low = [sum_MSC_gamma_low];
+measurements_LFP.coherence.sum_MSC.gamma_high = [sum_MSC_gamma_high];
+measurements_LFP.coherence.sum_MSC.gamma = [sum_MSC_gamma];
+
+measurements_LFP.coherence.coupling_strength.delta = [coupling_strength_delta];
+measurements_LFP.coherence.coupling_strength.theta = [coupling_strength_theta];
+measurements_LFP.coherence.coupling_strength.alpha = [coupling_strength_alpha];
+measurements_LFP.coherence.coupling_strength.beta_low = [coupling_strength_beta_low];
+measurements_LFP.coherence.coupling_strength.beta_high = [coupling_strength_beta_high];
+measurements_LFP.coherence.coupling_strength.beta = [coupling_strength_beta];
+measurements_LFP.coherence.coupling_strength.beta_parkinson = [coupling_strength_beta_parkinson];
+measurements_LFP.coherence.coupling_strength.gamma_low = [coupling_strength_gamma_low];
+measurements_LFP.coherence.coupling_strength.gamma_high = [coupling_strength_gamma_high];
+measurements_LFP.coherence.coupling_strength.gamma = [coupling_strength_gamma];
+
+measurements_LFP.coherence.delay.delta = [delay_delta];
+measurements_LFP.coherence.delay.theta = [delay_theta];
+measurements_LFP.coherence.delay.alpha = [delay_alpha];
+measurements_LFP.coherence.delay.beta_low = [delay_beta_low];
+measurements_LFP.coherence.delay.beta_high = [delay_beta_high];
+measurements_LFP.coherence.delay.beta = [delay_beta];
+measurements_LFP.coherence.delay.beta_parkinson = [delay_beta_parkinson];
+measurements_LFP.coherence.delay.gamma_low = [delay_gamma_low];
+measurements_LFP.coherence.delay.gamma_high = [delay_gamma_high];
+measurements_LFP.coherence.delay.gamma = [delay_gamma];
+
+
+% Eliminacion de variables que no se van a guardar
+clearvars -except measurements_LFP path name_registro foldername inicio_foldername
+
+% Guardar matrices en .mat
+path_name_registro = [inicio_foldername,'Images',foldername,'measurements_',name_registro];
+
+% Descomentar para guardar
+save(path_name_registro,'-v7.3')

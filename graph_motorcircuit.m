@@ -62,7 +62,8 @@ for i = 1:size(coherence,2)
 
     for j = 1:size(num_sync,1)
         [~, idx_color_actual] = min(abs(range_value-weigthed_left(j)));
-        line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',range_mag(idx_color_actual),'Color',color_sync(idx_color_actual,:))
+        %line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',range_mag(idx_color_actual),'Color',color_sync(idx_color_actual,:))
+        line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',20,'Color',color_sync(idx_color_actual,:))
         hold on
     end
 
@@ -99,7 +100,8 @@ for i = 1:size(coherence,2)
 
     for j = 1:size(num_sync,1)
         [~, idx_color_actual] = min(abs(range_value-weigthed_rigth(j)));
-        line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',range_mag(idx_color_actual),'Color',color_sync(idx_color_actual,:))
+        %line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',range_mag(idx_color_actual),'Color',color_sync(idx_color_actual,:))
+        line([pos_nodos(num_sync(j,1),1)+1.5,pos_nodos(num_sync(j,2),1)+1.5],[pos_nodos(num_sync(j,1),2)+1.5,pos_nodos(num_sync(j,2),2)+1.5],'LineWidth',20,'Color',color_sync(idx_color_actual,:))
         hold on
     end
 

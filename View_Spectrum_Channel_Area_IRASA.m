@@ -5,7 +5,7 @@ fprintf('\nVisualizacion del Espectro\n')
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Colocar que son señales mixtas
+% Colocar que son seï¿½ales mixtas
 if ~registroLFP.analysis_stages.spectral_channel 
     error('Falta el bloque de analisis espectral para cada canal');
     
@@ -330,7 +330,7 @@ for m = 1:length(ia)
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Mixted activity spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    title(['Mixed activity spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
     ylabel(c,'Power [W/Hz]', 'FontSize', 17)
     set(c,'fontsize',17)
     name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma de Mixto de los LFP '];
@@ -467,7 +467,7 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, Spectral_frac_pre_mean,'k','LineWidth',3); 
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
@@ -483,7 +483,7 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, Spectral_frac_on_mean,'k','LineWidth',3);    
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
@@ -499,7 +499,7 @@ for m = 1:length(ia)
     semilogy(f_Spectrogram_mean, Spectral_frac_post_mean,'k','LineWidth',3);   
     xlim([0 100])
     ylim([10^-5.5 10^-0.5])
-    lgd = legend('mixto', 'scale-free activity');
+    lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
     xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Log PSD [W/Hz]', 'FontSize', 24)
@@ -510,8 +510,8 @@ for m = 1:length(ia)
     close(fig_24)
     
     fig_26 = figure('units','normalized','outerposition',[0 0 1 1]);
-    plot(t_Spectrogram_mean, beta_Spectrogram_mean,'Color', azul,'LineWidth',3);
-    ylim([-1 4])
+    plot(t_Spectrogram_mean, smooth(t_Spectrogram_mean, beta_Spectrogram_mean,0.04, 'rloess'),'Color', azul,'LineWidth',3);
+    ylim([-1 3])
     hold on
     line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
     line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -519,9 +519,9 @@ for m = 1:length(ia)
     line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','black','LineWidth',3.5,'Marker','.','LineStyle','-');    
     xlim([0 registroLFP.times.end_m*60])
     set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Beta', 'FontSize', 24)
-    title(['Scale-free activity Beta parameter of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Beta de Arrhythmic activity de los LFP '];
+    xlabel('Time [s]', 'FontSize', 24); ylabel('Scale-free activity exponent', 'FontSize', 24)
+    title(['Scale-free activity exponent of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Exponente de Arrhythmic activity de los LFP '];
     saveas(fig_26,name_figure_save,'png');
     %waitforbuttonpress;
     close(fig_26)
