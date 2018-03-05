@@ -22,70 +22,70 @@ names_areas = unique(names_areas,'stable');
 [sum_MSC(:,:,1), coupling_strength(:,:,1), delay(:,:,1)] = coherence_measurements(registroLFP, [1, 4], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in delta band [1, 4] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in delta band [1, 4] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,1), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,1), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,2), band_power_norm(:,:,2)] = power_measurements_IRASA(registroLFP, [4, 8], false, true, path);
 [band_power_fractal(:,:,2), band_power_fractal_norm(:,:,2)] = power_fractal_measurements_IRASA(registroLFP, [4, 8], false, true, path);
 [sum_MSC(:,:,2), coupling_strength(:,:,2), delay(:,:,2)] = coherence_measurements(registroLFP, [4, 8], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in theta band [4, 8] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in theta band [4, 8] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,2), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,2), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,3), band_power_norm(:,:,3)] = power_measurements_IRASA(registroLFP, [8, 12], false, true, path);
 [band_power_fractal(:,:,3), band_power_fractal_norm(:,:,3)] = power_fractal_measurements_IRASA(registroLFP, [8, 12], false, true, path);
 [sum_MSC(:,:,3), coupling_strength(:,:,3), delay(:,:,3)] = coherence_measurements(registroLFP, [8, 12], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in alpha band [8, 12] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in alpha band [8, 12] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,3), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,3), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,4), band_power_norm(:,:,4)] = power_measurements_IRASA(registroLFP, [12, 20], false, true, path);
 [band_power_fractal(:,:,4), band_power_fractal_norm(:,:,4)] = power_fractal_measurements_IRASA(registroLFP, [12, 20], false, true, path);
 [sum_MSC(:,:,4), coupling_strength(:,:,4), delay(:,:,4)] = coherence_measurements(registroLFP, [12, 20], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in beta low band [12, 20] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in beta low band [12, 20] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,4), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,4), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,5), band_power_norm(:,:,5)] = power_measurements_IRASA(registroLFP, [20, 30], false, true, path);
 [band_power_fractal(:,:,5), band_power_fractal_norm(:,:,5)] = power_fractal_measurements_IRASA(registroLFP, [20, 30], false, true, path);
 [sum_MSC(:,:,5), coupling_strength(:,:,5), delay(:,:,5)] = coherence_measurements(registroLFP, [20, 30], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in beta high band [20, 30] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in beta high band [20, 30] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,5), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,5), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,6), band_power_norm(:,:,6)] = power_measurements_IRASA(registroLFP, [12, 30], false, true, path);
 [band_power_fractal(:,:,6), band_power_fractal_norm(:,:,6)] = power_fractal_measurements_IRASA(registroLFP, [12, 30], false, true, path);
 [sum_MSC(:,:,6), coupling_strength(:,:,6), delay(:,:,6)] = coherence_measurements(registroLFP, [12, 30], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in beta band [12, 30] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in beta band [12, 30] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,6), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,6), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,7), band_power_norm(:,:,7)] = power_measurements_IRASA(registroLFP, [8, 30], false, true, path);
 [band_power_fractal(:,:,7), band_power_fractal_norm(:,:,7)] = power_fractal_measurements_IRASA(registroLFP, [8, 30], false, true, path);
 [sum_MSC(:,:,7), coupling_strength(:,:,7), delay(:,:,7)] = coherence_measurements(registroLFP, [8, 30], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in beta parkinson band [8, 30] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in beta parkinson band [8, 30] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,7), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,7), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,8), band_power_norm(:,:,8)] = power_measurements_IRASA(registroLFP, [30, 60], false, true, path);
 [band_power_fractal(:,:,8), band_power_fractal_norm(:,:,8)] = power_fractal_measurements_IRASA(registroLFP, [30, 60], false, true, path);
 [sum_MSC(:,:,8), coupling_strength(:,:,8), delay(:,:,8)] = coherence_measurements(registroLFP, [30, 60], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in gamma low band [30, 60] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in gamma low band [30, 60] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,8), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,8), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,9), band_power_norm(:,:,9)] = power_measurements_IRASA(registroLFP, [60, 90], false, true, path);
 [band_power_fractal(:,:,9), band_power_fractal_norm(:,:,9)] = power_fractal_measurements_IRASA(registroLFP, [60, 90], false, true, path);
 [sum_MSC(:,:,9), coupling_strength(:,:,9), delay(:,:,9)] = coherence_measurements(registroLFP, [60, 90], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in gamma high band [60, 90] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in gamma high band [60, 90] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,9), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,9), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [band_power(:,:,10), band_power_norm(:,:,10)] = power_measurements_IRASA(registroLFP, [30, 90], false, true, path);
 [band_power_fractal(:,:,10), band_power_fractal_norm(:,:,10)] = power_fractal_measurements_IRASA(registroLFP, [30, 90], false, true, path);
 [sum_MSC(:,:,10), coupling_strength(:,:,10), delay(:,:,10)] = coherence_measurements(registroLFP, [30, 90], [false, false, false], true, path);
 titulo_1 = string([{'Coupling Strength graph of left hemisphere'}; {'in gamma band [30, 90] Hz'}]);
 titulo_2 = string([{'Coupling Strength graph of right hemisphere'}; {'in gamma band [30, 90] Hz'}]);
-graph_motorcircuit(coupling_strength(:,:,10), names_areas, path, titulo_1, titulo_2, 'Coupling Strength')
+graph_motorcircuit(coupling_strength(:,:,10), names_areas, [0.1, 0.3], path, titulo_1, titulo_2, 'Coupling Strength')
 
 [power_band_total, power_band_total_norm, power_fractal_band,power_fractal_band_norm] = power_total_measurements_IRASA(registroLFP, false, true, path);
 beta_exponent = exponent_fractal_measurements_IRASA(registroLFP, false, true, path);

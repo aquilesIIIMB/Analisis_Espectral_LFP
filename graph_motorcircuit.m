@@ -1,4 +1,4 @@
-function graph_motorcircuit(coherence, names_areas, path, titulo_1, titulo_2, z_etiqueta)
+function graph_motorcircuit(coherence, names_areas, limites, path, titulo_1, titulo_2, z_etiqueta)
 
 slash_backslash = find(path=='\' | path=='/');
 inicio_new_dir1 = slash_backslash(length(slash_backslash)-3);
@@ -20,8 +20,8 @@ right_coherence = coherence(round(size(coherence,1)/2)+1:end,:);
 % Maximo 7 areas
 %names_areas = {'DLS','S1','SMA','M1','VPL'};
 colora_areas = [[0 0.4470 0.7410];[0.8500 0.3250 0.0980];[0.9290 0.6940 0.1250];[0.4940 0.1840 0.5560];[0.4660 0.6740 0.1880];[0.3010 0.7450 0.9330];[0.6350 0.0780 0.1840]];
-num_niveles = 20;
-limites_colorbar = [0.1, 0.3];
+num_niveles = 40;
+limites_colorbar = limites; %[0.1, 0.3];
 range_value = linspace(limites_colorbar(1),limites_colorbar(2),num_niveles);
 range_mag = linspace(1,40,num_niveles);
 
@@ -77,7 +77,7 @@ for i = 1:size(coherence,2)
     caxis([limites_colorbar(1) limites_colorbar(2)])    
     xlim([0 30])
     ylim([0 30])
-    title(titulo_1, 'FontSize', 18)
+    title(titulo_1, 'FontSize', 18, 'Interpreter', 'none')
     ylabel(c,[z_etiqueta,' in ',etapa,'-stim stage'], 'FontSize', 20)
     set(c,'fontsize',17)
     set(gca,'XTick',[]); % hides the ticks on x-axis
@@ -115,7 +115,7 @@ for i = 1:size(coherence,2)
     caxis([limites_colorbar(1) limites_colorbar(2)])
     xlim([0 30])
     ylim([0 30])
-    title(titulo_2, 'FontSize', 18)
+    title(titulo_2, 'FontSize', 18, 'Interpreter', 'none')
     ylabel(c,[z_etiqueta,' in ',etapa,'-stim stage'], 'FontSize', 20)
     set(c,'fontsize',17)
     set(gca,'XTick',[]); % hides the ticks on x-axis

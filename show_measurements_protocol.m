@@ -125,20 +125,24 @@ for band_actual = 1:num_bands
     % Power Oscillations
 
     % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-    y_etiqueta = 'Oscillatory Signal Power';
-    titulo = ['Oscillatory Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Power of Oscillation in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_band_power, areas, num_record, [0 1], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Oscillatory Signal Power';
+    %titulo = ['Oscillatory Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Power of Oscillation in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_band_power, areas, num_record, [0 1], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Oscillatory Signal Power';
-    titulo = ['Oscillatory Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Power of Oscillation in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_band_power, areas, num_record, [0 1], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Oscillatory Signal Power';
+    %titulo = ['Oscillatory Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-1)Power of Oscillation in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_band_power, areas, num_record, [0 1], y_etiqueta, titulo, name_figure_save); 
 
     % Graficar cambio en la potencia   
     fig_13 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),inj_band_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_band_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_band_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -163,6 +167,10 @@ for band_actual = 1:num_bands
     fig_14 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_band_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_band_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_band_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -187,20 +195,24 @@ for band_actual = 1:num_bands
     % Power Oscillations Normalized
     
     % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-    y_etiqueta = 'Normalized oscillatory Signal Power';
-    titulo = ['Normalized Oscillatory Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-3)Power of Oscillation Normalized in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_band_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Normalized oscillatory Signal Power';
+    %titulo = ['Normalized Oscillatory Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-3)Power of Oscillation Normalized in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_band_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Normalized oscillatory Signal Power';
-    titulo = ['Normalized Oscillatory Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-3)Power of Oscillation Normalized in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_band_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Normalized oscillatory Signal Power';
+    %titulo = ['Normalized Oscillatory Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(1-3)Power of Oscillation Normalized in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_band_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
 
     % Graficar cambio en la potencia   
     fig_23 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),inj_band_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_band_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_band_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -210,7 +222,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 10])
+    ylim([0 20])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -225,6 +237,10 @@ for band_actual = 1:num_bands
     fig_24 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_band_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_band_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_band_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -234,7 +250,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 10])
+    ylim([0 20])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -249,20 +265,24 @@ for band_actual = 1:num_bands
     % Power Fractals
     
     % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-    y_etiqueta = 'Scale-free Signal Power';
-    titulo = ['Scale-free activity Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-1)Power Scale-free activity in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_fractal_power, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Scale-free Signal Power';
+    %titulo = ['Scale-free activity Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-1)Power Scale-free activity in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_fractal_power, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Scale-free Signal Power';
-    titulo = ['Scale-free activity Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-1)Power Scale-free activity in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_fractal_power, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Scale-free Signal Power';
+    %titulo = ['Scale-free activity Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-1)Power Scale-free activity in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_fractal_power, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
 
     % Graficar cambio en la potencia   
     fig_33 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),inj_fractal_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_fractal_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_fractal_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -287,6 +307,10 @@ for band_actual = 1:num_bands
     fig_34 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_fractal_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_fractal_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_fractal_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -311,20 +335,24 @@ for band_actual = 1:num_bands
     % Power Fractals Normalized
     
     % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-    y_etiqueta = 'Normalized Scale-free Signal Power';
-    titulo = ['Normalized Scale-free Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-3)Power Scale-free activity Normalized in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_fractal_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Normalized Scale-free Signal Power';
+    %titulo = ['Normalized Scale-free Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-3)Power Scale-free activity Normalized in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_fractal_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Normalized Scale-free activity Power';
-    titulo = ['Normalized Scale-free Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-3)Power Scale-free activity Normalized in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_fractal_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Normalized Scale-free activity Power';
+    %titulo = ['Normalized Scale-free Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(2-3)Power Scale-free activity Normalized in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_fractal_power_norm, areas, num_record, [0 10], y_etiqueta, titulo, name_figure_save); 
 
     % Graficar cambio en la potencia   
     fig_43 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),inj_fractal_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_fractal_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_fractal_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -334,7 +362,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 10])
+    ylim([0 20])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -349,6 +377,10 @@ for band_actual = 1:num_bands
     fig_44 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_fractal_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_fractal_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_fractal_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -358,7 +390,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 10])
+    ylim([0 20])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -380,20 +412,24 @@ for band_actual = 1:num_bands
     
     % Sum MSC
 
-    y_etiqueta = 'Sum MSC';
-    titulo = ['Sum Magnitude-Squared Coherence (MSC) of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Sum MSC in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_sum_MSC_total, areas', num_record, [0 26], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Sum MSC';
+    %titulo = ['Sum Magnitude-Squared Coherence (MSC) of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Sum MSC in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_sum_MSC_total, areas', num_record, [0 26], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Sum MSC';
-    titulo = ['Sum Magnitude-Squared Coherence (MSC) of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Sum MSC in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_sum_MSC_total, areas', num_record, [0 26], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Sum MSC';
+    %titulo = ['Sum Magnitude-Squared Coherence (MSC) of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(3-1)Sum MSC in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_sum_MSC_total, areas', num_record, [0 26], y_etiqueta, titulo, name_figure_save); 
     
     % Graficar cambio en la potencia   
     fig_53 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),inj_sum_MSC_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_sum_MSC_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_sum_MSC_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -403,7 +439,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 26])
+    ylim([0 35])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Sum MSC', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -418,6 +454,10 @@ for band_actual = 1:num_bands
     fig_54 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_sum_MSC_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_sum_MSC_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_sum_MSC_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -427,7 +467,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 26])
+    ylim([0 35])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Sum MSC', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -438,22 +478,34 @@ for band_actual = 1:num_bands
     %%saveas(fig_54,name_figure_save,'fig');
     %waitforbuttonpress;
     close(fig_54) 
+    
+    areas_graph = {measurementsProtocol.injured.power_total.area};
+
+    titulo_1 = string([{'MSC graph of injured hemisphere'}; {strcat(['in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'])}]);
+    titulo_2 = string([{'MSC graph of uninjured hemisphere'}; {strcat(['in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'])}]);
+    graph_motorcircuit([reshape(mean(inj_sum_MSC_total),3,[])'; reshape(mean(uninj_sum_MSC_total),3,[])'],...
+        areas_graph, [5, 10], [inicio_foldername,'Images',foldername,'Protocol',slash_system], titulo_1, titulo_2, 'MSC')
+    
 
     % Coupling Strength
     
-    y_etiqueta = 'Coupling Strength';
-    titulo = ['Coupling Strength of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_coupling_strength_total, areas', num_record, [0.05 0.65], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Coupling Strength';
+    %titulo = ['Coupling Strength of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_coupling_strength_total, areas', num_record, [0.05 0.65], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Coupling Strength';
-    titulo = ['Coupling Strength of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_coupling_strength_total, areas', num_record, [0.05 0.65], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Coupling Strength';
+    %titulo = ['Coupling Strength of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(4-1)Coupling Strength in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_coupling_strength_total, areas', num_record, [0.05 0.65], y_etiqueta, titulo, name_figure_save); 
 
     fig_63 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]'; 
+    for i = 1:length(areas)
+        plot(x(i,:),inj_coupling_strength_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -478,6 +530,10 @@ for band_actual = 1:num_bands
     fig_64 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_coupling_strength_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -498,22 +554,33 @@ for band_actual = 1:num_bands
     %%saveas(fig_64,name_figure_save,'fig');
     %waitforbuttonpress;
     close(fig_64)
+    
+    areas_graph = {measurementsProtocol.injured.power_total.area};
+
+    titulo_1 = string([{'Coupling Strength graph of injured hemisphere'}; {strcat(['in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'])}]);
+    titulo_2 = string([{'Coupling Strength graph of uninjured hemisphere'}; {strcat(['in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'])}]);
+    graph_motorcircuit([reshape(mean(inj_coupling_strength_total),3,[])'; reshape(mean(uninj_coupling_strength_total),3,[])'],...
+        areas_graph, [0.1 0.3], [inicio_foldername,'Images',foldername,'Protocol',slash_system], titulo_1, titulo_2, 'Coupling Strength')
 
     % Delay
     
-    y_etiqueta = 'Delay [ms]';
-    titulo = ['Delay of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(5-1)Delay in (',int2str(band_actual),')',banda_name,' of injured area'];
-    boxplot_custom(inj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Delay [ms]';
+    %titulo = ['Delay of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(5-1)Delay in (',int2str(band_actual),')',banda_name,' of injured area'];
+    %boxplot_custom(inj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
 
-    y_etiqueta = 'Delay [ms]';
-    titulo = ['Delay of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
-    name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(5-1)Delay in (',int2str(band_actual),')',banda_name,' of uninjured area'];
-    boxplot_custom(uninj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
+    %y_etiqueta = 'Delay [ms]';
+    %titulo = ['Delay of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'];
+    %name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(5-1)Delay in (',int2str(band_actual),')',banda_name,' of uninjured area'];
+    %boxplot_custom(uninj_delay_total.*1000, areas', num_record, [0 200], y_etiqueta, titulo, name_figure_save); 
     
     fig_73 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]'; 
+    for i = 1:length(areas)
+        plot(x(i,:),inj_delay_total(:,1+3*(i-1):3*(i)).*1000,'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),inj_delay_total(:,1:3:end)'.*1000,'+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),inj_delay_total(:,2:3:end)'.*1000,'o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -523,7 +590,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 200])
+    ylim([0 400])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Delay [ms]', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -538,6 +605,10 @@ for band_actual = 1:num_bands
     fig_74 = figure('units','normalized','outerposition',[0 0 1 1]);
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
+    for i = 1:length(areas)
+        plot(x(i,:),uninj_delay_total(:,1+3*(i-1):3*(i)).*1000,'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+        hold on
+    end
     pre = plot(x(:,1),uninj_delay_total(:,1:3:end)'.*1000,'+','Color',azul,'MarkerSize',15,'LineWidth',3);
     hold on
     on = plot(x(:,2),uninj_delay_total(:,2:3:end)'.*1000,'o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -547,7 +618,7 @@ for band_actual = 1:num_bands
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
-    ylim([0 200])
+    ylim([0 400])
     xlim([xt(1)-0.5, xt(end)+0.5])
     ylabel('Delay [ms]', 'FontSize', 24)
     set(gca,'fontsize',17)
@@ -566,20 +637,24 @@ areas = {measurementsProtocol.injured.power_total.area};
 % Power total Oscillations
 
 % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-y_etiqueta = 'Oscillatory Signal Power';
-titulo = ['Oscillatory Signal Power of injured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-1)Oscillatory Signal Power of injured area'];
-boxplot_custom(inj_band_power_total, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Oscillatory Signal Power';
+%titulo = ['Oscillatory Signal Power of injured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-1)Oscillatory Signal Power of injured area'];
+%boxplot_custom(inj_band_power_total, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
 
-y_etiqueta = 'Oscillatory Signal Power';
-titulo = ['Oscillatory Signal Power of uninjured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-1)Oscillatory Signal Power of uninjured area'];
-boxplot_custom(uninj_band_power_total, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Oscillatory Signal Power';
+%titulo = ['Oscillatory Signal Power of uninjured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-1)Oscillatory Signal Power of uninjured area'];
+%boxplot_custom(uninj_band_power_total, areas, num_record, [0 1.3], y_etiqueta, titulo, name_figure_save); 
 
 % Graficar cambio en la potencia   
 fig_83 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),inj_band_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),inj_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),inj_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -604,6 +679,10 @@ close(fig_83)
 fig_84 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),uninj_band_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),uninj_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),uninj_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -628,20 +707,24 @@ close(fig_84)
 % Power total Oscillations Normalized
 
 % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-y_etiqueta = 'Normalized Oscillatory Signal Power';
-titulo = ['Normalized Oscillatory Signal Power of injured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-3)Oscillatory Signal Power Normalized of injured area'];
-boxplot_custom(inj_band_power_total_norm, areas, num_record, [0 25], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Normalized Oscillatory Signal Power';
+%titulo = ['Normalized Oscillatory Signal Power of injured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-3)Oscillatory Signal Power Normalized of injured area'];
+%boxplot_custom(inj_band_power_total_norm, areas, num_record, [0 30], y_etiqueta, titulo, name_figure_save); 
 
-y_etiqueta = 'Normalized Oscillatory Signal Power';
-titulo = ['Normalized Oscillatory Signal Power of uninjured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-3)Oscillatory Signal Power Normalized of uninjured area'];
-boxplot_custom(uninj_band_power_total_norm, areas, num_record, [0 25], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Normalized Oscillatory Signal Power';
+%titulo = ['Normalized Oscillatory Signal Power of uninjured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(6-3)Oscillatory Signal Power Normalized of uninjured area'];
+%boxplot_custom(uninj_band_power_total_norm, areas, num_record, [0 30], y_etiqueta, titulo, name_figure_save); 
 
 % Graficar cambio en la potencia   
 fig_93 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),inj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),inj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),inj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -651,7 +734,7 @@ set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
 grid on
-ylim([0 25])
+ylim([0 30])
 xlim([xt(1)-0.5, xt(end)+0.5])
 ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
 set(gca,'fontsize',17)
@@ -666,6 +749,10 @@ close(fig_93)
 fig_94 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),uninj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -675,7 +762,7 @@ set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
 grid on
-ylim([0 25])
+ylim([0 30])
 xlim([xt(1)-0.5, xt(end)+0.5])
 ylabel('Normalized Oscillatory Signal Power', 'FontSize', 24)
 set(gca,'fontsize',17)
@@ -691,20 +778,24 @@ close(fig_94)
 % Power total Fractals
 
 % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-y_etiqueta = 'Scale-free Signal Power';
-titulo = ['Scale-free Signal Power of injured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-1)Scale-free Signal Power of injured area'];
-boxplot_custom(inj_fractal_power_total, areas, num_record, [0 2.5], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Scale-free Signal Power';
+%titulo = ['Scale-free Signal Power of injured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-1)Scale-free Signal Power of injured area'];
+%boxplot_custom(inj_fractal_power_total, areas, num_record, [0 2.5], y_etiqueta, titulo, name_figure_save); 
 
-y_etiqueta = 'Scale-free Signal Power';
-titulo = ['Scale-free Signal Power of uninjured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-1)Scale-free Signal Power of uninjured area'];
-boxplot_custom(uninj_fractal_power_total, areas, num_record, [0 2.5], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Scale-free Signal Power';
+%titulo = ['Scale-free Signal Power of uninjured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-1)Scale-free Signal Power of uninjured area'];
+%boxplot_custom(uninj_fractal_power_total, areas, num_record, [0 2.5], y_etiqueta, titulo, name_figure_save); 
 
 % Graficar cambio en la potencia   
 fig_103 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),inj_fractal_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),inj_fractal_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),inj_fractal_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -729,6 +820,10 @@ close(fig_103)
 fig_104 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),uninj_fractal_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),uninj_fractal_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),uninj_fractal_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -753,20 +848,24 @@ close(fig_104)
 % Power total Fractals Normalized
 
 % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-y_etiqueta = 'Normalized Scale-free Signal Power';
-titulo = ['Normalized Scale-free Signal Power of injured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-3)Scale-free Signal Power Normalized of injured area'];
-boxplot_custom(inj_fractal_power_total_norm, areas, num_record, [0 25], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Normalized Scale-free Signal Power';
+%titulo = ['Normalized Scale-free Signal Power of injured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-3)Scale-free Signal Power Normalized of injured area'];
+%boxplot_custom(inj_fractal_power_total_norm, areas, num_record, [0 30], y_etiqueta, titulo, name_figure_save); 
 
-y_etiqueta = 'Normalized Scale-free Signal Power';
-titulo = ['Normalized Scale-free Signal Power of uninjured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-3)Scale-free Signal Power Normalized of uninjured area'];
-boxplot_custom(uninj_band_power_total_norm, areas, num_record, [0 25], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Normalized Scale-free Signal Power';
+%titulo = ['Normalized Scale-free Signal Power of uninjured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(7-3)Scale-free Signal Power Normalized of uninjured area'];
+%boxplot_custom(uninj_band_power_total_norm, areas, num_record, [0 30], y_etiqueta, titulo, name_figure_save); 
 
 % Graficar cambio en la potencia   
 fig_113 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),inj_fractal_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),inj_fractal_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),inj_fractal_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -776,7 +875,7 @@ set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
 grid on
-ylim([0 25])
+ylim([0 30])
 xlim([xt(1)-0.5, xt(end)+0.5])
 ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
 set(gca,'fontsize',17)
@@ -791,6 +890,10 @@ close(fig_113)
 fig_114 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),uninj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -800,7 +903,7 @@ set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
 grid on
-ylim([0 25])
+ylim([0 30])
 xlim([xt(1)-0.5, xt(end)+0.5])
 ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
 set(gca,'fontsize',17)
@@ -815,20 +918,24 @@ close(fig_114)
 % Fractal Beta Exponent 
 
 % Graficar cambio en la potencia  % Graficar cambio en la potencia   
-y_etiqueta = 'Scale-free Signal Exponent';
-titulo = ['Scale-free Signal Exponent of injured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(8-1)Scale-free Signal Exponent of injured area'];
-boxplot_custom(inj_fractal_exponent, areas, num_record, [0 2], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Scale-free Signal Exponent';
+%titulo = ['Scale-free Signal Exponent of injured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(8-1)Scale-free Signal Exponent of injured area'];
+%boxplot_custom(inj_fractal_exponent, areas, num_record, [0 2], y_etiqueta, titulo, name_figure_save); 
 
-y_etiqueta = 'Scale-free Signal Exponent';
-titulo = ['Scale-free Signal Exponent of uninjured area'];
-name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(8-1)Scale-free Signal Exponent of uninjured area'];
-boxplot_custom(uninj_fractal_exponent, areas, num_record, [0 2], y_etiqueta, titulo, name_figure_save); 
+%y_etiqueta = 'Scale-free Signal Exponent';
+%titulo = ['Scale-free Signal Exponent of uninjured area'];
+%name_figure_save = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'(8-1)Scale-free Signal Exponent of uninjured area'];
+%boxplot_custom(uninj_fractal_exponent, areas, num_record, [0 2], y_etiqueta, titulo, name_figure_save); 
 
 % Graficar cambio en la potencia   
 fig_123 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),inj_fractal_exponent(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),inj_fractal_exponent(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),inj_fractal_exponent(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
@@ -853,6 +960,10 @@ close(fig_123)
 fig_124 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
+for i = 1:length(areas)
+    plot(x(i,:),uninj_fractal_exponent(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
+    hold on
+end
 pre = plot(x(:,1),uninj_fractal_exponent(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
 hold on
 on = plot(x(:,2),uninj_fractal_exponent(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);

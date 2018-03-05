@@ -48,7 +48,7 @@ end
 
 if save_protocol
 
-    %show_measurements_protocol(measurementsProtocol, path);
+    show_measurements_protocol(measurementsProtocol, path);
 
     % Eliminacion de variables que no se utilizaran
     clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro
