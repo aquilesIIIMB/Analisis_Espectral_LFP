@@ -48,8 +48,13 @@ set(h_post,'LineWidth',4);
 set(h_post,'Color',verde*0.7);
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 
-lgd = legend([h_pre(1) h_on(1) h_post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
-lgd.FontSize = 20;
+if size(h_pre,1) == 0
+    %lgd = legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+    %lgd.FontSize = 20;
+else
+    lgd = legend([h_pre(1) h_on(1) h_post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
+    lgd.FontSize = 20;
+end
 grid on
 ylim(ylimite)
 xlim([xt(1)-0.5, xt(end)+0.5])
@@ -59,7 +64,7 @@ set(gca,'fontsize',17)
 title(titulo, 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
 saveas(fig,name_figure_save,'png');
-saveas(fig,name_figure_save,'fig');
+%%saveas(fig,name_figure_save,'fig');
 %waitforbuttonpress;
 close(fig)  
 

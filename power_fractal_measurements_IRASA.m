@@ -178,11 +178,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1.5])
-            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Scale-free Activity Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power in band ',banda_actual,' of left and right hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -197,11 +197,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 12])
-            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free Activity Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized in band ',banda_actual,' of left and right hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power Normalized in band ',banda_actual,' of left and right hemisphere'];
             saveas(fig_12,name_figure_save,'png');
             saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -219,11 +219,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1.5])
-            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Scale-free Activity Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power in band ',banda_actual,' of left hemisphere'];
             saveas(fig_11,name_figure_save,'png');
             saveas(fig_11,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -239,11 +239,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1.5])
-            ylabel('Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Scale-free Activity Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Scale-free Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power in band ',banda_actual,' of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power in band ',banda_actual,' of rigth hemisphere'];
             saveas(fig_12,name_figure_save,'png');
             saveas(fig_12,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -260,11 +260,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 12])
-            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free Activity Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalized in band ',banda_actual,' of left hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power Normalized in band ',banda_actual,' of left hemisphere'];
             saveas(fig_13,name_figure_save,'png');
             saveas(fig_13,name_figure_save,'fig');
             %waitforbuttonpress;
@@ -280,11 +280,11 @@ function [power_band, power_band_norm] = power_fractal_measurements_IRASA(regist
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 12])
-            ylabel('Normalized Scale-free Activity Signal Power', 'FontSize', 24)
+            ylabel('Normalized Scale-free Signal Power', 'FontSize', 24)
             set(gca,'fontsize',20)
-            title(['Normalized Scale-free Activity Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
+            title(['Normalized Scale-free Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
-            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free activity Signal Power Normalizedin band ',banda_actual,' of rigth hemisphere'];
+            name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Scale-free Signal Power Normalizedin band ',banda_actual,' of rigth hemisphere'];
             saveas(fig_14,name_figure_save,'png');
             saveas(fig_14,name_figure_save,'fig');
             %waitforbuttonpress;

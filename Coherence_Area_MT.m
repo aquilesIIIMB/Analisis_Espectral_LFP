@@ -231,3 +231,4 @@ path_name_registro = [inicio_foldername,'Images',foldername,name_registro];
 % Descomentar para guardar
 save(path_name_registro,'-v7.3')
 
+disp(['It was saved in: ',path_name_registro])
