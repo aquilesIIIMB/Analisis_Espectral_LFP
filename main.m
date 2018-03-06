@@ -13,10 +13,10 @@ clear; close all
 %% Parametros editables por el usuario 
 %% Ruta de la carpeta de los LFP
 %%% Windows
-path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
+%path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-%path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/maravilla_2017-06-17_16-39-32/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/+2500_300Hz/orlando_2017-01-25_15-53-09/';
 
 %% Intervalos de tiempo del protocolo
 %timeRanges = [5, 5, 5]; %DC or AC
@@ -32,15 +32,15 @@ eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel-codes/channel_codes_florencia.csv'; % Flo
-%channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
+channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
 %  (Se dejaron las mismas areas que en 'channel_codes_florencia_PUC.csv' y se invirtieron los hemisferios originals L->R y R->L)
-channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
+%channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
 %channel_codes = 'channel-codes/channel_codes_Rata_R01_modificado.csv'; % Caro 
 %  (Se invirtieron los hemisferios originals L->R y R->L)
 
 %% Fin de los parametros
 
-
+% !!!!!!!!!!!! Colocar que la potencia esta medida en W/Hz
 
 
 

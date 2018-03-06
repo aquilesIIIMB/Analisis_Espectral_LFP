@@ -8,6 +8,10 @@ num_bands = length(measurementsProtocol.injured.power_band(1).oscillations);
 azul = [0 0.4470 0.7410];
 rojo = [0.85, 0.325, 0.098];
 verde = [0.466, 0.674, 0.188];
+morado = [0.494, 0.184, 0.556];
+rojo_oscuro = [0.635, 0.078, 0.184];
+
+color_total = [azul; rojo; verde; morado; rojo_oscuro;azul; rojo; verde; morado; rojo_oscuro];
 
 % Grafica
 
@@ -140,21 +144,30 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),inj_band_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_band_power(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_band_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_band_power(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_band_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_band_power(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_band_power(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_band_power(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_band_power(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_band_power(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_band_power(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
     grid on
     ylim([0 1])
     xlim([xt(1)-0.5, xt(end)+0.5])
-    ylabel('Oscillatory Signal Power', 'FontSize', 24)
+    ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
     set(gca,'fontsize',17)
     title(['Oscillatory Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
     % Guardar imagen de la figura
@@ -168,14 +181,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_band_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_band_power(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_band_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_band_power(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_band_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_band_power(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_band_power(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_band_power(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_band_power(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_band_power(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_band_power(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -210,14 +232,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),inj_band_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_band_power_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_band_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_band_power_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_band_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_band_power_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_band_power_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_band_power_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_band_power_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_band_power_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_band_power_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -238,14 +269,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_band_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_band_power_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_band_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_band_power_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_band_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_band_power_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_band_power_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_band_power_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_band_power_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_band_power_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_band_power_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -280,14 +320,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),inj_fractal_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_fractal_power(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_fractal_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_fractal_power(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_fractal_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_fractal_power(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_fractal_power(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_fractal_power(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_fractal_power(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_fractal_power(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_fractal_power(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -308,14 +357,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_fractal_power(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_fractal_power(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_fractal_power(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_fractal_power(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_fractal_power(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_fractal_power(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_fractal_power(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_fractal_power(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_fractal_power(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_fractal_power(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_fractal_power(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -350,14 +408,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),inj_fractal_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_fractal_power_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_fractal_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_fractal_power_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_fractal_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_fractal_power_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_fractal_power_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_fractal_power_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_fractal_power_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_fractal_power_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_fractal_power_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -378,14 +445,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_fractal_power_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_fractal_power_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_fractal_power_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_fractal_power_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_fractal_power_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_fractal_power_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_fractal_power_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_fractal_power_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_fractal_power_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_fractal_power_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_fractal_power_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -427,14 +503,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),inj_sum_MSC_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_sum_MSC_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_sum_MSC_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_sum_MSC_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_sum_MSC_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_sum_MSC_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_sum_MSC_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_sum_MSC_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_sum_MSC_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_sum_MSC_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_sum_MSC_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -455,14 +540,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_sum_MSC_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_sum_MSC_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_sum_MSC_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_sum_MSC_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_sum_MSC_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_sum_MSC_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_sum_MSC_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_sum_MSC_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_sum_MSC_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_sum_MSC_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_sum_MSC_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -503,14 +597,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]'; 
     for i = 1:length(areas)
-        plot(x(i,:),inj_coupling_strength_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_coupling_strength_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_coupling_strength_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_coupling_strength_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_coupling_strength_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_coupling_strength_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_coupling_strength_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_coupling_strength_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_coupling_strength_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -531,14 +634,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_coupling_strength_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_coupling_strength_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_coupling_strength_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_coupling_strength_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_coupling_strength_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_coupling_strength_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_coupling_strength_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_coupling_strength_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_coupling_strength_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_coupling_strength_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_coupling_strength_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)        
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -578,14 +690,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]'; 
     for i = 1:length(areas)
-        plot(x(i,:),inj_delay_total(:,1+3*(i-1):3*(i)).*1000,'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),inj_delay_total(j,1+3*(i-1):3*(i))'.*1000,'-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),inj_delay_total(:,1:3:end)'.*1000,'+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),inj_delay_total(:,1:3:end)'.*1000,'+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),inj_delay_total(:,2:3:end)'.*1000,'o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),inj_delay_total(:,2:3:end)'.*1000,'o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),inj_delay_total(:,3:3:end)'.*1000,'x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),inj_delay_total(:,3:3:end)'.*1000,'x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),inj_delay_total(j,1:3:end)'.*1000,'+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),inj_delay_total(j,2:3:end)'.*1000,'o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),inj_delay_total(j,3:3:end)'.*1000,'x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -606,14 +727,23 @@ for band_actual = 1:num_bands
     xt = 1:length(areas);
     x = [xt-0.225;xt;xt+0.225]';
     for i = 1:length(areas)
-        plot(x(i,:),uninj_delay_total(:,1+3*(i-1):3*(i)).*1000,'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-        hold on
+        for j = 1:num_record
+            plot(x(i,:),uninj_delay_total(j,1+3*(i-1):3*(i))'.*1000,'-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+            hold on
+        end
     end
-    pre = plot(x(:,1),uninj_delay_total(:,1:3:end)'.*1000,'+','Color',azul,'MarkerSize',15,'LineWidth',3);
+    pre = plot(x(:,1),uninj_delay_total(:,1:3:end)'.*1000,'+','Color','k','MarkerSize',15,'LineWidth',3);
     hold on
-    on = plot(x(:,2),uninj_delay_total(:,2:3:end)'.*1000,'o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+    on = plot(x(:,2),uninj_delay_total(:,2:3:end)'.*1000,'o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
     hold on
-    post = plot(x(:,3),uninj_delay_total(:,3:3:end)'.*1000,'x','Color',verde,'MarkerSize',15,'LineWidth',3);
+    post = plot(x(:,3),uninj_delay_total(:,3:3:end)'.*1000,'x','Color','k','MarkerSize',15,'LineWidth',3);
+    for j = 1:num_record
+        plot(x(:,1),uninj_delay_total(j,1:3:end)'.*1000,'+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+        hold on
+        plot(x(:,2),uninj_delay_total(j,2:3:end)'.*1000,'o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+        hold on
+        plot(x(:,3),uninj_delay_total(j,3:3:end)'.*1000,'x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    end
     set(gca, 'XTick', xt, 'XTickLabel', areas)        
     lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
     lgd.FontSize = 20;
@@ -652,14 +782,23 @@ fig_83 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),inj_band_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),inj_band_power_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),inj_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),inj_band_power_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),inj_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),inj_band_power_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),inj_band_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),inj_band_power_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),inj_band_power_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),inj_band_power_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),inj_band_power_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -680,14 +819,23 @@ fig_84 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),uninj_band_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),uninj_band_power_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),uninj_band_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),uninj_band_power_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),uninj_band_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),uninj_band_power_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),uninj_band_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),uninj_band_power_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),uninj_band_power_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),uninj_band_power_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),uninj_band_power_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -722,14 +870,23 @@ fig_93 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),inj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),inj_band_power_total_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),inj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),inj_band_power_total_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),inj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),inj_band_power_total_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),inj_band_power_total_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),inj_band_power_total_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),inj_band_power_total_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),inj_band_power_total_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),inj_band_power_total_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -750,14 +907,23 @@ fig_94 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),uninj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),uninj_band_power_total_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),uninj_band_power_total_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),uninj_band_power_total_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),uninj_band_power_total_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),uninj_band_power_total_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),uninj_band_power_total_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -793,14 +959,23 @@ fig_103 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),inj_fractal_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),inj_fractal_power_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),inj_fractal_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),inj_fractal_power_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),inj_fractal_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),inj_fractal_power_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),inj_fractal_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),inj_fractal_power_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),inj_fractal_power_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),inj_fractal_power_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),inj_fractal_power_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -821,14 +996,23 @@ fig_104 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),uninj_fractal_power_total(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),uninj_fractal_power_total(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),uninj_fractal_power_total(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),uninj_fractal_power_total(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),uninj_fractal_power_total(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),uninj_fractal_power_total(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),uninj_fractal_power_total(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),uninj_fractal_power_total(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),uninj_fractal_power_total(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),uninj_fractal_power_total(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),uninj_fractal_power_total(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -863,14 +1047,23 @@ fig_113 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),inj_fractal_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),inj_fractal_power_total_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),inj_fractal_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),inj_fractal_power_total_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),inj_fractal_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),inj_fractal_power_total_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),inj_fractal_power_total_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),inj_fractal_power_total_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),inj_fractal_power_total_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),inj_fractal_power_total_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),inj_fractal_power_total_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -891,14 +1084,23 @@ fig_114 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),uninj_band_power_total_norm(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),uninj_band_power_total_norm(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),uninj_band_power_total_norm(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),uninj_band_power_total_norm(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),uninj_band_power_total_norm(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),uninj_band_power_total_norm(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),uninj_band_power_total_norm(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),uninj_band_power_total_norm(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),uninj_band_power_total_norm(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -933,14 +1135,23 @@ fig_123 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),inj_fractal_exponent(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),inj_fractal_exponent(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),inj_fractal_exponent(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),inj_fractal_exponent(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),inj_fractal_exponent(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),inj_fractal_exponent(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),inj_fractal_exponent(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),inj_fractal_exponent(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),inj_fractal_exponent(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),inj_fractal_exponent(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),inj_fractal_exponent(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;
@@ -961,14 +1172,23 @@ fig_124 = figure('units','normalized','outerposition',[0 0 1 1]);
 xt = 1:length(areas);
 x = [xt-0.225;xt;xt+0.225]';
 for i = 1:length(areas)
-    plot(x(i,:),uninj_fractal_exponent(:,1+3*(i-1):3*(i)),'--','Color','k','MarkerSize',15,'LineWidth',1.5);
-    hold on
+    for j = 1:num_record
+        plot(x(i,:),uninj_fractal_exponent(j,1+3*(i-1):3*(i))','-','Color',color_total(j,:),'MarkerSize',15,'LineWidth',2.5);
+        hold on
+    end
 end
-pre = plot(x(:,1),uninj_fractal_exponent(:,1:3:end)','+','Color',azul,'MarkerSize',15,'LineWidth',3);
+pre = plot(x(:,1),uninj_fractal_exponent(:,1:3:end)','+','Color','k','MarkerSize',15,'LineWidth',3);
 hold on
-on = plot(x(:,2),uninj_fractal_exponent(:,2:3:end)','o','Color',rojo,'MarkerSize',10,'MarkerFaceColor',rojo,'LineWidth',1);
+on = plot(x(:,2),uninj_fractal_exponent(:,2:3:end)','o','Color','k','MarkerSize',10,'MarkerFaceColor','k','LineWidth',1);
 hold on
-post = plot(x(:,3),uninj_fractal_exponent(:,3:3:end)','x','Color',verde,'MarkerSize',15,'LineWidth',3);
+post = plot(x(:,3),uninj_fractal_exponent(:,3:3:end)','x','Color','k','MarkerSize',15,'LineWidth',3);
+for j = 1:num_record
+    plot(x(:,1),uninj_fractal_exponent(j,1:3:end)','+','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+    hold on
+    plot(x(:,2),uninj_fractal_exponent(j,2:3:end)','o','Color',color_total(j,:),'MarkerSize',10,'MarkerFaceColor',color_total(j,:),'LineWidth',1);
+    hold on
+    plot(x(:,3),uninj_fractal_exponent(j,3:3:end)','x','Color',color_total(j,:),'MarkerSize',15,'LineWidth',3);
+end
 set(gca, 'XTick', xt, 'XTickLabel', areas)
 lgd = legend([pre(1) on(1) post(1)], 'Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
 lgd.FontSize = 20;

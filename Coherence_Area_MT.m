@@ -59,7 +59,7 @@ for i=1:num_areas_izq-1
         idx_spect_artifacts_s2 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
         idx_spect_artifacts_s2 = find(~idx_spect_artifacts_s2)';
         
-        idx_spect_artifacts = unique([idx_spect_artifacts_s1, idx_spect_artifacts_s2]);
+        idx_spect_artifacts = unique([idx_spect_artifacts_s1; idx_spect_artifacts_s2]);
 
         % Indices de cada etapa
         idx_pre = find(t<(pre_m*60.0-5));
@@ -153,7 +153,7 @@ for i=1:num_areas_der-1
         idx_spect_artifacts_s2 = ~((frec_ind_max > 100-5) & (frec_ind_max < 110+5)); % Se ignoran los indices que estan cerca de la frecuencia del seno, ignora algunos bin de tiempo
         idx_spect_artifacts_s2 = find(~idx_spect_artifacts_s2)';
         
-        idx_spect_artifacts = unique([idx_spect_artifacts_s1, idx_spect_artifacts_s2]);
+        idx_spect_artifacts = unique([idx_spect_artifacts_s1; idx_spect_artifacts_s2]);
 
         % Indices de cada etapa
         idx_pre = find(t<(pre_m*60.0-5));
