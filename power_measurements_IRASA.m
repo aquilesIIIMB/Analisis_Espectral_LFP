@@ -184,7 +184,7 @@ function [power_band, power_band_norm] = power_measurements_IRASA(registroLFP, b
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1])
-            ylabel('Oscillatory Signal Power', 'FontSize', 24)
+            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of left and right hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
@@ -225,7 +225,7 @@ function [power_band, power_band_norm] = power_measurements_IRASA(registroLFP, b
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1])
-            ylabel('Oscillatory Signal Power', 'FontSize', 24)
+            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of left hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura
@@ -245,7 +245,7 @@ function [power_band, power_band_norm] = power_measurements_IRASA(registroLFP, b
             grid on
             %ylim([0 0.1]) % Para registros de ratas viejas con baja potencia
             ylim([0 1])
-            ylabel('Oscillatory Signal Power', 'FontSize', 24)
+            ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of rigth hemisphere in ',banda_actual,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
             % Guardar imagen de la figura

@@ -50,15 +50,6 @@ if save_protocol
 
     show_measurements_protocol(measurementsProtocol, path);
 
-    % Eliminacion de variables que no se utilizaran
-    clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro
-
-    path_name_registro = [inicio_foldername,'Images',foldername,'Protocol\','protocol_',foldername(2:end-1)];
-
-    % Descomentar para guardar
-    save(path_name_registro,'-v7.3')
-    
-    disp(['It was saved in: ',path_name_registro])
 else    
     % Eliminacion de variables que no se utilizaran
     clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro

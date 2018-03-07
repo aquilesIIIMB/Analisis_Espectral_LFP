@@ -204,7 +204,7 @@ for band_actual = 1:num_bands
     grid on
     ylim([0 1])
     xlim([xt(1)-0.5, xt(end)+0.5])
-    ylabel('Oscillatory Signal Power', 'FontSize', 24)
+    ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
     set(gca,'fontsize',17)
     title(['Oscillatory Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
     % Guardar imagen de la figura
@@ -343,7 +343,7 @@ for band_actual = 1:num_bands
     grid on
     ylim([0 1.3])
     xlim([xt(1)-0.5, xt(end)+0.5])
-    ylabel('Scale-free Signal Power', 'FontSize', 24)
+    ylabel('Scale-free Signal Power [W/Hz]', 'FontSize', 24)
     set(gca,'fontsize',17)
     title(['Scale-free Signal Power of injured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
     % Guardar imagen de la figura
@@ -380,7 +380,7 @@ for band_actual = 1:num_bands
     grid on
     ylim([0 1.3])
     xlim([xt(1)-0.5, xt(end)+0.5])
-    ylabel('Scale-free Signal Power', 'FontSize', 24)
+    ylabel('Scale-free Signal Power [W/Hz]', 'FontSize', 24)
     set(gca,'fontsize',17)
     title(['Scale-free Signal Power of uninjured area in ',banda_name,' band [',int2str(banda_eval(1)),'-',int2str(banda_eval(2)),'] Hz'], 'FontSize', 20, 'Interpreter', 'none')
     % Guardar imagen de la figura
@@ -805,7 +805,7 @@ lgd.FontSize = 20;
 grid on
 ylim([0 1.3])
 xlim([xt(1)-0.5, xt(end)+0.5])
-ylabel('Oscillatory Signal Power', 'FontSize', 24)
+ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
 set(gca,'fontsize',17)
 title(['Oscillatory Signal Power of injured area'], 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
@@ -842,7 +842,7 @@ lgd.FontSize = 20;
 grid on
 ylim([0 1.3])
 xlim([xt(1)-0.5, xt(end)+0.5])
-ylabel('Oscillatory Signal Power', 'FontSize', 24)
+ylabel('Oscillatory Signal Power [W/Hz]', 'FontSize', 24)
 set(gca,'fontsize',17)
 title(['Oscillatory Signal Power of uninjured area'], 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
@@ -982,7 +982,7 @@ lgd.FontSize = 20;
 grid on
 ylim([0 2.5])
 xlim([xt(1)-0.5, xt(end)+0.5])
-ylabel('Scale-free Signal Power', 'FontSize', 24)
+ylabel('Scale-free Signal Power [W/Hz]', 'FontSize', 24)
 set(gca,'fontsize',17)
 title(['Scale-free Signal Power of injured area'], 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
@@ -1019,7 +1019,7 @@ lgd.FontSize = 20;
 grid on
 ylim([0 2.5])
 xlim([xt(1)-0.5, xt(end)+0.5])
-ylabel('Scale-free Signal Power', 'FontSize', 24)
+ylabel('Scale-free Signal Power [W/Hz]', 'FontSize', 24)
 set(gca,'fontsize',17)
 title(['Scale-free Signal Power of uninjured area'], 'FontSize', 20, 'Interpreter', 'none')
 % Guardar imagen de la figura
@@ -1204,5 +1204,15 @@ saveas(fig_124,name_figure_save,'png');
 %%saveas(fig_124,name_figure_save,'fig');
 %waitforbuttonpress;
 close(fig_124)
+
+% Eliminacion de variables que no se utilizaran
+clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro
+
+path_name_registro = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'protocol_',foldername(2:end-1)];
+
+% Descomentar para guardar
+save(path_name_registro,'-v7.3')
+
+disp(['It was saved in: ',path_name_registro])
 
 end
