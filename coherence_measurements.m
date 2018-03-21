@@ -24,11 +24,19 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     elseif banda_eval == [30, 90]
         banda_actual = 'gamma';
     end
+    
+    names_areas = {registroLFP.areas.name};
+    % Eliminar la ultima letra de las areas (el hemisferio)
+    names_areas = cellfun(@(S) S(1:end-1), names_areas, 'Uniform', 0);
+    names_areas = unique(names_areas,'stable');
+    length_areas = length(names_areas);
+    num_sync = combntns([1:length_areas],2);
+    length_sync = size(num_sync,1);
 
-    sum_MSC_band = [];
-    coupling_strength_band = [];
-    delay_band = [];
-    areas = {};
+    sum_MSC_band = zeros(2*length_sync,3);
+    coupling_strength_band = zeros(2*length_sync,3);
+    delay_band = zeros(2*length_sync,3);
+    areas = cell(2*length_sync,1);
     delta = 1:100:10^6;
     delta = delta(1:round(length(delta)/2));
     delta = delta./10^6;
@@ -90,8 +98,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_post = sum(Coherence_post_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             
-            areas = {areas{:},[area_actual{1},'&',area_actual{2}]};
-            sum_MSC_band = [sum_MSC_band; [sum_MSC_pre,sum_MSC_on,sum_MSC_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j);
+            areas{idx_comb} = [area_actual{1}(1:end-1),'&',area_actual{2}(1:end-1)];
+            sum_MSC_band(idx_comb,:) = [sum_MSC_pre,sum_MSC_on,sum_MSC_post];
             
             if visualization(1)
                 figure;
@@ -101,9 +110,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 hold on
                 plot(f, Coherence_post_mean)
                 ylim([0 0.6])
-                title([area_actual{1},' & ',area_actual{2}])
+                title([area_actual{1}(1:end-1),' & ',area_actual{2}(1:end-1)])
 
-                fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
+                fprintf('%s\n', [area_actual{1}(1:end-1),' & ',area_actual{2}(1:end-1)])
                 fprintf('Porcentaje de banda en pre: %.2f \n', sum_MSC_pre)
                 fprintf('Porcentaje de banda en on: %.2f \n', sum_MSC_on)
                 fprintf('Porcentaje de banda en post: %.2f \n\n', sum_MSC_post)
@@ -131,8 +140,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             sum_MSC_on = sum(Coherence_on_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             sum_MSC_post = sum(Coherence_post_mean(f>=banda_eval(1) & f<=banda_eval(2)));
             
-            areas = {areas{:},[area_actual{1},'&',area_actual{2}]};
-            sum_MSC_band = [sum_MSC_band; [sum_MSC_pre,sum_MSC_on,sum_MSC_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j)+length_sync;
+            areas{idx_comb} = [area_actual{1}(1:end-1),'&',area_actual{2}(1:end-1)];
+            sum_MSC_band(idx_comb,:) = [sum_MSC_pre,sum_MSC_on,sum_MSC_post];
             
             if visualization(1)
                 figure;
@@ -142,9 +152,9 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 hold on
                 plot(f, Coherence_post_mean)
                 ylim([0 0.6])
-                title([area_actual{1},' & ',area_actual{2}])
+                title([area_actual{1}(1:end-1),' & ',area_actual{2}(1:end-1)])
 
-                fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
+                fprintf('%s\n', [area_actual{1}(1:end-1),' & ',area_actual{2}(1:end-1)])
                 fprintf('Porcentaje de banda en pre: %.2f \n', sum_MSC_pre)
                 fprintf('Porcentaje de banda en on: %.2f \n', sum_MSC_on)
                 fprintf('Porcentaje de banda en post: %.2f \n\n', sum_MSC_post)
@@ -243,7 +253,8 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             coupling_strength_on = coupling_strength_on./(sum(Coherence_on_mean_band.*0+1)./(2*delta_f));
             coupling_strength_post = coupling_strength_post./(sum(Coherence_post_mean_band.*0+1)./(2*delta_f));
             
-            coupling_strength_band = [coupling_strength_band; [coupling_strength_pre,coupling_strength_on,coupling_strength_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j);
+            coupling_strength_band(idx_comb,:) = [coupling_strength_pre,coupling_strength_on,coupling_strength_post];
             
             if visualization(2)
                 figure;
@@ -258,7 +269,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f(f>=f_band(I_post)-delta_f & f<=f_band(I_post)+delta_f), Coherence_post_mean_band,'LineWidth',3.5)
                 hold on
                 plot(f_band(I_post), max_post_band, 'k*')
-                ylim([0 0.6])
+                ylim([0 0.9])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -303,7 +314,8 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             coupling_strength_on = coupling_strength_on./(sum(Coherence_on_mean_band.*0+1)./(2*delta_f));
             coupling_strength_post = coupling_strength_post./(sum(Coherence_post_mean_band.*0+1)./(2*delta_f));
             
-            coupling_strength_band = [coupling_strength_band; [coupling_strength_pre,coupling_strength_on,coupling_strength_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j)+length_sync;
+            coupling_strength_band(idx_comb,:) = [coupling_strength_pre,coupling_strength_on,coupling_strength_post];
             
             if visualization(2)
                 figure;
@@ -318,7 +330,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 plot(f(f>=f_band(I_post)-delta_f & f<=f_band(I_post)+delta_f), Coherence_post_mean_band,'LineWidth',3.5)
                 hold on
                 plot(f_band(I_post), max_post_band, 'k*')
-                ylim([0 0.6])
+                ylim([0 0.9])
                 title([area_actual{1},' & ',area_actual{2}])
 
                 fprintf('%s\n', [area_actual{1},' & ',area_actual{2}])
@@ -399,7 +411,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             lgd.FontSize = 20;
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
-            ylim([0 0.6])
+            ylim([0 0.9])
             xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
@@ -420,7 +432,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             lgd.FontSize = 20;
             bar_inj(1).FaceColor = azul; bar_inj(2).FaceColor = rojo; bar_inj(3).FaceColor = verde;
             grid on
-            ylim([0 0.6])
+            ylim([0 0.9])
             xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
@@ -440,7 +452,7 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
             lgd.FontSize = 20;
             bar_uninj(1).FaceColor = azul; bar_uninj(2).FaceColor = rojo; bar_uninj(3).FaceColor = verde;
             grid on
-            ylim([0 0.6])
+            ylim([0 0.9])
             xlim([xt(1)-0.5, xt(end)+0.5])
             ylabel('Coupling Strength', 'FontSize', 24)
             set(gca,'fontsize',15)
@@ -457,10 +469,10 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
     % Delay
     delta_f = 1;
 
-    % Analisis de la Coherencia
+    % Analisis del Delay
     p = 2;
     for i=1:length(idx_inicio)-1
-        % Coherencia
+        % Delay
         for j = length(idx_inicio):-1:p
             
             area_actual = registroLFP.average_sync{i,j}.areas;
@@ -520,7 +532,8 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 end
             end
             
-            delay_band = [delay_band; [delay_pre,delay_on,delay_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j);
+            delay_band(idx_comb,:) = [delay_pre,delay_on,delay_post];
             
             if visualization(3)
 
@@ -534,10 +547,10 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
         p=p+1;
     end
     
-    % Analisis de la Coherencia
+    % Analisis del Delay
     p = 2;
     for i=1:length(idx_final)-1
-        % Coherencia
+        % Delay
         for j = length(idx_final):-1:p
             
             area_actual = registroLFP.average_sync{i+length(idx_inicio),j+length(idx_inicio)}.areas;
@@ -597,7 +610,8 @@ function [sum_MSC_band, coupling_strength_band, delay_band] = coherence_measurem
                 end
             end
             
-            delay_band = [delay_band; [delay_pre,delay_on,delay_post]];
+            idx_comb = find(num_sync(:,1)==i & num_sync(:,2)==j)+length_sync;
+            delay_band(idx_comb,:) = [delay_pre,delay_on,delay_post];
             
             if visualization(3)
 

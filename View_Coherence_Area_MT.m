@@ -69,7 +69,7 @@ for i=1:num_areas_izq-1
         set(gca,'fontsize',20)
         ylim([1 100])
         c=colorbar('southoutside');
-        caxis([0.2 0.8])
+        caxis([0.2 0.9])
         hold on
         line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -83,28 +83,28 @@ for i=1:num_areas_izq-1
         %waitforbuttonpress;
         close(fig_1)
         
-        fig_3 = figure('units','normalized','outerposition',[0 0 1 1]);
-        imagesc(t,f,C_norm'); 
-        cmap = colormap(parula(40));
-        axis xy
-        ylabel('Frequency [Hz]', 'FontSize', 24)
-        xlabel('Time [s]', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        ylim([1 100])
-        c=colorbar('southoutside');
-        caxis([-1 1])
-        hold on
-        line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.areas{1},' & ',registroLFP.average_sync{i,j}.areas{2}], 'FontSize', 24)
-        ylabel(c,'Normalized Coherence', 'FontSize', 17)
-        set(c,'fontsize',17)       
-        name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.areas{1},' & ',registroLFP.average_sync{i,j}.areas{2},' coherenciograma normalizada multitaper'];
-        saveas(fig_3,name_figure_save,'png');
-        %waitforbuttonpress;
-        close(fig_3)
+        %fig_3 = figure('units','normalized','outerposition',[0 0 1 1]);
+        %imagesc(t,f,C_norm'); 
+        %cmap = colormap(parula(40));
+        %axis xy
+        %ylabel('Frequency [Hz]', 'FontSize', 24)
+        %xlabel('Time [s]', 'FontSize', 24)
+        %set(gca,'fontsize',20)
+        %ylim([1 100])
+        %c=colorbar('southoutside');
+        %caxis([-1 1])
+        %hold on
+        %line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i,j}.areas{1},' & ',registroLFP.average_sync{i,j}.areas{2}], 'FontSize', 24)
+        %ylabel(c,'Normalized Coherence', 'FontSize', 17)
+        %set(c,'fontsize',17)       
+        %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i,j}.areas{1},' & ',registroLFP.average_sync{i,j}.areas{2},' coherenciograma normalizada multitaper'];
+        %saveas(fig_3,name_figure_save,'png');
+        %%waitforbuttonpress;
+        %close(fig_3)
         
         fig_5 = figure('units','normalized','outerposition',[0 0 1 1]);
         plot(f,Coherence_pre_mean,'Color',azul,'LineWidth',2.0)
@@ -113,7 +113,7 @@ for i=1:num_areas_izq-1
         plot(f,Coherence_post_mean,'Color',verde,'LineWidth',2.0)
         grid on
         xlim([0 100])
-        ylim([0.2 0.8])
+        ylim([0.2 1])
         set(gca,'fontsize',20)
         ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)
@@ -159,7 +159,7 @@ for i=1:num_areas_der-1
         set(gca,'fontsize',20)
         ylim([1 100])
         c=colorbar('southoutside');
-        caxis([0.2 0.8])
+        caxis([0.2 0.9])
         hold on
         line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
         line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
@@ -173,28 +173,28 @@ for i=1:num_areas_der-1
         %waitforbuttonpress;
         close(fig_2)
         
-        fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
-        imagesc(t,f,C_norm'); 
-        cmap = colormap(parula(40));
-        axis xy
-        ylabel('Frequency [Hz]', 'FontSize', 24)
-        xlabel('Time [s]', 'FontSize', 24)
-        set(gca,'fontsize',20)
-        ylim([1 100])
-        c=colorbar('southoutside');
-        caxis([-1 1])
-        hold on
-        line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-        title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{2}], 'FontSize', 24)
-        ylabel(c,'Normalized Coherence', 'FontSize', 17)
-        set(c,'fontsize',17)
-        name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{2},' coherenciograma normalizada multitaper'];
-        saveas(fig_4,name_figure_save,'png');
-        %waitforbuttonpress;
-        close(fig_4)
+        %fig_4 = figure('units','normalized','outerposition',[0 0 1 1]);
+        %imagesc(t,f,C_norm'); 
+        %cmap = colormap(parula(40));
+        %axis xy
+        %ylabel('Frequency [Hz]', 'FontSize', 24)
+        %xlabel('Time [s]', 'FontSize', 24)
+        %set(gca,'fontsize',20)
+        %ylim([1 100])
+        %c=colorbar('southoutside');
+        %caxis([-1 1])
+        %hold on
+        %line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+        %title(['Normalized coherenciogram multitaper between ','areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{2}], 'FontSize', 24)
+        %ylabel(c,'Normalized Coherence', 'FontSize', 17)
+        %set(c,'fontsize',17)
+        %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Coherenciograms',slash_system,'Areas ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{1},' & ',registroLFP.average_sync{i+num_areas_izq,j+num_areas_izq}.areas{2},' coherenciograma normalizada multitaper'];
+        %saveas(fig_4,name_figure_save,'png');
+        %%waitforbuttonpress;
+        %close(fig_4)
         
         fig_6 = figure('units','normalized','outerposition',[0 0 1 1]);
         plot(f,Coherence_pre_mean,'Color',azul,'LineWidth',2.0)
@@ -203,7 +203,7 @@ for i=1:num_areas_der-1
         plot(f,Coherence_post_mean,'Color',verde,'LineWidth',2.0)
         grid on
         xlim([0 100])
-        ylim([0.2 0.8])
+        ylim([0.2 1])
         set(gca,'fontsize',20)
         ylabel('Coherence', 'FontSize', 24)
         xlabel('Frequency [Hz]', 'FontSize', 24)

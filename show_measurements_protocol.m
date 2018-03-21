@@ -1206,7 +1206,7 @@ saveas(fig_124,name_figure_save,'png');
 close(fig_124)
 
 % Eliminacion de variables que no se utilizaran
-clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro
+clearvars -except path name_registro foldername inicio_foldername measurementsProtocol path_name_registro slash_system
 
 path_name_registro = [inicio_foldername,'Images',foldername,'Protocol',slash_system,'protocol_',foldername(2:end-1)];
 

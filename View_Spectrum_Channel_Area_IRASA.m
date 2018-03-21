@@ -199,7 +199,7 @@ for m = 1:length(ia)
     hold on
     p3 = plot(f_Spectrogram_mean, Spectral_osci_post_mean,'Color', verde,'LineWidth',3);
     xlim([0 60])
-    ylim([-0.007 0.15])
+    ylim([-0.01 0.15])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -211,23 +211,23 @@ for m = 1:length(ia)
     close(fig_2)
     
     %-------------------Plot---Mean Sectral Frequency---------------------------
-    fig_30 = figure('units','normalized','outerposition',[0 0 1 1]);
-    p1 = plot(f_Spectrogram_mean, Spectral_osci_pre_mean/max(Spectral_osci_pre_mean), 'Color', azul,'LineWidth',3);
-    hold on
-    p2 = plot(f_Spectrogram_mean, Spectral_osci_on_mean/max(Spectral_osci_pre_mean),'Color', rojo,'LineWidth',3);
-    hold on
-    p3 = plot(f_Spectrogram_mean, Spectral_osci_post_mean/max(Spectral_osci_pre_mean),'Color', verde,'LineWidth',3);
-    xlim([0 60])
-    ylim([-0.2 1.5])
-    lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
-    lgd.FontSize = 20;
-    set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
-    title(['Normalized Oscillation PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Oscilacion PSD Normalizada de los LFP '];
-    saveas(fig_30,name_figure_save,'png');
-    %waitforbuttonpress;
-    close(fig_30)
+    %fig_30 = figure('units','normalized','outerposition',[0 0 1 1]);
+    %p1 = plot(f_Spectrogram_mean, Spectral_osci_pre_mean/max(Spectral_osci_pre_mean), 'Color', azul,'LineWidth',3);
+    %hold on
+    %p2 = plot(f_Spectrogram_mean, Spectral_osci_on_mean/max(Spectral_osci_pre_mean),'Color', rojo,'LineWidth',3);
+    %hold on
+    %p3 = plot(f_Spectrogram_mean, Spectral_osci_post_mean/max(Spectral_osci_pre_mean),'Color', verde,'LineWidth',3);
+    %xlim([0 60])
+    %ylim([-0.2 1.5])
+    %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
+    %lgd.FontSize = 20;
+    %set(gca,'fontsize',20)
+    %xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
+    %title(['Normalized Oscillation PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Oscilacion PSD Normalizada de los LFP '];
+    %saveas(fig_30,name_figure_save,'png');
+    %%waitforbuttonpress;
+    %close(fig_30)
     
     %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
     fig_6 = figure('units','points','position',[0,0,250,600]);
@@ -253,7 +253,7 @@ for m = 1:length(ia)
     plot(f_Spectrogram_mean, smooth(f_Spectrogram_mean, quantil_post(5,:),0.02, 'loess'), ':', 'Color', verde,'LineWidth',1.7);
     hold on
     xlim([5 35])
-    ylim([-0.09 0.18])
+    ylim([-0.1 0.18])
     set(gca,'fontsize',15)
     xlabel('Frecuencia [Hz]', 'FontSize', 20); %ylabel('Amplitud (dB)', 'FontSize', 24);
     title(['Oscillation PSD in beta of ',C{ic(i)}], 'FontSize', 12)
@@ -263,29 +263,29 @@ for m = 1:length(ia)
     close(fig_6)
 
     %-------------------Plot---Mean Spectrogram------------------------------------
-    fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
-    clim=prctile(reshape(Spectrogram_osci_mean_norm',1,numel(Spectrogram_osci_mean_norm)),[5 99]);
-    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_osci_mean_norm',clim);
-    cmap = colormap(parula(80));
-    axis xy
-    ylabel('Frequency [Hz]', 'FontSize', 24)
-    xlabel('Time [s]', 'FontSize', 24)
-    set(gca,'fontsize',20)
-    ylim([0 60])
-    c=colorbar('southoutside');
-    caxis([-1 1])
-    hold on
-    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Normalized oscillation spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
-    set(c,'fontsize',17)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Oscilaciones de los LFP '];
-    saveas(fig_8,name_figure_save,'png');
-    %waitforbuttonpress;
-    close(fig_8)
+    %fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
+    %clim=prctile(reshape(Spectrogram_osci_mean_norm',1,numel(Spectrogram_osci_mean_norm)),[5 99]);
+    %imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_osci_mean_norm',clim);
+    %cmap = colormap(parula(80));
+    %axis xy
+    %ylabel('Frequency [Hz]', 'FontSize', 24)
+    %xlabel('Time [s]', 'FontSize', 24)
+    %set(gca,'fontsize',20)
+    %ylim([0 60])
+    %c=colorbar('southoutside');
+    %caxis([-1 1])
+    %hold on
+    %line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %title(['Normalized oscillation spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    %ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
+    %set(c,'fontsize',17)
+    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Oscilaciones de los LFP '];
+    %saveas(fig_8,name_figure_save,'png');
+    %%waitforbuttonpress;
+    %close(fig_8)
     
     %-------------------Plot---Mean Spectrogram------------------------------------
     fig_10 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -296,7 +296,7 @@ for m = 1:length(ia)
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
-    ylim([0 60])
+    ylim([0 100])
     c=colorbar('southoutside');
     caxis([0 0.05])
     hold on
@@ -322,7 +322,7 @@ for m = 1:length(ia)
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
-    ylim([0 60])
+    ylim([0 100])
     c=colorbar('southoutside');
     caxis([0 0.05])
     hold on
@@ -347,7 +347,7 @@ for m = 1:length(ia)
     hold on
     p3 = plot(f_Spectrogram_mean, Spectral_frac_post_mean,'Color', verde,'LineWidth',3);
     xlim([0 60])
-    ylim([0 0.20])
+    ylim([0 0.32])
     lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -359,23 +359,23 @@ for m = 1:length(ia)
     close(fig_12)
     
     %-------------------Plot---Mean Sectral Frequency---------------------------
-    fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
-    p1 = plot(f_Spectrogram_mean, Spectral_frac_pre_mean/max(Spectral_frac_pre_mean), 'Color', azul,'LineWidth',3);
-    hold on
-    p2 = plot(f_Spectrogram_mean, Spectral_frac_on_mean/max(Spectral_frac_pre_mean),'Color', rojo,'LineWidth',3);
-    hold on
-    p3 = plot(f_Spectrogram_mean, Spectral_frac_post_mean/max(Spectral_frac_pre_mean),'Color', verde,'LineWidth',3);
-    xlim([0 60])
-    ylim([0 1.5])
-    lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
-    lgd.FontSize = 20;
-    set(gca,'fontsize',20)
-    xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
-    title(['Normalized Scale-free activity PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Arrhythmic activity PSD Normalizada de los LFP '];
-    saveas(fig_31,name_figure_save,'png');
-    %waitforbuttonpress;
-    close(fig_31)
+    %fig_31 = figure('units','normalized','outerposition',[0 0 1 1]);
+    %p1 = plot(f_Spectrogram_mean, Spectral_frac_pre_mean/max(Spectral_frac_pre_mean), 'Color', azul,'LineWidth',3);
+    %hold on
+    %p2 = plot(f_Spectrogram_mean, Spectral_frac_on_mean/max(Spectral_frac_pre_mean),'Color', rojo,'LineWidth',3);
+    %hold on
+    %p3 = plot(f_Spectrogram_mean, Spectral_frac_post_mean/max(Spectral_frac_pre_mean),'Color', verde,'LineWidth',3);
+    %xlim([0 60])
+    %ylim([0 1.5])
+    %lgd = legend([p1 p2 p3], 'pre-stim', 'on-stim', 'post-stim');
+    %lgd.FontSize = 20;
+    %set(gca,'fontsize',20)
+    %xlabel('Frequency [Hz]', 'FontSize', 24); ylabel('Power [W/Hz]', 'FontSize', 24)
+    %title(['Normalized Scale-free activity PSD of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Arrhythmic activity PSD Normalizada de los LFP '];
+    %saveas(fig_31,name_figure_save,'png');
+    %%waitforbuttonpress;
+    %close(fig_31)
     
     %-------------------Plot---Sectral Frequency in Beta [8-20]Hz---------------------------
     fig_14 = figure('units','points','position',[0,0,250,600]);
@@ -411,29 +411,29 @@ for m = 1:length(ia)
     close(fig_14)
 
     %-------------------Plot---Mean Spectrogram------------------------------------
-    fig_16 = figure('units','normalized','outerposition',[0 0 1 1]);
-    clim=prctile(reshape(Spectrogram_frac_mean_norm',1,numel(Spectrogram_frac_mean_norm)),[5 99]);
-    imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_frac_mean_norm',clim);
-    cmap = colormap(parula(80));
-    axis xy
-    ylabel('Frequency [Hz]', 'FontSize', 24)
-    xlabel('Time [s]', 'FontSize', 24)
-    set(gca,'fontsize',20)
-    ylim([0 60])
-    c=colorbar('southoutside');
-    caxis([-5 5])
-    hold on
-    line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
-    title(['Normalized Scale-free activity spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
-    ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
-    set(c,'fontsize',17)
-    name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Arrhythmic activity de los LFP '];
-    saveas(fig_16,name_figure_save,'png');
-    %waitforbuttonpress;
-    close(fig_16)
+    %fig_16 = figure('units','normalized','outerposition',[0 0 1 1]);
+    %clim=prctile(reshape(Spectrogram_frac_mean_norm',1,numel(Spectrogram_frac_mean_norm)),[5 99]);
+    %imagesc(t_Spectrogram_mean,f_Spectrogram_mean,Spectrogram_frac_mean_norm',clim);
+    %cmap = colormap(parula(80));
+    %axis xy
+    %ylabel('Frequency [Hz]', 'FontSize', 24)
+    %xlabel('Time [s]', 'FontSize', 24)
+    %set(gca,'fontsize',20)
+    %ylim([0 60])
+    %c=colorbar('southoutside');
+    %caxis([-5 5])
+    %hold on
+    %line([pre_m*60.0 pre_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([on_inicio_m*60.0 on_inicio_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([on_final_m*60.0 on_final_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %line([post_m*60.0 post_m*60.0], get(gca, 'ylim'),'Color','white','LineWidth',3.5,'Marker','.','LineStyle','-');
+    %title(['Normalized Scale-free activity spectrogram of LFPs in area ',C{ic(i)}], 'FontSize', 24)
+    %ylabel(c,'Normalized Power [zscore]', 'FontSize', 17)
+    %set(c,'fontsize',17)
+    %name_figure_save = [inicio_foldername,'Images',foldername,slash_system,'Spectrograms',slash_system,'Promedio ',C{ic(i)},' Espectrograma Normalizado de Arrhythmic activity de los LFP '];
+    %saveas(fig_16,name_figure_save,'png');
+    %%waitforbuttonpress;
+    %close(fig_16)
     
     %-------------------Plot---Mean Spectrogram------------------------------------
     fig_18 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -444,7 +444,7 @@ for m = 1:length(ia)
     ylabel('Frequency [Hz]', 'FontSize', 24)
     xlabel('Time [s]', 'FontSize', 24)
     set(gca,'fontsize',20)
-    ylim([0 60])
+    ylim([0 100])
     c=colorbar('southoutside');
     caxis([0 0.05])
     hold on
@@ -466,7 +466,7 @@ for m = 1:length(ia)
     hold on
     semilogy(f_Spectrogram_mean, Spectral_frac_pre_mean,'k','LineWidth',3); 
     xlim([0 100])
-    ylim([10^-5.5 10^-0.5])
+    ylim([10^-5.5 10^-0.1])
     lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -482,7 +482,7 @@ for m = 1:length(ia)
     hold on
     semilogy(f_Spectrogram_mean, Spectral_frac_on_mean,'k','LineWidth',3);    
     xlim([0 100])
-    ylim([10^-5.5 10^-0.5])
+    ylim([10^-5.5 10^-0.1])
     lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)
@@ -498,7 +498,7 @@ for m = 1:length(ia)
     hold on
     semilogy(f_Spectrogram_mean, Spectral_frac_post_mean,'k','LineWidth',3);   
     xlim([0 100])
-    ylim([10^-5.5 10^-0.5])
+    ylim([10^-5.5 10^-0.1])
     lgd = legend('mixed', 'scale-free activity');
     lgd.FontSize = 20;
     set(gca,'fontsize',20)

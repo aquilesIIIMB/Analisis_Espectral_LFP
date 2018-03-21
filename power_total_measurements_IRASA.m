@@ -233,7 +233,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Scale-free activity Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -251,7 +251,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Scale-free activity Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -272,7 +272,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Scale-free activity Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -291,7 +291,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Scale-free activity Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Scale-free activity Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -311,7 +311,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Scale-free activity Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -330,7 +330,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Scale-free activity Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Scale-free activity Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -350,7 +350,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Oscillatory Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -368,7 +368,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             legend('Pre-stim', 'On-stim', 'Post-stim','Location','southoutside','Orientation','horizontal');
             bar_izqder(1).FaceColor = azul; bar_izqder(2).FaceColor = rojo; bar_izqder(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Oscillatory Signal Power of left and right hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -389,7 +389,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Oscillatory Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -408,7 +408,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 4])
+            ylim([0 4.2])
             ylabel('Oscillatory Power [W/Hz]', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Oscillatory Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -428,7 +428,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_izq(1).FaceColor = azul; bar_izq(2).FaceColor = rojo; bar_izq(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Oscillatory Signal Power of left hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
@@ -447,7 +447,7 @@ function [power_band_total, power_band_total_norm, power_fractal_band,power_frac
             lgd.FontSize = 20;
             bar_der(1).FaceColor = azul; bar_der(2).FaceColor = rojo; bar_der(3).FaceColor = verde;
             grid on
-            ylim([0 45])
+            ylim([0 65])
             ylabel('Normalized Oscillatory Power', 'FontSize', 24)
             set(gca,'fontsize',20)
             title(['Normalized Oscillatory Signal Power of rigth hemisphere'], 'FontSize', 20, 'Interpreter', 'none')
