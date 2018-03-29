@@ -16,7 +16,7 @@ clear; close all
 %path = 'D:\Descargas\Trabajo de titulo\Database\+2500_300Hz\arturo_2017-06-09_15-24-39\'; 
 
 %%% Ubuntu
-path = '/home/cmanalisis/Aquiles/Registros/Database/-375/daniel_2016-12-14_17-21-08/';
+path = '/home/cmanalisis/Aquiles/Registros/Database/-375/arturo_2017-05-30_15-46-44/';
 
 %% Intervalos de tiempo del protocolo
 timeRanges = [5, 5, 5]; %DC or AC
@@ -32,21 +32,19 @@ eval_channels = 1:64;
 
 %% Codificacion de canales
 %channel_codes = 'channel-codes/channel_codes_florencia.csv'; % Flo
-channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
+%channel_codes = 'channel-codes/channel_codes_florencia_2_modificado.csv'; % Flo Esgrima UCH 
 %%%  (Se dejaron las mismas areas que en 'channel_codes_florencia_PUC.csv' y se invirtieron los hemisferios originals L->R y R->L)
-%channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
+channel_codes = 'channel-codes/channel_codes_florencia_PUC.csv'; % Flo Futbolistas UC
 %channel_codes = 'channel-codes/channel_codes_Rata_R01_modificado.csv'; % Caro 
 %%%  (Se invirtieron los hemisferios originals L->R y R->L)
 
 %% Fin de los parametros
 
 
-%Orlando_2016-12-01_16-01-59 no se registra estimulacion en ADC8
-%tony_2016-12-07_16-17-37 no se registra estimulacion en ADC8
 %toni_2016-12-12_16-03-02 no esta completo
-%arturo_2017-05-30_15-46-44 no tienen ADC8
-%orlando_2016-12-14_16-48-54 no tiene adc8
 %toni2_2017-01-09_17-32-53 Malo
+%orlando_2017-01-23_12-47-55 Malo
+%orlando_2017-01-16_16-05-35 Malo
 
 
 

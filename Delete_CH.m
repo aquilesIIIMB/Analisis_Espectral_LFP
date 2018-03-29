@@ -22,20 +22,20 @@ Ch_del = [];
 % Confirma que ya se seleccionaron los canales
 while 1
     try
-        confirmation = input('Ya seleccionaste los canales a eliminar?[Type si]:  ','s');
+        confirmation = input('Have you already selected the channels to be deleted?[Type yes or si]:  ','s');
     catch
         continue;
     end
 
-    if strcmp(confirmation,'si')  
-        fprintf('\nEliminemos Canales \n\n');
+    if strcmp(confirmation,'si') || strcmp(confirmation,'yes')
+        fprintf('\nDelete Channels \n\n');
         break
     end
 end
 
 while 1
     try
-        Ch_del_actual = input('Ingrese numero del canal que desea eliminar: ');
+        Ch_del_actual = input('Input the channel number you want to delete: ');
         if isempty(Ch_del_actual)
             break;        
         end
@@ -54,8 +54,8 @@ end
 % Canales que seran evaluados despues de eliminar los que no son adecuados
 canales_eval_selected = find(~[registroLFP.channels.removed]);
 
-fprintf('\nTodos los canales seleccionados que se usaran:\n\n');
-fprintf('\tCanal\t\tArea\n');
+fprintf('\nAll the channels that will be used:\n\n');
+fprintf('\tChannel\t\tArea\n');
 for k = 1:length(canales_eval_selected)
     fprintf('\t %s\t\t %s\n',registroLFP.channels(canales_eval_selected(k)).name , registroLFP.channels(canales_eval_selected(k)).area);
 end

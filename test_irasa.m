@@ -51,7 +51,7 @@ end
 %% Test con mis datos
 % set parameter
 srate = 1000; % sampling frequency
-movingwin = [4 2]; % [window size, sliding step]
+movingwin = [2 1]; % [window size, sliding step]
 frange = [0.1 100];
 win = movingwin(1)*srate;
 step = movingwin(2)*srate;
@@ -99,7 +99,7 @@ xlabel('Time [s]', 'FontSize', 24)
 set(gca,'fontsize',20)
 ylim([1 100])
 c=colorbar('southoutside');
-%caxis([-1 1])
+caxis([0 15])
 ylabel(c,'Normalized Power [dBPink]', 'FontSize', 17)
 set(c,'fontsize',17)
 
@@ -113,6 +113,14 @@ hold on;
 plot(Frac.freq, mean(Frac.osci(:,(Frac.time < 13*60)), 2));
 legend('Pre-stim', 'On-stim', 'Post-stim')
 xlim([0, 40])
+
+% PSD
+figure;
+plot(Frac.freq, mean(Frac.osci(:,(Frac.time < 10*60)), 2));
+hold on;
+plot(Frac.freq, mean(Frac.osci(:,(Frac.time > 10*60)), 2));
+legend('Pre-stim', 'Post-stim')
+xlim([0, 100])
 
 % Para calcular la energia de la banda
 min_psd = min([min(psd_pre),min(psd_on),min(psd_post)]);

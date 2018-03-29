@@ -11,37 +11,37 @@ clear registroLFP % Se elimina el registro cargado en el workspace
 % Como se va a referenciar cada canal
 reference_type = 'area'; % 'none', 'general', 'area'
 % Verificacion de los Parametros
-fprintf('\n***Etapa de Evaluacion*** \n');
-fprintf('__Parametros escogidos:\n\n');
-fprintf('Ruta:\n\t%s\n', path);
+fprintf('\n***Evaluation of parameters *** \n');
+fprintf('__Chosen Parameters:\n\n');
+fprintf('Path:\n\t%s\n', path);
 pause(1)
-fprintf('Codificacion de cada canal:\n\t%s\n', channel_codes);
+fprintf('Coding of each channel:\n\t%s\n', channel_codes);
 pause(1)
 % Se carga la codficiacion del canal
 T = readtable(channel_codes);
-fprintf('Canales Usados:\n');
-fprintf('\tCanal\t\tArea\n');
+fprintf('Available Channels:\n');
+fprintf('\tChannel\t\tArea\n');
 for k = 1:length(eval_channels)
     fprintf('\t %s\t\t %s\n',T.Channel{(eval_channels(k))},T.Area{(eval_channels(k))});
 end
 pause(2)
-fprintf('El tipo de referencia es:\n\t%s\n', upper(reference_type));
+fprintf('Reference type:\n\t%s\n', upper(reference_type));
 pause(1)
-fprintf('La amplitud del umbral de rechazo de artefactos es:\n\t%d \n', threshold_amplitudes);
+fprintf('Threshold amplitudes to reject artifacts:\n\t%d \n', threshold_amplitudes);
 pause(1)
-fprintf('Rangos de tiempo del experimento\n\tPre estimulacion: %d min\n\tEn estimulacion: %d min\n\tPost estimulacion: %d min\n', timeRanges(1), timeRanges(2), timeRanges(3));
+fprintf('Experiment time ranges:\n\tPre Stimulation: %d min\n\tOn Stimulation: %d min\n\tPost Stimulation: %d min\n', timeRanges(1), timeRanges(2), timeRanges(3));
 pause(1)
 
 % Confirma que los parametros estan correctos
 try
-    confirmation = input('Estan todos los parametros Ok?[Press Enter]:  ','s');
+    confirmation = input('Are the parameters Ok?[Press Enter]:  ','s');
 catch
-    error('Revisar los parametros');
+    error('Check the parameters');
 end
 if ~isempty(confirmation)    
-    error('Revisar los parametros');
+    error('Check the parameters');
 else
-    fprintf('\nTODO LISTO PARA EMPEZAR LOS ANALISIS :D\n\n');
+    fprintf('\nEVERYTHING READY TO BEGIN THE ANALYSIS :D\n\n');
 end
 
 %% Inicializacion de la estructura
@@ -71,27 +71,91 @@ registroLFP.filter_param(2).fs = registroLFP.desired_fs;
 
 % Datos para el tiempo 
 dir_pulse = dir([path,'10*_ADC8.continuous']);
-[data, timestamps, info] = load_open_ephys_data_faster(strcat(path, dir_pulse.name));
-pulse_rect = data>0;
-deriv_pulse = diff(pulse_rect);
-idx_change_pulse = find(deriv_pulse~=0)+1;
-fin_pre = idx_change_pulse(1);
-inicio_post = idx_change_pulse(end)-1;
-inicio_stim = idx_change_pulse(2)-1;
-fin_stim = idx_change_pulse(end-1);
 
-time_max_reg_seg = length(data) / info.header.sampleRate;
-time_step_s = linspace(0,time_max_reg_seg,length(data)); % minutos
+% Si existe el ADC8 con los pulsos de estimulacion
+if exist(strcat(path, dir_pulse.name),'file') && ~isempty(dir_pulse)
+    [data, timestamps, info] = load_open_ephys_data_faster(strcat(path, dir_pulse.name));
+    time_max_reg_seg = length(data) / info.header.sampleRate;
+    time_step_s = linspace(0,time_max_reg_seg,length(data)); % minutos
+        
+    pulse_rect = data>0;
+    deriv_pulse = diff(pulse_rect);
+    idx_change_pulse = find(deriv_pulse~=0)+1;
+    
+    % Si los pulsos de estimulacion estan correctos
+    if ~isempty(idx_change_pulse)
+        
+        fin_pre = idx_change_pulse(1);
+        inicio_post = idx_change_pulse(end)-1;
+        inicio_stim = idx_change_pulse(2)-1;
+        fin_stim = idx_change_pulse(end-1);
 
-tiempo_fin_pre = time_step_s(fin_pre);
-tinicial = tiempo_fin_pre - timeRanges(1)*60;
-tiempo_inicio_stim_sennal = time_step_s(inicio_stim);
-tiempo_fin_stim_sennal = time_step_s(fin_stim);
-tiempo_inicio_post = time_step_s(inicio_post);
-tiempo_fin_post = tiempo_inicio_post + timeRanges(3)*60;
+        tiempo_fin_pre = time_step_s(fin_pre);
+        tinicial = tiempo_fin_pre - timeRanges(1)*60;
+        tiempo_inicio_stim_sennal = time_step_s(inicio_stim);
+        tiempo_fin_stim_sennal = time_step_s(fin_stim);
+        tiempo_inicio_post = time_step_s(inicio_post);
+        tiempo_fin_post = tiempo_inicio_post + timeRanges(3)*60;
 
-tiempo_inicio_stim = tiempo_fin_pre + ((tiempo_inicio_post - tiempo_fin_pre) - timeRanges(2)*60) / 2;  % Sirve para cualqier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
-tiempo_fin_stim = tiempo_inicio_post - ((tiempo_inicio_post - tiempo_fin_pre) - timeRanges(2)*60) / 2;  % Sirve para cualquier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
+        tiempo_inicio_stim = tiempo_fin_pre + ((tiempo_inicio_post - tiempo_fin_pre) - timeRanges(2)*60) / 2;  % Sirve para cualqier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
+        tiempo_fin_stim = tiempo_inicio_post - ((tiempo_inicio_post - tiempo_fin_pre) - timeRanges(2)*60) / 2;  % Sirve para cualquier tiempo de rampa, pero upramp y downramp deben ser igual tiempo
+        
+        if length(idx_change_pulse) > 10
+            fprintf('STIMULATION FREQUENCY!!!: %.2fHz\n\n', 1/mean(diff(time_step_s(deriv_pulse>0))))
+        else
+            fprintf('STIMULATION FREQUENCY!!!: Inf (DC)\n\n')
+        end
+        
+    else
+        while 1
+            try
+                extra_time = input('Extra time?(s):  ');
+            catch
+                continue;
+            end
+
+            if isnumeric(extra_time)
+
+                tinicial = extra_time;
+                tiempo_fin_pre = timeRanges(1)*60 + tinicial;
+                tiempo_inicio_stim = timeRanges(1)*60 + tinicial + 30;
+                tiempo_fin_stim = (timeRanges(1) + timeRanges(2))*60 + tinicial + 30;
+                tiempo_inicio_post =  (timeRanges(1) + timeRanges(2))*60 + tinicial + 60;
+                tiempo_fin_post = (timeRanges(1) + timeRanges(2) + timeRanges(3))*60 + tinicial + 60;
+                
+                break
+            end
+        end
+        
+    end
+    
+else
+    name_ch1 = dir([path,'10*_CH1.continuous']);
+    [data, timestamps, info] = load_open_ephys_data_faster(strcat(path, name_ch1.name));
+    time_max_reg_seg = length(data) / info.header.sampleRate;
+    time_step_s = linspace(0,time_max_reg_seg,length(data)); % minutos
+      
+    while 1
+        try
+            extra_time = input('Extra time?(s):  ');
+        catch
+            continue;
+        end
+
+        if isnumeric(extra_time)
+
+            tinicial = extra_time;
+            tiempo_fin_pre = timeRanges(1)*60 + tinicial;
+            tiempo_inicio_stim = timeRanges(1)*60 + tinicial + 30;
+            tiempo_fin_stim = (timeRanges(1) + timeRanges(2))*60 + tinicial + 30;
+            tiempo_inicio_post =  (timeRanges(1) + timeRanges(2))*60 + tinicial + 60;
+            tiempo_fin_post = (timeRanges(1) + timeRanges(2) + timeRanges(3))*60 + tinicial + 60;
+
+            break
+        end
+    end
+end
+    
 
 %tiempos_etapas = [tinicial, tiempo_fin_pre, tiempo_inicio_stim,
 %   tiempo_inicio_stim_sennal, tiempo_fin_stim_sennal, tiempo_fin_stim,
