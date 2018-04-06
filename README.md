@@ -93,7 +93,3 @@ The next section is usage, in which you instruct other people on how to use your
 
 # Acknowledgement
 
-
-
-
-
