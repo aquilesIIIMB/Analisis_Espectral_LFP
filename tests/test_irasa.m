@@ -86,7 +86,7 @@ plot(Frac.freq, mean(Frac.osci,2));
 
 % Spectrogram
 %-------------------Plot---Mean Spectrogram------------------------------------
-Spectrogram_mean = Frac.osci';
+Spectrogram_mean = Frac.frac';
 t_Spectrogram_mean = Frac.time;
 f_Spectrogram_mean = Frac.freq;
 fig_8 = figure('units','normalized','outerposition',[0 0 1 1]);
@@ -99,7 +99,7 @@ xlabel('Time [s]', 'FontSize', 24)
 set(gca,'fontsize',20)
 ylim([1 100])
 c=colorbar('southoutside');
-caxis([0 15])
+caxis([-1e-05 1e-05])
 ylabel(c,'Normalized Power [dBPink]', 'FontSize', 17)
 set(c,'fontsize',17)
 

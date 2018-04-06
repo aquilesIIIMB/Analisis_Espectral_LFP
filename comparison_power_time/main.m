@@ -19,11 +19,11 @@ clear; close all
 path = '/home/cmanalisis/Aquiles/Registros/Database/-375/arturo_2017-05-30_15-46-44/';
 
 %% Intervalos de tiempo del protocolo
-timeRanges = [5, 5, 5]; %DC or AC
-%timeRanges = [6, 6, 6]; %Mixtos
+timeRanges = 5; %DC or AC
+%timeRanges = 6; %Mixtos
 
 %% Amplitud del umbral para remover artefactos
-threshold_amplitudes = [15, 10, 10]; % 8,9,10 desde el mas sucio al mas limpio
+threshold_amplitudes = 15; % 8,9,10 desde el mas sucio al mas limpio
 
 %% Canales que se analizaran
 %eval_channels = [2:5,14:21,34:37,46:53];

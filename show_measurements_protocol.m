@@ -9,9 +9,13 @@ azul = [0 0.4470 0.7410];
 rojo = [0.85, 0.325, 0.098];
 verde = [0.466, 0.674, 0.188];
 morado = [0.494, 0.184, 0.556];
+azul_claro = [0.2 0.6470 0.9410];
 rojo_oscuro = [0.635, 0.078, 0.184];
+verde_claro = [0.666, 0.874, 0.388];
+morado_claro = [0.694, 0.384, 0.756];
 
-color_total = [azul; rojo; verde; morado; rojo_oscuro;azul; rojo; verde; morado; rojo_oscuro];
+color_total = [azul; rojo; verde; morado; azul_claro; rojo_oscuro; verde_claro; morado_claro;...
+    azul; rojo; verde; morado; azul_claro; rojo_oscuro; verde_claro; morado_claro];
 
 % Grafica
 
