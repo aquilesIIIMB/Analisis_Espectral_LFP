@@ -93,7 +93,10 @@ The next section is usage, in which you instruct other people on how to use your
 
 # Acknowledgement
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 1d35b6d8528b0830023cc507c7f06faac4c874b9
